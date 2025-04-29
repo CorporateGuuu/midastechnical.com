@@ -1,0 +1,81 @@
+/* Hero.module.css */
+.hero {
+  background: linear-gradient(to right, #0066cc, #001a33);
+  color: white;
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.content {
+  max-width: 600px;
+  z-index: 1;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.cta {
+  display: inline-block;
+  background-color: #ff3333;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.cta:hover {
+  background-color: #e62e2e;
+}
+
+.imageContainer {
+  position: relative;
+  width: 40%;
+  max-width: 500px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transform: perspective(800px) rotateY(-15deg);
+  transition: transform 0.5s;
+}
+
+.image:hover {
+  transform: perspective(800px) rotateY(0);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .content {
+    margin-bottom: 30px;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .imageContainer {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,164 @@
+/* Header.module.css */
+.header {
+  width: 100%;
+}
+
+.topBanner {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0066cc;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.navLinks {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 25px;
+}
+
+.navLinks li {
+  margin: 0;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s;
+  padding: 5px 0;
+}
+
+.navLinks a:hover {
+  color: #0066cc;
+}
+
+.searchBar {
+  display: flex;
+  margin: 0 20px;
+}
+
+.searchInput {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  width: 200px;
+}
+
+.searchButton {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 15px;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .mainHeader {
+    padding: 10px 15px;
+  }
+
+  .navLinks {
+    display: none;
+  }
+
+  .searchBar {
+    display: none;
+  }
+
+  .mobileMenuButton {
+    display: block;
+  }
+
+  .mobileMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 100;
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .mobileMenu.open {
+    transform: translateX(0);
+  }
+
+  .mobileNavLinks {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .mobileNavLinks li {
+    margin: 15px 0;
+  }
+
+  .mobileNavLinks a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .mobileSearchBar {
+    display: flex;
+    margin: 20px 0;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+}
