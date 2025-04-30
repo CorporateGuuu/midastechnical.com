@@ -1,3 +1,7 @@
+# Ignore large video files
+Website Content/Videos/MDTS1.mov
+Website Content/Videos/MDTS2.mov
+
 # dependencies
 /node_modules
 /.pnp
