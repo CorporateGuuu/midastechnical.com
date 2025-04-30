@@ -63,9 +63,16 @@ function AppContent({ Component, pageProps }) {
     signOut({ callbackUrl: '/' });
   };
 
-  // Check if we're on the landing page or LCD Buyback page
+  // Check if we're on the landing page, LCD Buyback page, or other pages that need a clean look
   const isLandingPage = router.pathname === '/';
   const isLcdBuybackPage = router.pathname === '/lcd-buyback';
+  const isAuthPage = router.pathname.startsWith('/auth/');
+  const isCartPage = router.pathname === '/cart';
+  const isCategoriesPage = router.pathname === '/categories';
+  const isProductsPage = router.pathname === '/products';
+
+  // Pages that should have a clean look without navigation
+  const shouldHideNavigation = isAuthPage || isCartPage || isCategoriesPage || isProductsPage;
 
   return (
     <div className="app-wrapper">
@@ -81,27 +88,29 @@ function AppContent({ Component, pageProps }) {
                 Midas Technical Solutions
               </Link>
 
-              <button
-                className="mobile-menu-button md:hidden"
-                onClick={toggleMobileMenu}
-                aria-expanded={mobileMenuOpen}
-                aria-label="Toggle menu"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  {mobileMenuOpen ? (
-                    <>
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </>
-                  ) : (
-                    <>
-                      <line x1="3" y1="12" x2="21" y2="12"></line>
-                      <line x1="3" y1="6" x2="21" y2="6"></line>
-                      <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </>
-                  )}
-                </svg>
-              </button>
+              {!shouldHideNavigation && (
+                <button
+                  className="mobile-menu-button md:hidden"
+                  onClick={toggleMobileMenu}
+                  aria-expanded={mobileMenuOpen}
+                  aria-label="Toggle menu"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {mobileMenuOpen ? (
+                      <>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </>
+                    ) : (
+                      <>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                      </>
+                    )}
+                  </svg>
+                </button>
+              )}
             </div>
 
             <div className="search-form hidden md:flex">
@@ -116,47 +125,49 @@ function AppContent({ Component, pageProps }) {
               </form>
             </div>
 
-            <nav className={`nav-links desktop-nav hidden md:flex`}>
-              <Link href="/products">Products</Link>
-              <Link href="/categories">Categories</Link>
-              <Link href="/lcd-buyback">LCD Buyback</Link>
-              <Link href="/cart">Cart</Link>
+            {!shouldHideNavigation && (
+              <nav className={`nav-links desktop-nav hidden md:flex`}>
+                <Link href="/products">Products</Link>
+                <Link href="/categories">Categories</Link>
+                <Link href="/lcd-buyback">LCD Buyback</Link>
+                <Link href="/cart">Cart</Link>
 
-              {isLoading ? (
-                <span className="auth-loading">Loading...</span>
-              ) : isAuthenticated ? (
-                <div className="user-menu-container">
-                  <button
-                    className="user-menu-button"
-                    onClick={toggleUserMenu}
-                    aria-expanded={showUserMenu}
-                  >
-                    {session.user.name || session.user.email}
-                  </button>
+                {isLoading ? (
+                  <span className="auth-loading">Loading...</span>
+                ) : isAuthenticated ? (
+                  <div className="user-menu-container">
+                    <button
+                      className="user-menu-button"
+                      onClick={toggleUserMenu}
+                      aria-expanded={showUserMenu}
+                    >
+                      {session.user.name || session.user.email}
+                    </button>
 
-                  {showUserMenu && (
-                    <div className="user-menu">
-                      <Link href="/user/profile" className="user-menu-item">
-                        Profile
-                      </Link>
-                      <Link href="/user/orders" className="user-menu-item">
-                        Orders
-                      </Link>
-                      <button
-                        className="user-menu-item sign-out-button"
-                        onClick={handleSignOut}
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Link href="/auth/signin" className="auth-link-button">
-                  Sign In
-                </Link>
-              )}
-            </nav>
+                    {showUserMenu && (
+                      <div className="user-menu">
+                        <Link href="/user/profile" className="user-menu-item">
+                          Profile
+                        </Link>
+                        <Link href="/user/orders" className="user-menu-item">
+                          Orders
+                        </Link>
+                        <button
+                          className="user-menu-item sign-out-button"
+                          onClick={handleSignOut}
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link href="/auth/signin" className="auth-link-button">
+                    Sign In
+                  </Link>
+                )}
+              </nav>
+            )}
           </div>
 
           {/* Mobile menu */}
@@ -174,31 +185,33 @@ function AppContent({ Component, pageProps }) {
                 </form>
               </div>
 
-              <nav className="mobile-nav">
-                <Link href="/products" className="mobile-nav-item">Products</Link>
-                <Link href="/categories" className="mobile-nav-item">Categories</Link>
-                <Link href="/lcd-buyback" className="mobile-nav-item">LCD Buyback</Link>
-                <Link href="/cart" className="mobile-nav-item">Cart</Link>
+              {!shouldHideNavigation && (
+                <nav className="mobile-nav">
+                  <Link href="/products" className="mobile-nav-item">Products</Link>
+                  <Link href="/categories" className="mobile-nav-item">Categories</Link>
+                  <Link href="/lcd-buyback" className="mobile-nav-item">LCD Buyback</Link>
+                  <Link href="/cart" className="mobile-nav-item">Cart</Link>
 
-                {isLoading ? (
-                  <span className="mobile-nav-item auth-loading">Loading...</span>
-                ) : isAuthenticated ? (
-                  <>
-                    <Link href="/user/profile" className="mobile-nav-item">Profile</Link>
-                    <Link href="/user/orders" className="mobile-nav-item">Orders</Link>
-                    <button
-                      className="mobile-nav-item sign-out-button"
-                      onClick={handleSignOut}
-                    >
-                      Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <Link href="/auth/signin" className="mobile-nav-item auth-link">
-                    Sign In
-                  </Link>
-                )}
-              </nav>
+                  {isLoading ? (
+                    <span className="mobile-nav-item auth-loading">Loading...</span>
+                  ) : isAuthenticated ? (
+                    <>
+                      <Link href="/user/profile" className="mobile-nav-item">Profile</Link>
+                      <Link href="/user/orders" className="mobile-nav-item">Orders</Link>
+                      <button
+                        className="mobile-nav-item sign-out-button"
+                        onClick={handleSignOut}
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <Link href="/auth/signin" className="mobile-nav-item auth-link">
+                      Sign In
+                    </Link>
+                  )}
+                </nav>
+              )}
             </div>
           </div>
         </header>
