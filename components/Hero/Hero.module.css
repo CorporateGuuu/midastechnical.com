@@ -1,81 +1,140 @@
 /* Hero.module.css */
 .hero {
-  background: linear-gradient(to right, #0066cc, #001a33);
+  position: relative;
+  height: 600px;
   color: white;
-  padding: 60px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   overflow: hidden;
 }
 
-.content {
-  max-width: 600px;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
   z-index: 1;
 }
 
+.content {
+  max-width: 800px;
+  text-align: center;
+  padding: 0 20px;
+  z-index: 2;
+}
+
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 3.5rem;
+  font-weight: 800;
   margin-bottom: 20px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+  font-size: 1.5rem;
+  margin-bottom: 40px;
   opacity: 0.9;
+  font-weight: 300;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .cta {
   display: inline-block;
-  background-color: #ff3333;
+  background-color: #0066cc;
   color: white;
-  padding: 12px 24px;
+  padding: 15px 30px;
   border-radius: 4px;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  border: 2px solid #0066cc;
 }
 
 .cta:hover {
-  background-color: #e62e2e;
+  background-color: #0052a3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.secondaryCta {
+  display: inline-block;
+  background-color: transparent;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid white;
+}
+
+.secondaryCta:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .imageContainer {
-  position: relative;
-  width: 40%;
-  max-width: 500px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .image {
   width: 100%;
-  height: auto;
-  object-fit: contain;
-  transform: perspective(800px) rotateY(-15deg);
-  transition: transform 0.5s;
-}
-
-.image:hover {
-  transform: perspective(800px) rotateY(0);
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {
   .hero {
-    flex-direction: column;
-    text-align: center;
-    padding: 40px 20px;
+    height: 500px;
   }
-  
-  .content {
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
     margin-bottom: 30px;
   }
-  
+
+  .ctaContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .cta, .secondaryCta {
+    padding: 12px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 450px;
+  }
+
   .title {
     font-size: 2rem;
   }
-  
-  .imageContainer {
-    width: 80%;
-    margin: 0 auto;
+
+  .subtitle {
+    font-size: 1rem;
   }
 }

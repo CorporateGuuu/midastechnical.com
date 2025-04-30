@@ -26,38 +26,21 @@ const Header = () => {
             <li><Link href="/products">Products</Link></li>
             <li><Link href="/categories">Categories</Link></li>
             <li><Link href="/lcd-buyback">LCD Buyback</Link></li>
-            <li><Link href="/cart">Cart</Link></li>
-            <li><Link href="/auth/signin">Sign In</Link></li>
           </ul>
-
-          <div className={styles.searchBar}>
-            <input
-              type="text"
-              placeholder="Search products..."
-              className={styles.searchInput}
-            />
-            <button className={styles.searchButton}>
-              <i className="fas fa-search">🔍</i>
-            </button>
-          </div>
         </nav>
 
-        <div className={styles.icons}>
-          <div className={styles.icon}>
-            <i className="fas fa-user">👨‍💼</i>
-          </div>
-          <div className={styles.icon}>
-            <i className="fas fa-heart">💙</i>
-          </div>
-          <Link href="/cart">
-            <div className={styles.icon}>
-              <i className="fas fa-shopping-cart">🛍️</i>
-            </div>
+        <div className={styles.actionLinks}>
+          <Link href="/cart" className={styles.cartLink}>
+            Cart
+          </Link>
+          <Link href="/auth/signin" className={styles.signInLink}>
+            Sign In
           </Link>
 
           <button
             className={styles.mobileMenuButton}
             onClick={toggleMobileMenu}
+            aria-label="Menu"
           >
             <i className="fas fa-bars">☰</i>
           </button>
@@ -69,20 +52,10 @@ const Header = () => {
         <button
           className={styles.closeButton}
           onClick={toggleMobileMenu}
+          aria-label="Close menu"
         >
           <i className="fas fa-times">✕</i>
         </button>
-
-        <div className={styles.mobileSearchBar}>
-          <input
-            type="text"
-            placeholder="Search products..."
-            className={styles.searchInput}
-          />
-          <button className={styles.searchButton}>
-            <i className="fas fa-search">🔍</i>
-          </button>
-        </div>
 
         <ul className={styles.mobileNavLinks}>
           <li><Link href="/">Home</Link></li>

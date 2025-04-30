@@ -1,6 +1,9 @@
 /* Header.module.css */
 .header {
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .topBanner {
@@ -11,19 +14,34 @@
   font-size: 14px;
 }
 
+.topBanner a {
+  color: #4dabf7;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.topBanner a:hover {
+  text-decoration: underline;
+}
+
 .mainHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px 40px;
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: #0066cc;
+}
+
+.logo a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .navigation {
@@ -36,7 +54,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 25px;
+  gap: 30px;
 }
 
 .navLinks li {
@@ -47,45 +65,57 @@
   text-decoration: none;
   color: #333;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: all 0.2s ease;
   padding: 5px 0;
+  position: relative;
 }
 
 .navLinks a:hover {
   color: #0066cc;
 }
 
-.searchBar {
-  display: flex;
-  margin: 0 20px;
-}
-
-.searchInput {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px 0 0 4px;
-  width: 200px;
-}
-
-.searchButton {
+.navLinks a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
   background-color: #0066cc;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
+  transition: width 0.2s ease;
 }
 
-.icons {
+.navLinks a:hover::after {
+  width: 100%;
+}
+
+.actionLinks {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
-.icon {
-  margin-left: 15px;
-  font-size: 20px;
+.cartLink, .signInLink {
+  text-decoration: none;
   color: #333;
-  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.cartLink:hover, .signInLink:hover {
+  color: #0066cc;
+}
+
+.signInLink {
+  padding: 8px 16px;
+  border: 1px solid #0066cc;
+  border-radius: 4px;
+  color: #0066cc;
+}
+
+.signInLink:hover {
+  background-color: #0066cc;
+  color: white;
 }
 
 .mobileMenuButton {
@@ -94,19 +124,24 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
+  color: #333;
 }
 
 @media (max-width: 768px) {
   .mainHeader {
-    padding: 10px 15px;
+    padding: 12px 20px;
   }
 
-  .navLinks {
+  .navigation {
     display: none;
   }
 
-  .searchBar {
-    display: none;
+  .actionLinks {
+    gap: 15px;
+  }
+
+  .cartLink, .signInLink {
+    font-size: 14px;
   }
 
   .mobileMenuButton {
@@ -120,10 +155,11 @@
     width: 100%;
     height: 100%;
     background-color: white;
-    z-index: 100;
-    padding: 20px;
+    z-index: 1000;
+    padding: 60px 30px 30px;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   }
 
   .mobileMenu.open {
@@ -133,11 +169,14 @@
   .mobileNavLinks {
     list-style: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .mobileNavLinks li {
-    margin: 15px 0;
+    margin: 0;
+    border-bottom: 1px solid #f0f0f0;
   }
 
   .mobileNavLinks a {
@@ -145,11 +184,13 @@
     color: #333;
     font-size: 18px;
     font-weight: 500;
+    display: block;
+    padding: 15px 0;
+    transition: color 0.2s ease;
   }
 
-  .mobileSearchBar {
-    display: flex;
-    margin: 20px 0;
+  .mobileNavLinks a:hover {
+    color: #0066cc;
   }
 
   .closeButton {
@@ -160,5 +201,13 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
+    color: #333;
+    padding: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signInLink {
+    display: none;
   }
 }
