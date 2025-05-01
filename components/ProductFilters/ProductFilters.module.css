@@ -1,6 +1,6 @@
 .productFilters {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   margin-bottom: 2rem;
   position: relative;
 }
@@ -220,14 +220,20 @@
 
 /* Desktop styles */
 @media (min-width: 768px) {
+  .productFilters {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
   .mobileFilterToggle {
     display: none;
   }
-  
+
   .sortByMobile {
     display: none;
   }
-  
+
   .filterSidebar {
     position: static;
     transform: none;
@@ -238,22 +244,23 @@
     margin-right: 2rem;
     overflow: visible;
   }
-  
+
   .filterHeader {
     display: none;
   }
-  
+
   .sortByDesktop {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    margin-top: 0;
   }
-  
+
   .sortByDesktop label {
     font-size: 0.875rem;
     color: #4b5563;
   }
-  
+
   .sortByDesktop select {
     padding: 0.5rem 2rem 0.5rem 1rem;
     border: 1px solid #e5e7eb;

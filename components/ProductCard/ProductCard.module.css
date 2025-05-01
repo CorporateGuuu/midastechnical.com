@@ -111,6 +111,18 @@
   color: #0066cc;
 }
 
+.productRating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.reviewCount {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
 .productPrice {
   display: flex;
   align-items: center;
@@ -176,7 +188,7 @@
   .productImageContainer {
     height: 180px;
   }
-  
+
   .productActions {
     opacity: 1;
     transform: translateX(0);

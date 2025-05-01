@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from './ProductFilters.module.css';
+import PriceRangeSlider from '../PriceRangeSlider/PriceRangeSlider';
 
 const ProductFilters = ({ categories, brands, onFilterChange }) => {
   const router = useRouter();
   const { query } = router;
-  
+
   // Initialize filter state from URL query params
   const [filters, setFilters] = useState({
     category: query.category || '',
@@ -18,7 +19,7 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
   // Price range slider values
   const [priceMin, setPriceMin] = useState(query.minPrice ? parseInt(query.minPrice) : 0);
   const [priceMax, setPriceMax] = useState(query.maxPrice ? parseInt(query.maxPrice) : 500);
-  
+
   // Mobile filter visibility
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -34,7 +35,7 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
       inStock: query.inStock === 'true',
       sortBy: query.sortBy || 'featured'
     });
-    
+
     setPriceMin(query.minPrice ? parseInt(query.minPrice) : 0);
     setPriceMax(query.maxPrice ? parseInt(query.maxPrice) : 500);
   }, [query]);
@@ -43,31 +44,31 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
   const handleFilterChange = (filterType, value) => {
     const newFilters = { ...filters, [filterType]: value };
     setFilters(newFilters);
-    
+
     if (onFilterChange) {
       onFilterChange(newFilters);
     }
-    
+
     // Update URL with new filters
     const queryParams = { ...query };
-    
+
     if (filterType === 'category' && value) {
       queryParams.category = value;
     } else if (filterType === 'category') {
       delete queryParams.category;
     }
-    
+
     if (filterType === 'brand' && value) {
       queryParams.brand = value;
     } else if (filterType === 'brand') {
       delete queryParams.brand;
     }
-    
+
     if (filterType === 'priceRange') {
       queryParams.minPrice = value[0].toString();
       queryParams.maxPrice = value[1].toString();
     }
-    
+
     if (filterType === 'inStock') {
       if (value) {
         queryParams.inStock = 'true';
@@ -75,13 +76,13 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
         delete queryParams.inStock;
       }
     }
-    
+
     if (filterType === 'sortBy' && value !== 'featured') {
       queryParams.sortBy = value;
     } else if (filterType === 'sortBy') {
       delete queryParams.sortBy;
     }
-    
+
     router.push({
       pathname: router.pathname,
       query: queryParams
@@ -111,14 +112,14 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
       inStock: false,
       sortBy: 'featured'
     });
-    
+
     setPriceMin(0);
     setPriceMax(500);
-    
+
     router.push({
       pathname: router.pathname
     }, undefined, { shallow: true });
-    
+
     if (onFilterChange) {
       onFilterChange({
         category: '',
@@ -153,27 +154,32 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
           </svg>
           Filters
         </button>
-        
+
         <div className={styles.sortByMobile}>
-          <select 
-            value={filters.sortBy} 
+          <select
+            value={filters.sortBy}
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
           >
             <option value="featured">Featured</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
-            <option value="newest">Newest</option>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="name-asc">Name: A to Z</option>
+            <option value="name-desc">Name: Z to A</option>
             <option value="bestselling">Best Selling</option>
+            <option value="rating">Highest Rated</option>
+            <option value="discount">Biggest Discount</option>
           </select>
         </div>
       </div>
-      
+
       {/* Filter sidebar */}
       <div className={`${styles.filterSidebar} ${mobileFiltersOpen ? styles.open : ''}`}>
         <div className={styles.filterHeader}>
           <h3>Filters</h3>
-          <button 
-            className={styles.closeButton} 
+          <button
+            className={styles.closeButton}
             onClick={toggleMobileFilters}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -182,28 +188,28 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
             </svg>
           </button>
         </div>
-        
+
         <div className={styles.filterSection}>
           <h4>Category</h4>
           <div className={styles.filterOptions}>
             <div className={styles.filterOption}>
-              <input 
-                type="radio" 
-                id="category-all" 
-                name="category" 
-                checked={filters.category === ''} 
+              <input
+                type="radio"
+                id="category-all"
+                name="category"
+                checked={filters.category === ''}
                 onChange={() => handleFilterChange('category', '')}
               />
               <label htmlFor="category-all">All Categories</label>
             </div>
-            
+
             {categories && categories.map((category) => (
               <div key={category.id} className={styles.filterOption}>
-                <input 
-                  type="radio" 
-                  id={`category-${category.id}`} 
-                  name="category" 
-                  checked={filters.category === category.slug} 
+                <input
+                  type="radio"
+                  id={`category-${category.id}`}
+                  name="category"
+                  checked={filters.category === category.slug}
                   onChange={() => handleFilterChange('category', category.slug)}
                 />
                 <label htmlFor={`category-${category.id}`}>{category.name}</label>
@@ -211,28 +217,28 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
             ))}
           </div>
         </div>
-        
+
         <div className={styles.filterSection}>
           <h4>Brand</h4>
           <div className={styles.filterOptions}>
             <div className={styles.filterOption}>
-              <input 
-                type="radio" 
-                id="brand-all" 
-                name="brand" 
-                checked={filters.brand === ''} 
+              <input
+                type="radio"
+                id="brand-all"
+                name="brand"
+                checked={filters.brand === ''}
                 onChange={() => handleFilterChange('brand', '')}
               />
               <label htmlFor="brand-all">All Brands</label>
             </div>
-            
+
             {brands && brands.map((brand) => (
               <div key={brand.id} className={styles.filterOption}>
-                <input 
-                  type="radio" 
-                  id={`brand-${brand.id}`} 
-                  name="brand" 
-                  checked={filters.brand === brand.slug} 
+                <input
+                  type="radio"
+                  id={`brand-${brand.id}`}
+                  name="brand"
+                  checked={filters.brand === brand.slug}
                   onChange={() => handleFilterChange('brand', brand.slug)}
                 />
                 <label htmlFor={`brand-${brand.id}`}>{brand.name}</label>
@@ -240,86 +246,64 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
             ))}
           </div>
         </div>
-        
+
         <div className={styles.filterSection}>
           <h4>Price Range</h4>
-          <div className={styles.priceRange}>
-            <div className={styles.priceInputs}>
-              <div className={styles.priceInput}>
-                <label htmlFor="price-min">Min</label>
-                <div className={styles.inputWithPrefix}>
-                  <span>$</span>
-                  <input 
-                    type="number" 
-                    id="price-min" 
-                    min="0" 
-                    max={priceMax} 
-                    value={priceMin} 
-                    onChange={(e) => handlePriceChange('min', parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
-              
-              <div className={styles.priceInput}>
-                <label htmlFor="price-max">Max</label>
-                <div className={styles.inputWithPrefix}>
-                  <span>$</span>
-                  <input 
-                    type="number" 
-                    id="price-max" 
-                    min={priceMin} 
-                    value={priceMax} 
-                    onChange={(e) => handlePriceChange('max', parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <button 
-              className={styles.applyButton} 
-              onClick={applyPriceRange}
-            >
-              Apply
-            </button>
-          </div>
+          <PriceRangeSlider
+            min={0}
+            max={1000}
+            step={10}
+            initialMin={priceMin}
+            initialMax={priceMax}
+            onChange={([min, max]) => {
+              setPriceMin(min);
+              setPriceMax(max);
+              handleFilterChange('priceRange', [min, max]);
+            }}
+          />
         </div>
-        
+
         <div className={styles.filterSection}>
           <h4>Availability</h4>
           <div className={styles.filterOptions}>
             <div className={styles.filterOption}>
-              <input 
-                type="checkbox" 
-                id="in-stock" 
-                checked={filters.inStock} 
+              <input
+                type="checkbox"
+                id="in-stock"
+                checked={filters.inStock}
                 onChange={(e) => handleFilterChange('inStock', e.target.checked)}
               />
               <label htmlFor="in-stock">In Stock Only</label>
             </div>
           </div>
         </div>
-        
-        <button 
-          className={styles.resetButton} 
+
+        <button
+          className={styles.resetButton}
           onClick={resetFilters}
         >
           Reset Filters
         </button>
       </div>
-      
+
       {/* Sort by (desktop) */}
       <div className={styles.sortByDesktop}>
         <label htmlFor="sort-by">Sort By:</label>
-        <select 
+        <select
           id="sort-by"
-          value={filters.sortBy} 
+          value={filters.sortBy}
           onChange={(e) => handleFilterChange('sortBy', e.target.value)}
         >
           <option value="featured">Featured</option>
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
-          <option value="newest">Newest</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
           <option value="bestselling">Best Selling</option>
+          <option value="rating">Highest Rated</option>
+          <option value="discount">Biggest Discount</option>
         </select>
       </div>
     </div>

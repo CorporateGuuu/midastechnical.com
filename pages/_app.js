@@ -73,6 +73,7 @@ function AppContent({ Component, pageProps }) {
   const isCartPage = router.pathname === '/cart';
   const isCategoriesPage = router.pathname === '/categories';
   const isProductsPage = router.pathname === '/products';
+  const isComparePage = router.pathname === '/compare';
 
   // Pages that should have a clean look without navigation
   const isProductDetailPage = router.pathname.startsWith('/products/') && router.pathname !== '/products';
@@ -176,9 +177,9 @@ function AppContent({ Component, pageProps }) {
       </main>
 
       {!isLandingPage && !isLcdBuybackPage && (
-        <footer className={`footer ${isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') ? 'clean-footer' : ''}`}>
+        <footer className={`footer ${isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') || isComparePage ? 'clean-footer' : ''}`}>
           <div className="container">
-            {isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') ? (
+            {isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') || isComparePage ? (
               // Clean footer for products, cart, auth pages and product detail pages
               <div className="footer-bottom">
                 &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.

@@ -1,39 +1,40 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import LazyImage from '../LazyImage/LazyImage';
+import StarRating from '../StarRating/StarRating';
 import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
-  
+
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
-  
+
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-  
+
   const handleAddToCart = (e) => {
     e.preventDefault();
     // In a real app, this would add the product to the cart
     alert(`Added ${product.name} to cart`);
   };
-  
+
   const handleAddToWishlist = (e) => {
     e.preventDefault();
     // In a real app, this would add the product to the wishlist
     alert(`Added ${product.name} to wishlist`);
   };
-  
+
   const handleQuickView = (e) => {
     e.preventDefault();
     // In a real app, this would show a quick view modal
     alert(`Quick view for ${product.name}`);
   };
-  
+
   return (
-    <div 
+    <div
       className={styles.productCard}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -48,16 +49,16 @@ const ProductCard = ({ product }) => {
             height="100%"
           />
         </Link>
-        
+
         {product.discount_percentage > 0 && (
           <span className={styles.discountBadge}>
             {product.discount_percentage}% OFF
           </span>
         )}
-        
+
         <div className={`${styles.productActions} ${isHovered ? styles.visible : ''}`}>
-          <button 
-            className={styles.wishlistButton} 
+          <button
+            className={styles.wishlistButton}
             title="Add to Wishlist"
             onClick={handleAddToWishlist}
           >
@@ -65,9 +66,9 @@ const ProductCard = ({ product }) => {
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          
-          <button 
-            className={styles.quickViewButton} 
+
+          <button
+            className={styles.quickViewButton}
             title="Quick View"
             onClick={handleQuickView}
           >
@@ -78,16 +79,23 @@ const ProductCard = ({ product }) => {
           </button>
         </div>
       </div>
-      
+
       <div className={styles.productContent}>
         <div className={styles.productCategory}>{product.category_name}</div>
-        
+
         <h3 className={styles.productName}>
           <Link href={`/products/${product.slug}`}>
             {product.name}
           </Link>
         </h3>
-        
+
+        <div className={styles.productRating}>
+          <StarRating rating={product.rating || 0} size="small" />
+          {product.review_count > 0 && (
+            <span className={styles.reviewCount}>({product.review_count})</span>
+          )}
+        </div>
+
         <div className={styles.productPrice}>
           {product.discount_percentage > 0 ? (
             <>
@@ -100,13 +108,13 @@ const ProductCard = ({ product }) => {
             <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
           )}
         </div>
-        
+
         <div className={styles.productButtons}>
           <Link href={`/products/${product.slug}`} className={styles.viewDetailsButton}>
             View Details
           </Link>
-          
-          <button 
+
+          <button
             className={styles.addToCartButton}
             onClick={handleAddToCart}
           >
