@@ -87,13 +87,13 @@ const SearchAutocomplete = () => {
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm.length >= 2) {
         setLoading(true);
-        
+
         // In a real implementation, this would be an API call
         // For demo purposes, we'll filter the mock data
-        const filteredResults = mockSearchResults.filter(item => 
+        const filteredResults = mockSearchResults.filter(item =>
           item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        
+
         setResults(filteredResults);
         setLoading(false);
         setShowResults(true);
@@ -129,12 +129,14 @@ const SearchAutocomplete = () => {
     <div className={styles.searchAutocomplete} ref={searchRef}>
       <form onSubmit={handleSearch} className={styles.searchForm}>
         <input
-          type="text"
+          id="search"
+          type="search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => searchTerm.length >= 2 && setShowResults(true)}
           placeholder="Search products..."
           className={styles.searchInput}
+          aria-label="Search products"
         />
         <button type="submit" className={styles.searchButton}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -155,8 +157,8 @@ const SearchAutocomplete = () => {
             <div className={styles.resultsList}>
               <h3 className={styles.resultsTitle}>Products</h3>
               {results.map(result => (
-                <Link 
-                  href={`/products/${result.slug}`} 
+                <Link
+                  href={`/products/${result.slug}`}
                   key={result.id}
                   className={styles.resultItem}
                   onClick={() => setShowResults(false)}
@@ -171,7 +173,7 @@ const SearchAutocomplete = () => {
                 </Link>
               ))}
               <div className={styles.viewAll}>
-                <Link 
+                <Link
                   href={`/search?q=${encodeURIComponent(searchTerm)}`}
                   onClick={() => setShowResults(false)}
                 >
@@ -182,14 +184,14 @@ const SearchAutocomplete = () => {
           ) : (
             <div className={styles.noResults}>
               <p>No results found for "{searchTerm}"</p>
-              
+
               <div className={styles.suggestions}>
                 <div className={styles.suggestionsSection}>
                   <h3>Categories</h3>
                   <div className={styles.categoryTags}>
                     {categories.map(category => (
-                      <button 
-                        key={category.slug} 
+                      <button
+                        key={category.slug}
                         className={styles.categoryTag}
                         onClick={() => handleCategoryClick(category.slug)}
                       >
@@ -198,13 +200,13 @@ const SearchAutocomplete = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className={styles.suggestionsSection}>
                   <h3>Popular Searches</h3>
                   <ul className={styles.popularSearches}>
                     {popularSearches.map((term, index) => (
                       <li key={index}>
-                        <button 
+                        <button
                           className={styles.popularSearchItem}
                           onClick={() => handlePopularSearchClick(term)}
                         >

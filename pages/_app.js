@@ -9,6 +9,63 @@ import { useRouter } from 'next/router';
 import MiniCart from '../components/MiniCart/MiniCart';
 import SearchAutocomplete from '../components/SearchAutocomplete/SearchAutocomplete';
 import MobileMenu from '../components/MobileMenu/MobileMenu';
+import dynamic from 'next/dynamic';
+
+// Import navigation component
+import { MainNavigation } from '../components/Navigation';
+import Footer from '../components/Footer/Footer';
+
+// Import security components
+const SecurityBanner = dynamic(
+  () => import('../components/Security/SecurityBanner'),
+  { ssr: false }
+);
+
+// Import WhatsApp button
+const WhatsAppButton = dynamic(
+  () => import('../components/WhatsApp/WhatsAppButton'),
+  { ssr: false }
+);
+
+// Import Apple Banner
+const AppleBanner = dynamic(
+  () => import('../components/Banner/AppleBanner'),
+  { ssr: false }
+);
+
+// Import fix for hidden element
+const FixHiddenElement = dynamic(
+  () => import('../components/FixHiddenElement'),
+  { ssr: false }
+);
+
+// Dynamically import PWAManager with no SSR
+const PWAManager = dynamic(
+  () => import('../components/PWA/PWAManager'),
+  { ssr: false }
+);
+
+// Dynamically import accessibility components with no SSR
+const AccessibilityMenu = dynamic(
+  () => import('../components/Accessibility/AccessibilityMenu'),
+  { ssr: false }
+);
+
+const SkipNavigation = dynamic(
+  () => import('../components/Accessibility/SkipNavigation'),
+  { ssr: false }
+);
+
+const KeyboardShortcuts = dynamic(
+  () => import('../components/Accessibility/KeyboardShortcuts'),
+  { ssr: false }
+);
+
+// Dynamically import ChatbotUI with no SSR
+const ChatbotUI = dynamic(
+  () => import('../components/Chatbot/ChatbotUI'),
+  { ssr: false }
+);
 
 function AppContent({ Component, pageProps }) {
   const { data: session, status } = useSession();
@@ -74,6 +131,7 @@ function AppContent({ Component, pageProps }) {
   const isCategoriesPage = router.pathname === '/categories';
   const isProductsPage = router.pathname === '/products';
   const isComparePage = router.pathname === '/compare';
+  const isWholesalePage = router.pathname === '/wholesale';
 
   // Pages that should have a clean look without navigation
   const isProductDetailPage = router.pathname.startsWith('/products/') && router.pathname !== '/products';
@@ -82,8 +140,34 @@ function AppContent({ Component, pageProps }) {
   return (
     <div className="app-wrapper">
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="theme-color" content="#0066cc" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="MDTS" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </Head>
+
+      {/* Cloudflare Security Banner */}
+      <SecurityBanner />
+
+      {/* Apple Banner */}
+      <AppleBanner />
+
+      {/* Main Navigation */}
+      <MainNavigation />
+
+      {/* PWA Manager - Only rendered client-side */}
+      <PWAManager />
+
+      {/* Accessibility components - Only rendered client-side */}
+      <SkipNavigation />
+      <AccessibilityMenu />
+      <KeyboardShortcuts />
+      <ChatbotUI />
+      <WhatsAppButton />
+      <FixHiddenElement />
 
       {!isLandingPage && !isLcdBuybackPage && (
         <header className="header">
@@ -118,9 +202,11 @@ function AppContent({ Component, pageProps }) {
               )}
             </div>
 
-            <div className="search-form hidden md:flex">
-              <SearchAutocomplete />
-            </div>
+            {!isWholesalePage && (
+              <div className="search-form hidden md:flex">
+                <SearchAutocomplete />
+              </div>
+            )}
 
             {!shouldHideNavigation && (
               <nav className={`nav-links desktop-nav hidden md:flex`}>
@@ -172,53 +258,11 @@ function AppContent({ Component, pageProps }) {
         </header>
       )}
 
-      <main className={isLandingPage || isLcdBuybackPage ? "" : "main"}>
+      <main id="main-content" className={isLandingPage || isLcdBuybackPage ? "" : "main"} tabIndex="-1">
         <Component {...pageProps} />
       </main>
 
-      {!isLandingPage && !isLcdBuybackPage && (
-        <footer className={`footer ${isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') || isComparePage ? 'clean-footer' : ''}`}>
-          <div className="container">
-            {isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') || isComparePage ? (
-              // Clean footer for products, cart, auth pages and product detail pages
-              <div className="footer-bottom">
-                &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
-              </div>
-            ) : (
-              // Full footer for other pages
-              <>
-                <div className="footer-content">
-                  <div className="footer-section">
-                    <h3>Midas Technical Solutions</h3>
-                    <p>Your trusted partner for professional repair parts & tools.</p>
-                  </div>
-
-                  <div className="footer-section">
-                    <h3>Quick Links</h3>
-                    <nav className="footer-nav">
-                      <Link href="/products">Products</Link> {' '}
-                      <Link href="/categories">Categories</Link> {' '}
-                      <Link href="/lcd-buyback">LCD Buyback</Link> {' '}
-                      <Link href="/cart">Cart</Link> {' '}
-                      <Link href="/auth/signin">Sign In</Link>
-                    </nav>
-                  </div>
-
-                  <div className="footer-section">
-                    <h3>Contact</h3>
-                    <p>Email: support@mdtstech.store</p>
-                    <p>Phone: +1 (240) 351-0511</p>
-                  </div>
-                </div>
-
-                <div className="footer-bottom">
-                  &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
-                </div>
-              </>
-            )}
-          </div>
-        </footer>
-      )}
+      <Footer />
     </div>
   );
 }

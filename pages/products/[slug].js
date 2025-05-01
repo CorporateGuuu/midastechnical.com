@@ -8,6 +8,12 @@ import ProductTabs from '../../components/ProductDetail/ProductTabs';
 import RelatedProducts from '../../components/ProductDetail/RelatedProducts';
 import ProductReviews from '../../components/ProductDetail/ProductReviews';
 import CompareButton from '../../components/ProductDetail/CompareButton';
+import ProductRecommendations from '../../components/ProductRecommendations/ProductRecommendations';
+import RecentlyViewed from '../../components/RecentlyViewed/RecentlyViewed';
+import SocialShare from '../../components/SocialShare/SocialShare';
+import SimilarProducts from '../../components/Recommendations/SimilarProducts';
+import FrequentlyBoughtTogether from '../../components/Recommendations/FrequentlyBoughtTogether';
+import { trackProductView } from '../../utils/recommendationEngine';
 import styles from '../../styles/ProductDetail.module.css';
 
 export default function ProductDetail() {
@@ -37,8 +43,28 @@ export default function ProductDetail() {
         if (data.success) {
           setProduct(data.product);
 
-          // In a real app, you would track recently viewed products here
-          // For example, by storing in localStorage or sending to an API
+          // Track this product in recently viewed
+          try {
+            const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+            const productId = data.product.id.toString();
+
+            // Remove if already exists (to move to front)
+            const filtered = recentlyViewed.filter(id => id !== productId);
+
+            // Add to beginning
+            filtered.unshift(productId);
+
+            // Keep only the most recent 20
+            const limited = filtered.slice(0, 20);
+
+            // Save back to localStorage
+            localStorage.setItem('recentlyViewed', JSON.stringify(limited));
+
+            // Track product view for recommendations
+            trackProductView(data.product.id);
+          } catch (err) {
+            console.error('Error updating recently viewed:', err);
+          }
         } else {
           throw new Error(data.message || 'Failed to fetch product');
         }
@@ -180,6 +206,16 @@ export default function ProductDetail() {
               <CompareButton product={product} />
             </div>
 
+            <div className={styles.socialShareContainer}>
+              <h4 className={styles.socialShareTitle}>Share This Product</h4>
+              <SocialShare
+                url={`${typeof window !== 'undefined' ? window.location.origin : ''}/products/${product.slug}`}
+                title={product.name}
+                description={product.description || `Check out ${product.name} at MDTS - Midas Technical Solutions`}
+                image={product.image_url}
+              />
+            </div>
+
             <div className={styles.productFeatures}>
               <div className={styles.feature}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -188,7 +224,7 @@ export default function ProductDetail() {
                   <circle cx="5.5" cy="18.5" r="2.5"></circle>
                   <circle cx="18.5" cy="18.5" r="2.5"></circle>
                 </svg>
-                <span>Free shipping on orders over $50</span>
+                <span>Free shipping on orders over $500</span>
               </div>
 
               <div className={styles.feature}>
@@ -212,7 +248,31 @@ export default function ProductDetail() {
 
         <ProductReviews productId={product.id} />
 
-        <RelatedProducts categoryId={product.category_id} currentProductId={product.id} />
+        <FrequentlyBoughtTogether
+          productId={product.id}
+          currentProduct={product}
+          title="Frequently Bought Together"
+          limit={3}
+        />
+
+        <SimilarProducts
+          productId={product.id}
+          categoryId={product.category_id}
+          title="Similar Products"
+          subtitle="You might also be interested in these products"
+          limit={4}
+        />
+
+        <ProductRecommendations
+          currentProductId={product.id}
+          currentCategory={product.category_name}
+          title="You Might Also Like"
+        />
+
+        <RecentlyViewed
+          currentProductId={product.id}
+          title="Recently Viewed Products"
+        />
       </div>
     </>
   );

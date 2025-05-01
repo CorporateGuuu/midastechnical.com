@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ProductFilters from '../components/ProductFilters/ProductFilters';
+import EnhancedSearch from '../components/EnhancedSearch/EnhancedSearch';
+import { trackSearch, trackSearchResultClick } from '../utils/searchAnalytics';
 import styles from '../styles/ProductsPage.module.css';
 
 export default function Search() {
@@ -76,6 +78,13 @@ export default function Search() {
       try {
         setLoading(true);
 
+        // Track search analytics
+        const filters = {};
+        if (router.query.category) filters.category = router.query.category;
+        if (router.query.minPrice) filters.minPrice = router.query.minPrice;
+        if (router.query.maxPrice) filters.maxPrice = router.query.maxPrice;
+        if (router.query.inStock) filters.inStock = router.query.inStock === 'true';
+
         // In a real implementation, this would be an API call to search products
         // For demo purposes, we'll simulate a delay and return mock data
         setTimeout(() => {
@@ -146,6 +155,9 @@ export default function Search() {
           setProducts(filteredResults);
           setTotalProducts(filteredResults.length);
           setLoading(false);
+
+          // Track search results count
+          trackSearch(searchQuery, {}, filteredResults.length);
         }, 500);
       } catch (err) {
         console.error('Error searching products:', err);
@@ -168,6 +180,11 @@ export default function Search() {
         <div className={styles.productsHeader}>
           <h1>{searchQuery ? `Search results for "${searchQuery}"` : 'Search'}</h1>
           {searchQuery && <p>Found {totalProducts} products matching your search</p>}
+
+          {/* Enhanced Search Component */}
+          <div className={styles.enhancedSearchContainer}>
+            <EnhancedSearch initialQuery={searchQuery || ''} showFilters={true} />
+          </div>
         </div>
 
         <div className={styles.productsLayout}>
@@ -241,7 +258,10 @@ export default function Search() {
                       <div className={styles.productContent}>
                         <div className={styles.productCategory}>{product.category_name}</div>
                         <h3 className={styles.productName}>
-                          <Link href={`/products/${product.slug}`}>
+                          <Link
+                            href={`/products/${product.slug}`}
+                            onClick={() => trackSearchResultClick(searchQuery, product.id, products.indexOf(product) + 1)}
+                          >
                             {product.name}
                           </Link>
                         </h3>
@@ -258,7 +278,11 @@ export default function Search() {
                         </div>
 
                         <div className={styles.productButtons}>
-                          <Link href={`/products/${product.slug}`} className={styles.viewDetailsButton}>
+                          <Link
+                            href={`/products/${product.slug}`}
+                            className={styles.viewDetailsButton}
+                            onClick={() => trackSearchResultClick(searchQuery, product.id, products.indexOf(product) + 1)}
+                          >
                             View Details
                           </Link>
                           <button className={styles.addToCartButton}>

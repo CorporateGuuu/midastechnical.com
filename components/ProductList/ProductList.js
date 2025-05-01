@@ -19,9 +19,29 @@ const ProductList = ({ products, title = "Popular Products" }) => {
     }));
   };
 
-  const handleAddToCart = (productId) => {
-    // In a real app, this would add the product to the cart
-    alert(`Added ${quantities[productId]} of product ID ${productId} to cart`);
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: productId,
+          quantity: quantities[productId],
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add to cart');
+      }
+
+      // Show success message
+      alert(`Successfully added ${quantities[productId]} of product ID ${productId} to cart`);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add to cart. Please try again.');
+    }
   };
 
   return (

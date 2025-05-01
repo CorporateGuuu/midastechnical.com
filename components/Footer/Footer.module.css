@@ -1,6 +1,6 @@
 /* Footer.module.css */
 .footer {
-  background-color: #111;
+  background-color: #1a1a1a;
   color: white;
   padding: 60px 20px 30px;
 }
@@ -53,6 +53,52 @@
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.subscriptionConfirmation {
+  background-color: rgba(0, 102, 204, 0.1);
+  border: 1px solid rgba(0, 102, 204, 0.3);
+  border-radius: 4px;
+  padding: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.subscriptionConfirmation svg {
+  color: #0066cc;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.subscriptionConfirmation p {
+  margin: 0;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.socialLink:hover {
+  background-color: #0066cc;
+  transform: translateY(-3px);
 }
 
 .button:hover {
@@ -127,6 +173,33 @@
   color: #0066cc;
 }
 
+.contactButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 5px;
+}
+
+.contactButton:hover {
+  background-color: #0055aa;
+}
+
+.contactButton svg {
+  transition: transform 0.3s;
+}
+
+.contactButton:hover svg {
+  transform: translateX(3px);
+}
+
 .bottom {
   display: flex;
   flex-wrap: wrap;
@@ -147,34 +220,36 @@
 }
 
 .paymentIcon {
-  width: 40px;
-  height: 25px;
-  background-color: white;
-  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.paymentIcon:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 @media (max-width: 768px) {
   .footer {
     padding: 40px 15px 20px;
   }
-  
+
   .top, .middle {
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  
+
   .services {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
-  
+
   .bottom {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .copyright {
     margin-bottom: 20px;
   }

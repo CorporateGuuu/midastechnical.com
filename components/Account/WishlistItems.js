@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import SocialShare from '../SocialShare/SocialShare';
 import styles from '../../styles/Account.module.css';
 
 const WishlistItems = () => {
@@ -12,10 +13,10 @@ const WishlistItems = () => {
     const fetchWishlistItems = async () => {
       try {
         setLoading(true);
-        
+
         // Simulate API call with timeout
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         // Mock wishlist data
         const mockWishlistItems = [
           {
@@ -63,7 +64,7 @@ const WishlistItems = () => {
             added_at: '2023-05-20T16:20:00Z'
           }
         ];
-        
+
         setWishlistItems(mockWishlistItems);
       } catch (err) {
         console.error('Error fetching wishlist items:', err);
@@ -72,7 +73,7 @@ const WishlistItems = () => {
         setLoading(false);
       }
     };
-    
+
     fetchWishlistItems();
   }, []);
 
@@ -123,20 +124,34 @@ const WishlistItems = () => {
 
   return (
     <div>
-      <h2>My Wishlist</h2>
-      <p>Items you've saved for later</p>
-      
+      <div className={styles.wishlistHeader}>
+        <div>
+          <h2>My Wishlist</h2>
+          <p>Items you've saved for later</p>
+        </div>
+
+        <div className={styles.shareWishlist}>
+          <h4>Share Your Wishlist</h4>
+          <SocialShare
+            url={typeof window !== 'undefined' ? window.location.href : ''}
+            title="Check out my wishlist at MDTS - Midas Technical Solutions"
+            description="Here are some products I'm interested in from MDTS - Midas Technical Solutions."
+            platforms={['facebook', 'twitter', 'email', 'copy']}
+          />
+        </div>
+      </div>
+
       <div className={styles.wishlistGrid}>
         {wishlistItems.map(item => (
           <div key={item.id} className={styles.wishlistCard}>
             <div className={styles.wishlistImageContainer}>
-              <img 
-                src={item.image_url || '/images/placeholder.svg'} 
+              <img
+                src={item.image_url || '/images/placeholder.svg'}
                 alt={item.name}
                 className={styles.wishlistImage}
               />
-              
-              <button 
+
+              <button
                 className={styles.removeWishlistItem}
                 onClick={() => handleRemoveFromWishlist(item.id)}
                 title="Remove from wishlist"
@@ -147,16 +162,16 @@ const WishlistItems = () => {
                 </svg>
               </button>
             </div>
-            
+
             <div className={styles.wishlistContent}>
               <div className={styles.wishlistCategory}>{item.category}</div>
-              
+
               <h3 className={styles.wishlistName}>
                 <Link href={`/products/${item.slug}`}>
                   {item.name}
                 </Link>
               </h3>
-              
+
               <div className={styles.wishlistPrice}>
                 {item.discount_percentage > 0 ? (
                   <>
@@ -169,9 +184,9 @@ const WishlistItems = () => {
                   <span className={styles.wishlistCurrentPrice}>${item.price.toFixed(2)}</span>
                 )}
               </div>
-              
+
               <div className={styles.wishlistActions}>
-                <button 
+                <button
                   className={styles.addToCartFromWishlist}
                   onClick={() => handleAddToCart(item)}
                 >
@@ -182,8 +197,8 @@ const WishlistItems = () => {
                   </svg>
                   Add to Cart
                 </button>
-                
-                <Link 
+
+                <Link
                   href={`/products/${item.slug}`}
                   className={styles.viewProductFromWishlist}
                 >

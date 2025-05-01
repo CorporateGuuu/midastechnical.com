@@ -1,0 +1,202 @@
+.mainNav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.scrolled {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLogo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0066cc;
+}
+
+.navLinks {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navLink {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #0066cc;
+}
+
+.navLink.active {
+  color: #0066cc;
+}
+
+.navLink.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #0066cc;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 0.5rem;
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.searchBar:focus-within {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #0066cc;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.searchButton:hover {
+  color: #0066cc;
+}
+
+.headerWhatsApp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #25D366;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.headerWhatsApp:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+}
+
+.navActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.navAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.navAction:hover {
+  color: #0066cc;
+}
+
+.navAction.active {
+  color: #0066cc;
+}
+
+.navActionText {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  .navContainer {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .navLeft {
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .navLinks {
+    display: none;
+  }
+
+  .navRight {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .searchBar {
+    width: 100%;
+  }
+
+  .navActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .headerWhatsApp {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+}

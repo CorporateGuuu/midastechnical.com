@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { signIn, getCsrfToken } from 'next-auth/react';
+import React, { useState, useEffect } from 'react';
+import { signIn, getCsrfToken, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
+import { Turnstile, SecurityBadge, SecurityMessage } from '../../components/Security';
+import { recordFailedLogin } from '../../lib/fraudPrevention';
 import styles from '../../styles/AuthPages.module.css';
 
 export default function SignIn({ csrfToken }) {
@@ -10,15 +12,67 @@ export default function SignIn({ csrfToken }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [securityMessage, setSecurityMessage] = useState(null);
   const router = useRouter();
-  const { callbackUrl } = router.query;
+  const { callbackUrl, error: errorParam } = router.query;
+
+  useEffect(() => {
+    // Check if user is already signed in
+    async function checkSession() {
+      const session = await getSession();
+      if (session) {
+        router.replace(callbackUrl || '/');
+      } else {
+        setInitialLoading(false);
+      }
+    }
+
+    checkSession();
+
+    // Set error message from URL parameter
+    if (errorParam) {
+      if (errorParam === 'CredentialsSignin') {
+        setError('Invalid email or password');
+      } else {
+        setError(errorParam);
+      }
+    }
+  }, [router, callbackUrl, errorParam]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSecurityMessage(null);
+
+    // Check if Turnstile token is present
+    if (!turnstileToken) {
+      setError('Please complete the security check');
+      setLoading(false);
+      return;
+    }
 
     try {
+      // First, verify the Turnstile token
+      const verifyResponse = await fetch('/api/security/verify-turnstile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: turnstileToken }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyData.success) {
+        setError('Security check failed. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      // Proceed with sign in
       const result = await signIn('credentials', {
         redirect: false,
         email,
@@ -27,12 +81,31 @@ export default function SignIn({ csrfToken }) {
       });
 
       if (result.error) {
+        // Record failed login attempt for fraud prevention
+        recordFailedLogin('client_ip', email);
+
         setError('Invalid email or password');
+        setSecurityMessage({
+          type: 'warning',
+          message: 'Multiple failed login attempts may result in temporary account lockout.'
+        });
         setLoading(false);
+      } else if (result.url && result.url.includes('requiresTwoFactor=true')) {
+        // Redirect to 2FA page
+        router.push(`/auth/2fa${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`);
       } else {
-        router.push(callbackUrl || '/');
+        // Check if the callback URL is to the account page
+        if (callbackUrl && callbackUrl.includes('/account')) {
+          // Redirect to account page with a small delay to ensure session is properly set
+          setTimeout(() => {
+            router.push('/account');
+          }, 500);
+        } else {
+          router.push(callbackUrl || '/');
+        }
       }
     } catch (error) {
+      console.error('Sign in error:', error);
       setError('An error occurred. Please try again.');
       setLoading(false);
     }
@@ -41,6 +114,25 @@ export default function SignIn({ csrfToken }) {
   const handleGoogleSignIn = () => {
     signIn('google', { callbackUrl: callbackUrl || '/' });
   };
+
+  if (initialLoading) {
+    return (
+      <>
+        <Head>
+          <title>Sign In - Midas Technical Solutions</title>
+          <meta name="description" content="Sign in to your Midas Technical Solutions account." />
+        </Head>
+        <div className={styles.mainContent}>
+          <div className={styles.authForm}>
+            <div className="loading-spinner">
+              <div className="spinner"></div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -59,6 +151,12 @@ export default function SignIn({ csrfToken }) {
             <div className="error-message">
               <p>{error}</p>
             </div>
+          )}
+
+          {securityMessage && (
+            <SecurityMessage type={securityMessage.type}>
+              {securityMessage.message}
+            </SecurityMessage>
           )}
 
           <form onSubmit={handleSubmit}>
@@ -91,10 +189,23 @@ export default function SignIn({ csrfToken }) {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" disabled={loading}>
+          {/* Cloudflare Turnstile for bot protection */}
+          <Turnstile
+            onVerify={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken('')}
+            action="signin"
+          />
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={loading || !turnstileToken}
+          >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        <SecurityBadge />
 
         <div className="auth-separator">
           <span>OR</span>
@@ -132,7 +243,7 @@ export default function SignIn({ csrfToken }) {
                 <div className={styles.footerService}>
                   <div className={styles.footerServiceIcon}>🚚</div>
                   <div className={styles.footerServiceName}>Fast Shipping</div>
-                  <div className={styles.footerServiceDescription}>Free shipping on orders over $50</div>
+                  <div className={styles.footerServiceDescription}>Free shipping on orders over $500</div>
                 </div>
 
                 <div className={styles.footerService}>

@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import bcrypt from 'bcrypt';
 import { query } from '../../../lib/db';
+import { getUserTwoFactorSettings } from '../../../lib/2fa';
 
 export default NextAuth({
   providers: [
@@ -33,6 +34,26 @@ export default NextAuth({
             return null;
           }
 
+          // Check if 2FA is enabled
+          const twoFactorSettings = await getUserTwoFactorSettings(user.id);
+
+          if (twoFactorSettings?.enabled) {
+            // Return user with requiresTwoFactor flag
+            return {
+              id: user.id,
+              name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0],
+              email: user.email,
+              image: user.image,
+              requiresTwoFactor: true,
+              twoFactorMethods: {
+                email_enabled: twoFactorSettings.email_enabled,
+                sms_enabled: twoFactorSettings.sms_enabled,
+                duo_enabled: twoFactorSettings.duo_enabled,
+                preferred_method: twoFactorSettings.preferred_method
+              }
+            };
+          }
+
           // Return user object without password
           return {
             id: user.id,
@@ -42,6 +63,45 @@ export default NextAuth({
           };
         } catch (error) {
           console.error('Authentication error:', error);
+          return null;
+        }
+      }
+    }),
+    // 2FA completion provider
+    CredentialsProvider({
+      id: '2fa-completion',
+      name: '2FA Completion',
+      credentials: {
+        userId: { label: "User ID", type: "text" },
+        twoFactorVerified: { label: "2FA Verified", type: "text" }
+      },
+      async authorize(credentials) {
+        try {
+          if (!credentials.userId || credentials.twoFactorVerified !== 'true') {
+            return null;
+          }
+
+          // Get user by ID
+          const result = await query(
+            'SELECT * FROM users WHERE id = $1',
+            [credentials.userId]
+          );
+
+          const user = result.rows[0];
+
+          if (!user) {
+            return null;
+          }
+
+          // Return user object
+          return {
+            id: user.id,
+            name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0],
+            email: user.email,
+            image: user.image
+          };
+        } catch (error) {
+          console.error('2FA completion error:', error);
           return null;
         }
       }
@@ -59,15 +119,46 @@ export default NextAuth({
     newUser: '/auth/new-user'
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+
+        // Handle 2FA
+        if (user.requiresTwoFactor) {
+          token.requiresTwoFactor = true;
+          token.twoFactorMethods = user.twoFactorMethods;
+        }
+
+        // If using the 2FA completion provider, clear the requiresTwoFactor flag
+        if (account?.provider === '2fa-completion') {
+          token.requiresTwoFactor = false;
+          token.twoFactorMethods = undefined;
+        }
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+
+      // Add 2FA status to session
+      if (token.requiresTwoFactor) {
+        session.requiresTwoFactor = true;
+        session.twoFactorMethods = token.twoFactorMethods;
+      }
+
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Handle 2FA redirect
+      if (url.startsWith(`${baseUrl}/auth/2fa`)) {
+        return url;
+      }
+
+      // Default behavior
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      return baseUrl;
     }
   },
   adapter: {

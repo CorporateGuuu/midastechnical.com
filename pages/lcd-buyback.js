@@ -11,37 +11,7 @@ export default function LcdBuyback() {
         <meta name="description" content="Sell your old LCD screens and get cash back with our LCD Buyback Program. Fast, easy, and competitive prices." />
       </Head>
 
-      <div className={styles.header}>
-        <div className={styles.headerContainer}>
-          <div className={styles.logo}>
-            <Link href="/">MDTS</Link>
-          </div>
 
-          <div className={styles.searchBar}>
-            <form action="/search" method="get">
-              <input
-                type="text"
-                name="q"
-                placeholder="Search products..."
-              />
-              <button type="submit" aria-label="Search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-            </form>
-          </div>
-
-          <nav className={styles.navigation}>
-            <Link href="/">Home</Link>
-            <Link href="/products">Products</Link>
-            <Link href="/categories">Categories</Link>
-            <Link href="/cart">Cart</Link>
-            <Link href="/auth/signin" className={styles.signInLink}>Sign In</Link>
-          </nav>
-        </div>
-      </div>
 
       <main>
         <section className={styles.hero}>
@@ -217,7 +187,7 @@ export default function LcdBuyback() {
                 <div className={styles.footerService}>
                   <div className={styles.footerServiceIcon}>🚚</div>
                   <div className={styles.footerServiceName}>Fast Shipping</div>
-                  <div className={styles.footerServiceDescription}>Free shipping on orders over $50</div>
+                  <div className={styles.footerServiceDescription}>Free shipping on orders over $500</div>
                 </div>
 
                 <div className={styles.footerService}>

@@ -1,11 +1,12 @@
 import { signOut } from 'next-auth/react';
 import styles from '../../styles/Account.module.css';
+import zIndexStyles from '../../styles/ZIndexFix.module.css';
 
 const AccountSidebar = ({ activeTab, onTabChange }) => {
   return (
-    <div className={styles.sidebar}>
-      <nav className={styles.sidebarNav}>
-        <div 
+    <div className={`${styles.sidebar} ${zIndexStyles.accountSidebar}`}>
+      <nav className={`${styles.sidebarNav} ${zIndexStyles.accountSidebarNav}`}>
+        <div
           className={`${styles.navItem} ${activeTab === 'overview' ? styles.active : ''}`}
           onClick={() => onTabChange('overview')}
         >
@@ -17,8 +18,8 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
           </svg>
           Dashboard
         </div>
-        
-        <div 
+
+        <div
           className={`${styles.navItem} ${activeTab === 'orders' ? styles.active : ''}`}
           onClick={() => onTabChange('orders')}
         >
@@ -29,8 +30,8 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
           </svg>
           Orders
         </div>
-        
-        <div 
+
+        <div
           className={`${styles.navItem} ${activeTab === 'addresses' ? styles.active : ''}`}
           onClick={() => onTabChange('addresses')}
         >
@@ -40,8 +41,8 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
           </svg>
           Addresses
         </div>
-        
-        <div 
+
+        <div
           className={`${styles.navItem} ${activeTab === 'wishlist' ? styles.active : ''}`}
           onClick={() => onTabChange('wishlist')}
         >
@@ -50,8 +51,8 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
           </svg>
           Wishlist
         </div>
-        
-        <div 
+
+        <div
           className={`${styles.navItem} ${activeTab === 'preferences' ? styles.active : ''}`}
           onClick={() => onTabChange('preferences')}
         >
@@ -62,8 +63,8 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
           Preferences
         </div>
       </nav>
-      
-      <button 
+
+      <button
         className={styles.logoutButton}
         onClick={() => signOut({ callbackUrl: '/' })}
       >

@@ -21,7 +21,7 @@ const AddToCart = ({ product, quantity = 1 }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          product_id: product.id,
+          productId: product.id,
           quantity: quantity,
         }),
       });
@@ -34,7 +34,7 @@ const AddToCart = ({ product, quantity = 1 }) => {
 
       // Show success message
       setSuccess(true);
-      
+
       // Reset success message after 3 seconds
       setTimeout(() => {
         setSuccess(false);
@@ -53,7 +53,7 @@ const AddToCart = ({ product, quantity = 1 }) => {
 
   return (
     <div className={styles.addToCartContainer}>
-      <button 
+      <button
         className={`${styles.addToCartButton} ${loading ? styles.loading : ''}`}
         onClick={addToCart}
         disabled={loading || product.stock_status === 'Out of Stock'}
@@ -76,15 +76,15 @@ const AddToCart = ({ product, quantity = 1 }) => {
           </>
         )}
       </button>
-      
-      <button 
+
+      <button
         className={styles.buyNowButton}
         onClick={goToCart}
         disabled={loading || product.stock_status === 'Out of Stock'}
       >
         Buy Now
       </button>
-      
+
       {error && <div className={styles.errorMessage}>{error}</div>}
       {success && <div className={styles.successMessage}>Added to cart!</div>}
     </div>

@@ -25,22 +25,33 @@ export default function Categories() {
     const fetchCategories = async () => {
       try {
         setLoading(true);
+        setError(null);
+
         const response = await fetch('/api/categories');
 
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error(`Failed to fetch categories: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
 
         if (data.success) {
-          setCategories(data.categories);
+          setCategories(data.categories || []);
         } else {
           throw new Error(data.message || 'Failed to fetch categories');
         }
       } catch (err) {
         console.error('Error fetching categories:', err);
         setError(err.message);
+
+        // Set fallback categories in case of error
+        setCategories([
+          { id: 1, name: 'iPhone Parts', slug: 'iphone-parts', product_count: 0 },
+          { id: 2, name: 'Samsung Parts', slug: 'samsung-parts', product_count: 0 },
+          { id: 3, name: 'iPad Parts', slug: 'ipad-parts', product_count: 0 },
+          { id: 4, name: 'MacBook Parts', slug: 'macbook-parts', product_count: 0 },
+          { id: 5, name: 'Repair Tools', slug: 'repair-tools', product_count: 0 }
+        ]);
       } finally {
         setLoading(false);
       }

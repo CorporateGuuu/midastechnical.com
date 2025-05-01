@@ -1,6 +1,94 @@
 /* Import base styles with CSS variables */
 @import './base.css';
 @import './landing.css';
+@import './ZIndexFix.module.css';
+
+/* Mobile optimization */
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+/* Fix for iOS input zoom */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Accessibility Styles */
+:root {
+  --focus-ring-color: #0066cc;
+  --focus-ring-width: 3px;
+}
+
+/* Font size adjustments based on accessibility settings */
+html[data-font-size="small"] {
+  font-size: 14px;
+}
+
+html[data-font-size="medium"] {
+  font-size: 16px;
+}
+
+html[data-font-size="large"] {
+  font-size: 18px;
+}
+
+html[data-font-size="extra-large"] {
+  font-size: 20px;
+}
+
+/* Contrast adjustments based on accessibility settings */
+html[data-contrast="high"] {
+  --text-color: #000000;
+  --text-muted: #333333;
+  --primary-color: #0000cc;
+  --primary-dark: #000099;
+  --secondary-color: #f0f0f0;
+  --secondary-dark: #e0e0e0;
+  --border-color: #000000;
+  --background-color: #ffffff;
+  --background-alt: #f0f0f0;
+}
+
+/* Reduced motion for users who prefer it */
+.reduced-motion * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Enhanced focus styles for keyboard navigation */
+.focus-highlight :focus {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 
 /* Layout */
 .container {
@@ -104,6 +192,30 @@
     width: 100%;
     justify-content: space-between;
     margin-top: var(--spacing-sm);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .search-form {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .search-form input {
+    height: 40px; /* Larger touch target */
+  }
+
+  .search-form button {
+    height: 32px;
+    width: 32px;
   }
 }
 
@@ -141,6 +253,32 @@
 @media (max-width: 639px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .card {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .card-image {
+    height: 180px; /* Slightly smaller for mobile */
+  }
+
+  .card-content {
+    padding: var(--spacing-md);
+  }
+
+  .card-title {
+    font-size: var(--font-size-lg);
+  }
+
+  /* Improve touch targets */
+  .btn {
+    padding: 12px 16px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

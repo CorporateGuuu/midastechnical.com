@@ -54,6 +54,19 @@ export default function CategoryDetail() {
     setPage(prevPage => Math.max(prevPage - 1, 1));
   };
 
+  // Generate category description based on slug
+  const getCategoryDescription = (categorySlug) => {
+    const descriptions = {
+      'iphone-parts': 'Find genuine and high-quality iPhone replacement parts including screens, batteries, cameras, and more. We offer parts for all iPhone models from iPhone 5 to the latest iPhone 15 series.',
+      'samsung-parts': 'Complete selection of Samsung Galaxy phone replacement parts including LCD screens, batteries, charging ports, and back glass. Compatible with all Samsung Galaxy S and Note series.',
+      'ipad-parts': 'iPad repair parts for all models including screens, batteries, cameras, and charging ports. We carry parts for iPad, iPad Air, iPad Pro, and iPad Mini series.',
+      'macbook-parts': 'MacBook replacement parts including screens, keyboards, batteries, and logic boards. Compatible with MacBook Pro, MacBook Air, and MacBook models.',
+      'repair-tools': 'Professional repair tools for mobile device repair including precision screwdriver sets, opening tools, heat guns, soldering equipment, and diagnostic tools.'
+    };
+
+    return descriptions[categorySlug] || `Products and accessories for repair and replacement.`;
+  };
+
   if (loading) {
     return (
       <div className="container">
@@ -94,7 +107,7 @@ export default function CategoryDetail() {
 
       <div style={{ marginBottom: '2rem' }}>
         <h1>{category.name}</h1>
-        <p style={{ color: '#666' }}>{category.description}</p>
+        <p style={{ color: '#666' }}>{category.description || getCategoryDescription(slug)}</p>
       </div>
 
       <h2 style={{ marginBottom: '1rem' }}>Products in this Category</h2>

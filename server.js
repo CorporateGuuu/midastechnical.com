@@ -34,8 +34,8 @@ const port = 3000;
 
 // Create a PostgreSQL connection pool
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:postgres@localhost:5432/phone_electronics_store',
-  ssl: false,
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/mdtstech_store',
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 // Middleware
@@ -54,10 +54,15 @@ app.use(session({
     pool: pool,
     tableName: 'session'
   }),
-  secret: 'your_session_secret',
+  secret: process.env.SESSION_SECRET || 'your_session_secret',
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    secure: process.env.NODE_ENV === 'production', // Only use secure cookies in production
+    httpOnly: true, // Prevent JavaScript access to cookies
+    sameSite: 'strict' // Prevent CSRF attacks
+  }
 }));
 
 // Serve static files

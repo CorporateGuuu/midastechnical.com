@@ -6,6 +6,8 @@ import CategoryCards from '../components/CategoryCards/CategoryCards';
 import Testimonials from '../components/Testimonials/Testimonials';
 import TrustBadges from '../components/TrustBadges/TrustBadges';
 import RecentlyViewed from '../components/RecentlyViewed/RecentlyViewed';
+import PersonalizedRecommendations from '../components/Recommendations/PersonalizedRecommendations';
+import { MarketplaceIntegration } from '../components/Marketplace';
 
 // Simulating data from CSV since we can't use getStaticProps in this environment
 const featuredProducts = [
@@ -129,8 +131,18 @@ export default function Home() {
       {/* Popular Products */}
       <ProductList products={popularProducts} title="Popular Products" />
 
+      {/* Personalized Recommendations */}
+      <PersonalizedRecommendations
+        title="Recommended For You"
+        subtitle="Based on your browsing history and preferences"
+        limit={4}
+      />
+
       {/* Recently Viewed */}
-      <RecentlyViewed />
+      <RecentlyViewed
+        title="Recently Viewed Products"
+        subtitle="Products you've viewed recently"
+      />
 
       {/* CTA Section */}
       <section className="cta-section">

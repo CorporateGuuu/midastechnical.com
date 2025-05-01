@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import LazyImage from '../LazyImage/LazyImage';
 import StarRating from '../StarRating/StarRating';
+import { trackProductView } from '../../utils/recommendationEngine';
 import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product }) => {
@@ -17,14 +18,60 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    // In a real app, this would add the product to the cart
-    alert(`Added ${product.name} to cart`);
+
+    // Get current cart items
+    const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+
+    // Check if product is already in cart
+    const existingItem = cartItems.find(item => item.id === product.id);
+
+    if (existingItem) {
+      // Increment quantity
+      existingItem.quantity += 1;
+    } else {
+      // Add new item
+      cartItems.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image_url: product.image_url,
+        quantity: 1
+      });
+    }
+
+    // Save to localStorage
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    // Show confirmation
+    alert(`${product.name} added to cart!`);
   };
 
   const handleAddToWishlist = (e) => {
     e.preventDefault();
-    // In a real app, this would add the product to the wishlist
-    alert(`Added ${product.name} to wishlist`);
+
+    // Get current wishlist items
+    const wishlistItems = JSON.parse(localStorage.getItem('wishlistItems') || '[]');
+
+    // Check if product is already in wishlist
+    const existingItem = wishlistItems.find(item => item.id === product.id);
+
+    if (!existingItem) {
+      // Add new item
+      wishlistItems.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image_url: product.image_url
+      });
+
+      // Save to localStorage
+      localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
+
+      // Show confirmation
+      alert(`${product.name} added to wishlist!`);
+    } else {
+      alert('This product is already in your wishlist!');
+    }
   };
 
   const handleQuickView = (e) => {
@@ -40,7 +87,10 @@ const ProductCard = ({ product }) => {
       onMouseLeave={handleMouseLeave}
     >
       <div className={styles.productImageContainer}>
-        <Link href={`/products/${product.slug}`}>
+        <Link
+          href={`/products/${product.slug}`}
+          onClick={() => trackProductView(product.id)}
+        >
           <LazyImage
             src={product.image_url || '/images/placeholder.svg'}
             alt={product.name}
@@ -50,7 +100,7 @@ const ProductCard = ({ product }) => {
           />
         </Link>
 
-        {product.discount_percentage > 0 && (
+        {product.discount_percentage && product.discount_percentage > 0 && (
           <span className={styles.discountBadge}>
             {product.discount_percentage}% OFF
           </span>
@@ -84,7 +134,10 @@ const ProductCard = ({ product }) => {
         <div className={styles.productCategory}>{product.category_name}</div>
 
         <h3 className={styles.productName}>
-          <Link href={`/products/${product.slug}`}>
+          <Link
+            href={`/products/${product.slug}`}
+            onClick={() => trackProductView(product.id)}
+          >
             {product.name}
           </Link>
         </h3>
@@ -97,20 +150,28 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className={styles.productPrice}>
-          {product.discount_percentage > 0 ? (
-            <>
-              <span className={styles.originalPrice}>
-                ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
-              </span>
-              <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
-            </>
+          {product.price !== undefined && product.price !== null ? (
+            product.discount_percentage > 0 ? (
+              <>
+                <span className={styles.originalPrice}>
+                  ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
+                </span>
+                <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
+              </>
+            ) : (
+              <span className={styles.currentPrice}>${parseFloat(product.price || 0).toFixed(2)}</span>
+            )
           ) : (
-            <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
+            <span className={styles.currentPrice}>Price unavailable</span>
           )}
         </div>
 
         <div className={styles.productButtons}>
-          <Link href={`/products/${product.slug}`} className={styles.viewDetailsButton}>
+          <Link
+            href={`/products/${product.slug}`}
+            className={styles.viewDetailsButton}
+            onClick={() => trackProductView(product.id)}
+          >
             View Details
           </Link>
 

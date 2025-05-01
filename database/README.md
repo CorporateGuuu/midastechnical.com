@@ -1,6 +1,6 @@
-# E-Commerce Database Setup
+# MDTS Tech Store Database
 
-This directory contains the database schema, setup scripts, and data import utilities for the e-commerce platform.
+This directory contains the database schema, setup scripts, and data import utilities for the MDTS Tech Store e-commerce platform.
 
 ## Database Structure
 
@@ -19,6 +19,17 @@ The database uses PostgreSQL with the following main tables:
 - **reviews**: Product reviews
 - **wishlists**: User wishlists
 - **wishlist_items**: Items in wishlists
+- **coupons**: Discount coupons
+- **password_reset_tokens**: Password reset tokens
+- **chatbot_conversations**: Chatbot conversation records
+- **chatbot_messages**: Individual chatbot messages
+- **chatbot_analytics**: Analytics data for chatbot interactions
+- **support_articles**: Knowledge base articles
+- **lcd_buyback_requests**: LCD buyback program requests
+- **outreach_campaigns**: Marketing outreach campaigns
+- **recipients**: Outreach recipients
+- **campaign_recipients**: Link between campaigns and recipients
+- **outreach_messages**: Message templates for outreach campaigns
 
 ## Setup Instructions
 
@@ -38,40 +49,31 @@ npm install pg bcrypt
 pip install pandas openpyxl
 ```
 
-### 4. Convert Excel Data to CSV
+### 4. Combine Database Files
 
-Run the conversion script to convert Excel files to CSV format:
-
-```bash
-python database/convert_excel_to_csv.py
-```
-
-This will process Excel files from the "New Database" and "Product Database" folders and save them as CSV files in the `database/data` directory.
-
-### 5. Merge and Normalize Data
-
-Run the data normalization script to prepare the data for import:
+Run the database combination script to merge files from the "New Database" and "Product Database" folders:
 
 ```bash
-python database/merge_data.py
+python database/combine_database_files.py
 ```
 
-This will process the CSV files and create normalized CSV files in the `database/data/normalized` directory.
+This will process Excel and CSV files and save the combined data in the `database/data/combined` directory.
 
-### 6. Set Up the Database
+### 5. Set Up the Database
 
 Run the database setup script to create the database and tables:
 
 ```bash
-node database/setup.js
+psql -U postgres -c "CREATE DATABASE mdtstech_store"
+psql -U postgres -d mdtstech_store -f database/combined_schema.sql
 ```
 
-### 7. Import Data
+### 6. Import Data
 
-Run the data import script to populate the database with the normalized data:
+Run the data import script to populate the database with the combined data:
 
 ```bash
-node database/import-csv.js
+node database/import-combined-data.js
 ```
 
 ## Database Models
@@ -82,6 +84,7 @@ The `models` directory contains JavaScript modules for interacting with the data
 - **category.js**: Functions for managing categories
 - **user.js**: Functions for managing users and authentication
 - **cart.js**: Functions for managing shopping carts
+- **order.js**: Functions for managing orders
 
 ## Data Files
 
@@ -92,16 +95,15 @@ The original data files are stored in:
 
 The processed data files are stored in:
 
-- **database/data**: Converted CSV files
-- **database/data/normalized**: Normalized CSV files ready for import
+- **database/data/combined**: Combined CSV files ready for import
 
 ## Database Configuration
 
-The database connection is configured in `database/config.js`. By default, it connects to:
+The database connection is configured in `lib/db.js`. By default, it connects to:
 
 - **Host**: localhost
 - **Port**: 5432
-- **Database**: phone_electronics_store
+- **Database**: mdtstech_store
 - **User**: postgres
 - **Password**: postgres
 

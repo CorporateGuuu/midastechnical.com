@@ -134,6 +134,11 @@
 .productsHeader p {
   color: var(--text-muted);
   max-width: 600px;
+  margin: 0 auto 1.5rem;
+}
+
+.enhancedSearchContainer {
+  max-width: 600px;
   margin: 0 auto;
 }
 
