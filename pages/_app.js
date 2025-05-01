@@ -7,6 +7,7 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import MiniCart from '../components/MiniCart/MiniCart';
+import SearchAutocomplete from '../components/SearchAutocomplete/SearchAutocomplete';
 
 function AppContent({ Component, pageProps }) {
   const { data: session, status } = useSession();
@@ -115,15 +116,7 @@ function AppContent({ Component, pageProps }) {
             </div>
 
             <div className="search-form hidden md:flex">
-              <form action="/search" method="get">
-                <input type="text" name="q" placeholder="Search products..." />
-                <button type="submit" aria-label="Search">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                </button>
-              </form>
+              <SearchAutocomplete />
             </div>
 
             {!shouldHideNavigation && (
@@ -175,15 +168,7 @@ function AppContent({ Component, pageProps }) {
           <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
             <div className="container">
               <div className="search-form mobile-search">
-                <form action="/search" method="get">
-                  <input type="text" name="q" placeholder="Search products..." />
-                  <button type="submit" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                  </button>
-                </form>
+                <SearchAutocomplete />
               </div>
 
               {!shouldHideNavigation && (
