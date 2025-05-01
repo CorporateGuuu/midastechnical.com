@@ -74,7 +74,8 @@ function AppContent({ Component, pageProps }) {
   const isProductsPage = router.pathname === '/products';
 
   // Pages that should have a clean look without navigation
-  const shouldHideNavigation = isAuthPage || isCartPage || isCategoriesPage || isProductsPage;
+  const isProductDetailPage = router.pathname.startsWith('/products/') && router.pathname !== '/products';
+  const shouldHideNavigation = isAuthPage || isCartPage || isCategoriesPage || isProductsPage || isProductDetailPage;
 
   return (
     <div className="app-wrapper">
@@ -208,35 +209,45 @@ function AppContent({ Component, pageProps }) {
       </main>
 
       {!isLandingPage && !isLcdBuybackPage && (
-        <footer className="footer">
+        <footer className={`footer ${isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') ? 'clean-footer' : ''}`}>
           <div className="container">
-            <div className="footer-content">
-              <div className="footer-section">
-                <h3>Midas Technical Solutions</h3>
-                <p>Your trusted partner for professional repair parts & tools.</p>
+            {isProductsPage || isCartPage || isAuthPage || isCategoriesPage || router.pathname.startsWith('/products/') ? (
+              // Clean footer for products, cart, auth pages and product detail pages
+              <div className="footer-bottom">
+                &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
               </div>
+            ) : (
+              // Full footer for other pages
+              <>
+                <div className="footer-content">
+                  <div className="footer-section">
+                    <h3>Midas Technical Solutions</h3>
+                    <p>Your trusted partner for professional repair parts & tools.</p>
+                  </div>
 
-              <div className="footer-section">
-                <h3>Quick Links</h3>
-                <nav className="footer-nav">
-                  <Link href="/products">Products</Link> {' '}
-                  <Link href="/categories">Categories</Link> {' '}
-                  <Link href="/lcd-buyback">LCD Buyback</Link> {' '}
-                  <Link href="/cart">Cart</Link> {' '}
-                  <Link href="/auth/signin">Sign In</Link>
-                </nav>
-              </div>
+                  <div className="footer-section">
+                    <h3>Quick Links</h3>
+                    <nav className="footer-nav">
+                      <Link href="/products">Products</Link> {' '}
+                      <Link href="/categories">Categories</Link> {' '}
+                      <Link href="/lcd-buyback">LCD Buyback</Link> {' '}
+                      <Link href="/cart">Cart</Link> {' '}
+                      <Link href="/auth/signin">Sign In</Link>
+                    </nav>
+                  </div>
 
-              <div className="footer-section">
-                <h3>Contact</h3>
-                <p>Email: support@mdtstech.store</p>
-                <p>Phone: +1 (240) 351-0511</p>
-              </div>
-            </div>
+                  <div className="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: support@mdtstech.store</p>
+                    <p>Phone: +1 (240) 351-0511</p>
+                  </div>
+                </div>
 
-            <div className="footer-bottom">
-              &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
-            </div>
+                <div className="footer-bottom">
+                  &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
+                </div>
+              </>
+            )}
           </div>
         </footer>
       )}
