@@ -7,6 +7,7 @@ import ProductImages from '../../components/ProductDetail/ProductImages';
 import ProductTabs from '../../components/ProductDetail/ProductTabs';
 import RelatedProducts from '../../components/ProductDetail/RelatedProducts';
 import ProductReviews from '../../components/ProductDetail/ProductReviews';
+import CompareButton from '../../components/ProductDetail/CompareButton';
 import styles from '../../styles/ProductDetail.module.css';
 
 export default function ProductDetail() {
@@ -175,6 +176,8 @@ export default function ProductDetail() {
                 </svg>
                 Add to Wishlist
               </button>
+
+              <CompareButton product={product} />
             </div>
 
             <div className={styles.productFeatures}>

@@ -27,12 +27,16 @@ const FeaturedProducts = ({ products }) => {
               <div className={styles.category}>{product.category}</div>
               <h3 className={styles.name}>{product.name}</h3>
               <div className={styles.price}>
-                {product.discount_percentage > 0 && (
-                  <span className={styles.originalPrice}>
-                    ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
-                  </span>
+                {product.discount_percentage > 0 ? (
+                  <>
+                    <span className={styles.originalPrice}>
+                      ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
+                    </span>
+                    <span className={styles.salePrice}>${product.price.toFixed(2)}</span>
+                  </>
+                ) : (
+                  <span>${product.price.toFixed(2)}</span>
                 )}
-                ${product.price.toFixed(2)}
               </div>
               <Link href={`/products/${product.id}`} className={styles.viewAll}>
                 View Details

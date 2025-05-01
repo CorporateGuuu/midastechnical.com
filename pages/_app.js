@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import MiniCart from '../components/MiniCart/MiniCart';
 import SearchAutocomplete from '../components/SearchAutocomplete/SearchAutocomplete';
+import MobileMenu from '../components/MobileMenu/MobileMenu';
 
 function AppContent({ Component, pageProps }) {
   const { data: session, status } = useSession();
@@ -166,41 +167,7 @@ function AppContent({ Component, pageProps }) {
           </div>
 
           {/* Mobile menu */}
-          <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-            <div className="container">
-              <div className="search-form mobile-search">
-                <SearchAutocomplete />
-              </div>
-
-              {!shouldHideNavigation && (
-                <nav className="mobile-nav">
-                  <Link href="/products" className="mobile-nav-item">Products</Link>
-                  <Link href="/categories" className="mobile-nav-item">Categories</Link>
-                  <Link href="/lcd-buyback" className="mobile-nav-item">LCD Buyback</Link>
-                  <Link href="/cart" className="mobile-nav-item">Cart</Link>
-
-                  {isLoading ? (
-                    <span className="mobile-nav-item auth-loading">Loading...</span>
-                  ) : isAuthenticated ? (
-                    <>
-                      <Link href="/user/profile" className="mobile-nav-item">Profile</Link>
-                      <Link href="/user/orders" className="mobile-nav-item">Orders</Link>
-                      <button
-                        className="mobile-nav-item sign-out-button"
-                        onClick={handleSignOut}
-                      >
-                        Sign Out
-                      </button>
-                    </>
-                  ) : (
-                    <Link href="/auth/signin" className="mobile-nav-item auth-link">
-                      Sign In
-                    </Link>
-                  )}
-                </nav>
-              )}
-            </div>
-          </div>
+          <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
         </header>
       )}
 
