@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import MiniCart from '../components/MiniCart/MiniCart';
 
 function AppContent({ Component, pageProps }) {
   const { data: session, status } = useSession();
@@ -130,7 +131,7 @@ function AppContent({ Component, pageProps }) {
                 <Link href="/products">Products</Link>
                 <Link href="/categories">Categories</Link>
                 <Link href="/lcd-buyback">LCD Buyback</Link>
-                <Link href="/cart">Cart</Link>
+                <MiniCart />
 
                 {isLoading ? (
                   <span className="auth-loading">Loading...</span>

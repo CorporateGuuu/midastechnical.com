@@ -1,9 +1,11 @@
 import Head from 'next/head';
-import LandingNav from '../components/LandingNav';
 import Hero from '../components/Hero/Hero';
 import FeaturedProducts from '../components/FeaturedProducts/FeaturedProducts';
 import ProductList from '../components/ProductList/ProductList';
-import Footer from '../components/Footer/Footer';
+import CategoryCards from '../components/CategoryCards/CategoryCards';
+import Testimonials from '../components/Testimonials/Testimonials';
+import TrustBadges from '../components/TrustBadges/TrustBadges';
+import RecentlyViewed from '../components/RecentlyViewed/RecentlyViewed';
 
 // Simulating data from CSV since we can't use getStaticProps in this environment
 const featuredProducts = [
@@ -109,53 +111,28 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="landing-hero">
-        <LandingNav />
-        <div className="landing-hero-overlay"></div>
-        <div className="landing-hero-content">
-          <h1>Midas Technical Solutions</h1>
-          <p>Your trusted partner for professional repair parts & tools</p>
-          <div className="landing-hero-buttons">
-            <a href="/products" className="primary-button">Shop Now</a>
-            <a href="/lcd-buyback" className="secondary-button">LCD Buyback</a>
-          </div>
-        </div>
-        <div className="landing-hero-image">
-          <img src={heroImageUrl} alt="Professional repair tools and parts" />
-        </div>
-      </div>
+      {/* Hero Section */}
+      <Hero heroImageUrl={heroImageUrl} />
 
-      <section className="features-section">
-        <div className="container">
-          <h2 className="section-title">
-            <span>Why Choose MDTS?</span>
-          </h2>
+      {/* Trust Badges */}
+      <TrustBadges />
 
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🛠️</div>
-              <h3>Quality Parts</h3>
-              <p>All our parts are tested and guaranteed to meet or exceed OEM specifications.</p>
-            </div>
+      {/* Category Cards */}
+      <CategoryCards />
 
-            <div className="feature-card">
-              <div className="feature-icon">💰</div>
-              <h3>Competitive Pricing</h3>
-              <p>Get professional-grade parts and tools without the premium price tag.</p>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon">🚚</div>
-              <h3>Fast Shipping</h3>
-              <p>Orders ship within 24 hours with tracking provided on all packages.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* Featured Products */}
       <FeaturedProducts products={featuredProducts} />
+
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* Popular Products */}
       <ProductList products={popularProducts} title="Popular Products" />
 
+      {/* Recently Viewed */}
+      <RecentlyViewed />
+
+      {/* CTA Section */}
       <section className="cta-section">
         <div className="container">
           <h2>Ready to Start Your Repair?</h2>
@@ -164,6 +141,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="landing-footer">
         <div className="container">
           <div className="landing-footer-content">

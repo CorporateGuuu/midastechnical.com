@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import AddToCart from '../../components/AddToCart';
+import ProductImages from '../../components/ProductDetail/ProductImages';
+import ProductTabs from '../../components/ProductDetail/ProductTabs';
+import RelatedProducts from '../../components/ProductDetail/RelatedProducts';
+import ProductReviews from '../../components/ProductDetail/ProductReviews';
+import styles from '../../styles/ProductDetail.module.css';
 
 export default function ProductDetail() {
   const router = useRouter();
@@ -10,6 +16,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     // Only fetch when slug is available
@@ -28,6 +35,9 @@ export default function ProductDetail() {
 
         if (data.success) {
           setProduct(data.product);
+
+          // In a real app, you would track recently viewed products here
+          // For example, by storing in localStorage or sending to an API
         } else {
           throw new Error(data.message || 'Failed to fetch product');
         }
@@ -42,10 +52,17 @@ export default function ProductDetail() {
     fetchProduct();
   }, [slug]);
 
+  const handleQuantityChange = (newQuantity) => {
+    setQuantity(newQuantity);
+  };
+
   if (loading) {
     return (
       <div className="container">
-        <p>Loading product...</p>
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading product details...</p>
+        </div>
       </div>
     );
   }
@@ -53,11 +70,13 @@ export default function ProductDetail() {
   if (error) {
     return (
       <div className="container">
-        <h1>Error</h1>
-        <p>{error}</p>
-        <Link href="/products">
-          Back to Products
-        </Link>
+        <div className="error-message">
+          <h1>Error</h1>
+          <p>{error}</p>
+          <Link href="/products" className="btn">
+            Back to Products
+          </Link>
+        </div>
       </div>
     );
   }
@@ -65,64 +84,133 @@ export default function ProductDetail() {
   if (!product) {
     return (
       <div className="container">
-        <h1>Product Not Found</h1>
-        <p>The requested product could not be found.</p>
-        <Link href="/products">
-          Back to Products
-        </Link>
+        <div className="error-message">
+          <h1>Product Not Found</h1>
+          <p>The requested product could not be found.</p>
+          <Link href="/products" className="btn">
+            Back to Products
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container">
-      <Link href="/products" style={{ display: 'inline-block', marginBottom: '1rem' }}>
-        &larr; Back to Products
-      </Link>
+    <>
+      <Head>
+        <title>{product.name} | MDTS - Midas Technical Solutions</title>
+        <meta name="description" content={product.description || `Buy ${product.name} from MDTS - Midas Technical Solutions`} />
+      </Head>
 
-      <div className="card" style={{ overflow: 'hidden' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', '@media (min-width: 768px)': { flexDirection: 'row' } }}>
-          <div style={{ flex: '1 1 50%' }}>
-            <img
-              src={product.image_url || "/placeholder.svg"}
-              alt={product.name}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
+      <div className="container">
+        <div className={styles.breadcrumbs}>
+          <Link href="/">Home</Link> /
+          <Link href="/products">Products</Link> /
+          <Link href={`/categories/${product.category_slug || 'all'}`}>{product.category_name}</Link> /
+          <span>{product.name}</span>
+        </div>
+
+        <div className={styles.productDetail}>
+          <div className={styles.productMedia}>
+            <ProductImages product={product} />
           </div>
-          <div style={{ flex: '1 1 50%', padding: '1.5rem' }}>
-            <h1 style={{ marginBottom: '0.5rem' }}>{product.name}</h1>
-            <p style={{ color: '#666', marginBottom: '1rem' }}>Category: {product.category_name}</p>
 
-            <div style={{ marginBottom: '1rem' }}>
-              <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${product.price.toFixed(2)}</span>
-              {product.discount_percentage > 0 && (
-                <span style={{ marginLeft: '0.5rem', backgroundColor: '#fee2e2', color: '#991b1b', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontSize: '0.875rem' }}>
-                  {product.discount_percentage}% OFF
+          <div className={styles.productInfo}>
+            <h1 className={styles.productName}>{product.name}</h1>
+
+            <div className={styles.productMeta}>
+              <span className={styles.productCategory}>Category: {product.category_name}</span>
+              <span className={styles.productSku}>SKU: {product.sku || 'N/A'}</span>
+              {product.stock_status && (
+                <span className={`${styles.stockStatus} ${product.stock_status === 'In Stock' ? styles.inStock : styles.outOfStock}`}>
+                  {product.stock_status}
                 </span>
               )}
             </div>
 
-            <p style={{ marginBottom: '1.5rem' }}>{product.description}</p>
-
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2 style={{ marginBottom: '0.5rem' }}>Specifications</h2>
-              <div style={{ backgroundColor: '#f9fafb', padding: '1rem', borderRadius: '0.25rem' }}>
-                {product.specifications && Object.entries(product.specifications).map(([key, value]) => (
-                  value && key !== 'id' && key !== 'product_id' && (
-                    <div key={key} style={{ marginBottom: '0.5rem' }}>
-                      <span style={{ fontWeight: '500' }}>{key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {value}
-                    </div>
-                  )
-                ))}
-              </div>
+            <div className={styles.productPrice}>
+              {product.discount_percentage > 0 ? (
+                <>
+                  <span className={styles.originalPrice}>
+                    ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
+                  </span>
+                  <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
+                  <span className={styles.discountBadge}>{product.discount_percentage}% OFF</span>
+                </>
+              ) : (
+                <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
+              )}
             </div>
 
-            <AddToCart product={product} />
+            <div className={styles.productDescription}>
+              <p>{product.description || 'No description available for this product.'}</p>
+            </div>
+
+            <div className={styles.productActions}>
+              <div className={styles.quantityWrapper}>
+                <label htmlFor="quantity">Quantity:</label>
+                <div className={styles.quantitySelector}>
+                  <button
+                    onClick={() => handleQuantityChange(Math.max(1, quantity - 1))}
+                    disabled={quantity <= 1}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    id="quantity"
+                    value={quantity}
+                    min="1"
+                    onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
+                  />
+                  <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
+                </div>
+              </div>
+
+              <AddToCart product={product} quantity={quantity} />
+
+              <button className={styles.wishlistButton}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                Add to Wishlist
+              </button>
+            </div>
+
+            <div className={styles.productFeatures}>
+              <div className={styles.feature}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+                <span>Free shipping on orders over $50</span>
+              </div>
+
+              <div className={styles.feature}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                </svg>
+                <span>30-day satisfaction guarantee</span>
+              </div>
+
+              <div className={styles.feature}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Secure checkout</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <ProductTabs product={product} />
+
+        <ProductReviews productId={product.id} />
+
+        <RelatedProducts categoryId={product.category_id} currentProductId={product.id} />
       </div>
-    </div>
+    </>
   );
 }
-
-

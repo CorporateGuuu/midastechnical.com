@@ -144,38 +144,6 @@ export default function Cart() {
   if (loading) {
     return (
       <>
-        <div className={styles.header}>
-          <div className={styles.headerContainer}>
-            <div className={styles.logo}>
-              <Link href="/">MDTS</Link>
-            </div>
-
-            <div className={styles.searchBar}>
-              <form action="/search" method="get">
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Search products..."
-                />
-                <button type="submit" aria-label="Search">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                </button>
-              </form>
-            </div>
-
-            <nav className={styles.navigation}>
-              <Link href="/">Home</Link>
-              <Link href="/products">Products</Link>
-              <Link href="/categories">Categories</Link>
-              <Link href="/lcd-buyback">LCD Buyback</Link>
-              <Link href="/auth/signin" className={styles.signInLink}>Sign In</Link>
-            </nav>
-          </div>
-        </div>
-
         <div className="container">
           <div className="loading-container">
             <div className="loading-spinner"></div>
@@ -189,38 +157,6 @@ export default function Cart() {
   if (error) {
     return (
       <>
-        <div className={styles.header}>
-          <div className={styles.headerContainer}>
-            <div className={styles.logo}>
-              <Link href="/">MDTS</Link>
-            </div>
-
-            <div className={styles.searchBar}>
-              <form action="/search" method="get">
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Search products..."
-                />
-                <button type="submit" aria-label="Search">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                </button>
-              </form>
-            </div>
-
-            <nav className={styles.navigation}>
-              <Link href="/">Home</Link>
-              <Link href="/products">Products</Link>
-              <Link href="/categories">Categories</Link>
-              <Link href="/lcd-buyback">LCD Buyback</Link>
-              <Link href="/auth/signin" className={styles.signInLink}>Sign In</Link>
-            </nav>
-          </div>
-        </div>
-
         <div className="container">
           <h1>Your Cart</h1>
           <div className="error-message">
@@ -235,38 +171,6 @@ export default function Cart() {
   if (!cart || cart.items.length === 0) {
     return (
       <>
-        <div className={styles.header}>
-          <div className={styles.headerContainer}>
-            <div className={styles.logo}>
-              <Link href="/">MDTS</Link>
-            </div>
-
-            <div className={styles.searchBar}>
-              <form action="/search" method="get">
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Search products..."
-                />
-                <button type="submit" aria-label="Search">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                </button>
-              </form>
-            </div>
-
-            <nav className={styles.navigation}>
-              <Link href="/">Home</Link>
-              <Link href="/products">Products</Link>
-              <Link href="/categories">Categories</Link>
-              <Link href="/lcd-buyback">LCD Buyback</Link>
-              <Link href="/auth/signin" className={styles.signInLink}>Sign In</Link>
-            </nav>
-          </div>
-        </div>
-
         <div className="container">
           <h1>Your Cart</h1>
           <div className="empty-cart">
@@ -286,38 +190,6 @@ export default function Cart() {
 
   return (
     <>
-      <div className={styles.header}>
-        <div className={styles.headerContainer}>
-          <div className={styles.logo}>
-            <Link href="/">MDTS</Link>
-          </div>
-
-          <div className={styles.searchBar}>
-            <form action="/search" method="get">
-              <input
-                type="text"
-                name="q"
-                placeholder="Search products..."
-              />
-              <button type="submit" aria-label="Search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-            </form>
-          </div>
-
-          <nav className={styles.navigation}>
-            <Link href="/">Home</Link>
-            <Link href="/products">Products</Link>
-            <Link href="/categories">Categories</Link>
-            <Link href="/lcd-buyback">LCD Buyback</Link>
-            <Link href="/auth/signin" className={styles.signInLink}>Sign In</Link>
-          </nav>
-        </div>
-      </div>
-
       <div className="container">
         <h1>Your Cart</h1>
         <div className="cart-container">
