@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -16,7 +17,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     // If the user is not authenticated or not an admin, redirect to the login page
     if (!loading && (!session || !session.user.isAdmin)) {
-      router.push('/auth/signin?callbackUrl=/admin/dashboard');
+      router.push('/auth/signin?callbackUrl=/admin');
     }
   }, [session, loading, router]);
 
@@ -310,7 +311,7 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       redirect: {
-        destination: '/auth/signin?callbackUrl=/admin/dashboard',
+        destination: '/auth/signin?callbackUrl=/admin',
         permanent: false,
       },
     };

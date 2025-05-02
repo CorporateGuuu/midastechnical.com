@@ -232,6 +232,11 @@ function AppContent({ Component, pageProps }) {
                         <Link href="/user/orders" className="user-menu-item">
                           Orders
                         </Link>
+                        {session.user.isAdmin && (
+                          <Link href="/admin" className="user-menu-item">
+                            Admin Dashboard
+                          </Link>
+                        )}
                         <button
                           className="user-menu-item sign-out-button"
                           onClick={handleSignOut}

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -124,7 +125,7 @@ const MainNavigation = () => {
             </Link>
 
             {session && session.user.isAdmin && (
-              <Link href="/admin/dashboard" className={`${styles.navAction} ${isActive('/admin/dashboard') ? styles.active : ''}`}>
+              <Link href="/admin" className={`${styles.navAction} ${isActive('/admin') ? styles.active : ''}`}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                   <line x1="3" y1="9" x2="21" y2="9"></line>

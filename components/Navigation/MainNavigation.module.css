@@ -177,7 +177,29 @@
   }
 
   .navLinks {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    justify-content: space-between;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+  }
+
+  .navLinks::-webkit-scrollbar {
     display: none;
+    /* Chrome, Safari, Opera */
+  }
+
+  .navLink {
+    padding: 0.5rem;
+    font-size: 0.9rem;
   }
 
   .navRight {
@@ -194,8 +216,23 @@
   }
 
   .navActions {
+    display: flex;
+    flex-direction: row;
     justify-content: flex-end;
     gap: 0.5rem;
+    align-items: center;
+  }
+
+  .navAction {
+    flex-direction: row;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    align-items: center;
+  }
+
+  .navActionText {
+    margin-top: 0;
+    font-size: 0.75rem;
   }
 
   .headerWhatsApp {
