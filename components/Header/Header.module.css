@@ -95,27 +95,87 @@
   gap: 20px;
 }
 
-.cartLink, .signInLink {
+.cartLink {
   text-decoration: none;
   color: #333;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
-.cartLink:hover, .signInLink:hover {
+.cartLink:hover {
   color: #0066cc;
 }
 
-.signInLink {
-  padding: 8px 16px;
+/* Dropdown styles */
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
   border: 1px solid #0066cc;
   border-radius: 4px;
+  padding: 8px 16px;
   color: #0066cc;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.signInLink:hover {
+.dropdownButton:hover {
   background-color: #0066cc;
   color: white;
+}
+
+.dropdownIcon {
+  transition: transform 0.2s ease;
+}
+
+.dropdownButton[aria-expanded="true"] .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 200px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  margin-top: 8px;
+  z-index: 10;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: block;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background-color: #f5f5f5;
+  color: #0066cc;
 }
 
 .mobileMenuButton {
@@ -140,8 +200,13 @@
     gap: 15px;
   }
 
-  .cartLink, .signInLink {
+  .cartLink {
     font-size: 14px;
+  }
+
+  .dropdownContainer {
+    display: none;
+    /* Hide dropdown on mobile, show in mobile menu instead */
   }
 
   .mobileMenuButton {
@@ -207,7 +272,9 @@
 }
 
 @media (max-width: 480px) {
-  .signInLink {
-    display: none;
+
+  /* No need to hide signInLink anymore as it's in the dropdown */
+  .cartLink {
+    font-size: 13px;
   }
 }

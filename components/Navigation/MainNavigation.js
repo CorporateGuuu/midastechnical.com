@@ -47,9 +47,6 @@ const MainNavigation = () => {
           </Link>
 
           <div className={styles.navLinks}>
-            <Link href="/" className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`}>
-              Home
-            </Link>
             <Link href="/categories" className={`${styles.navLink} ${isActive('/categories') ? styles.active : ''}`}>
               Categories
             </Link>
