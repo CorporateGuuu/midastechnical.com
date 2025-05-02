@@ -1,3 +1,5 @@
+import React from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
 import Hero from '../components/Hero/Hero';
 import FeaturedProducts from '../components/FeaturedProducts/FeaturedProducts';
@@ -100,7 +102,7 @@ const popularProducts = [
   }
 ];
 
-export default function Home() {
+function Home() {
   const heroImageUrl = "/images/hero-repair.svg";
 
   return (
@@ -147,9 +149,9 @@ export default function Home() {
       {/* CTA Section */}
       <section className="cta-section">
         <div className="container">
-          <h2>Ready to Start Your Repair?</h2>
-          <p>Browse our extensive catalog of repair parts and tools for all major device brands.</p>
-          <a href="/products" className="cta-button">Shop All Products</a>
+          <h2>Genuine Apple Parts Program</h2>
+          <p>Midas Technical Solutions is proud to offer genuine Apple parts for reliable repairs. Learn more about our GAPP program.</p>
+          <Link href="/gapp" className="cta-button">Learn More</Link>
         </div>
       </section>
 
@@ -165,16 +167,16 @@ export default function Home() {
             <div className="landing-footer-links">
               <div className="landing-footer-column">
                 <h4>Shop</h4>
-                <a href="/products">All Products</a>
-                <a href="/categories">Categories</a>
-                <a href="/lcd-buyback">LCD Buyback</a>
+                <Link href="/products">All Products</Link>
+                <Link href="/categories">Categories</Link>
+                <Link href="/lcd-buyback">LCD Buyback</Link>
               </div>
 
               <div className="landing-footer-column">
                 <h4>Company</h4>
-                <a href="/about">About Us</a>
-                <a href="/contact">Contact</a>
-                <a href="/faq">FAQ</a>
+                <Link href="/about">About Us</Link>
+                <Link href="/contact">Contact</Link>
+                <Link href="/faq">FAQ</Link>
               </div>
 
               <div className="landing-footer-column">
@@ -194,3 +196,5 @@ export default function Home() {
     </>
   );
 }
+
+export default React.memo(Home);
