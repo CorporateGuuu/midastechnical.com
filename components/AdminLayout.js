@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -13,22 +14,22 @@ const AdminLayout = ({ children }) => {
   useEffect(() => {
     async function checkAdmin() {
       const session = await getSession();
-      
+
       if (!session) {
         router.replace('/auth/signin?callbackUrl=' + router.asPath);
         return;
       }
-      
+
       // Check if user is admin
       try {
         const response = await fetch('/api/admin/check-admin');
         const data = await response.json();
-        
+
         if (!data.isAdmin) {
           router.replace('/');
           return;
         }
-        
+
         setIsAdmin(true);
         setLoading(false);
       } catch (error) {
@@ -36,7 +37,7 @@ const AdminLayout = ({ children }) => {
         router.replace('/');
       }
     }
-    
+
     checkAdmin();
   }, [router]);
 
@@ -65,7 +66,7 @@ const AdminLayout = ({ children }) => {
             MDTS Admin
           </Link>
         </div>
-        
+
         <nav className={styles.nav}>
           <Link href="/admin" className={`${styles.navItem} ${router.pathname === '/admin' ? styles.active : ''}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -76,7 +77,7 @@ const AdminLayout = ({ children }) => {
             </svg>
             Dashboard
           </Link>
-          
+
           <Link href="/admin/products" className={`${styles.navItem} ${router.pathname.startsWith('/admin/products') ? styles.active : ''}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -85,7 +86,7 @@ const AdminLayout = ({ children }) => {
             </svg>
             Products
           </Link>
-          
+
           <Link href="/admin/orders" className={`${styles.navItem} ${router.pathname.startsWith('/admin/orders') ? styles.active : ''}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2H2v10h10V2z"></path>
@@ -95,7 +96,7 @@ const AdminLayout = ({ children }) => {
             </svg>
             Orders
           </Link>
-          
+
           <Link href="/admin/customers" className={`${styles.navItem} ${router.pathname.startsWith('/admin/customers') ? styles.active : ''}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -103,7 +104,17 @@ const AdminLayout = ({ children }) => {
             </svg>
             Customers
           </Link>
-          
+
+          <Link href="/admin/marketplace" className={`${styles.navItem} ${router.pathname.startsWith('/admin/marketplace') ? styles.active : ''}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              <path d="M6 11h4"></path>
+              <path d="M14 11h4"></path>
+            </svg>
+            Marketplace
+          </Link>
+
           <Link href="/admin/settings" className={`${styles.navItem} ${router.pathname.startsWith('/admin/settings') ? styles.active : ''}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="3"></circle>
@@ -112,7 +123,7 @@ const AdminLayout = ({ children }) => {
             Settings
           </Link>
         </nav>
-        
+
         <div className={styles.sidebarFooter}>
           <button onClick={handleSignOut} className={styles.signOutButton}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -124,7 +135,7 @@ const AdminLayout = ({ children }) => {
           </button>
         </div>
       </aside>
-      
+
       <main className={styles.main}>
         <header className={styles.header}>
           <div className={styles.headerLeft}>
@@ -133,10 +144,11 @@ const AdminLayout = ({ children }) => {
               {router.pathname === '/admin/products' && 'Products'}
               {router.pathname === '/admin/orders' && 'Orders'}
               {router.pathname === '/admin/customers' && 'Customers'}
+              {router.pathname === '/admin/marketplace' && 'Marketplace Integration'}
               {router.pathname === '/admin/settings' && 'Settings'}
             </h1>
           </div>
-          
+
           <div className={styles.headerRight}>
             <div className={styles.userInfo}>
               <span className={styles.userName}>{session?.user?.name || 'Admin'}</span>
@@ -144,7 +156,7 @@ const AdminLayout = ({ children }) => {
             </div>
           </div>
         </header>
-        
+
         <div className={styles.content}>
           {children}
         </div>
