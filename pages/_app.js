@@ -152,9 +152,6 @@ function AppContent({ Component, pageProps }) {
       {/* Cloudflare Security Banner */}
       <SecurityBanner />
 
-      {/* Apple Banner */}
-      <AppleBanner />
-
       {/* Main Navigation */}
       <MainNavigation />
 
@@ -261,6 +258,9 @@ function AppContent({ Component, pageProps }) {
       <main id="main-content" className={isLandingPage || isLcdBuybackPage ? "" : "main"} tabIndex="-1">
         <Component {...pageProps} />
       </main>
+
+      {/* Apple Banner */}
+      <AppleBanner />
 
       <Footer />
     </div>

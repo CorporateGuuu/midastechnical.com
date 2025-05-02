@@ -58,6 +58,9 @@ const MainNavigation = () => {
             <Link href="/lcd-buyback" className={`${styles.navLink} ${isActive('/lcd-buyback') ? styles.active : ''}`}>
               LCD Buyback
             </Link>
+            <Link href="/gapp" className={`${styles.navLink} ${isActive('/gapp') ? styles.active : ''}`}>
+              Apple Parts Program
+            </Link>
           </div>
         </div>
 
