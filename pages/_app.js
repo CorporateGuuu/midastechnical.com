@@ -127,6 +127,7 @@ function AppContent({ Component, pageProps }) {
   // Check if we're on the landing page, LCD Buyback page, or other pages that need a clean look
   const isLandingPage = router.pathname === '/';
   const isLcdBuybackPage = router.pathname === '/lcd-buyback';
+  const isGappPage = router.pathname === '/gapp';
   const isAuthPage = router.pathname.startsWith('/auth/');
   const isCartPage = router.pathname === '/cart';
   const isCategoriesPage = router.pathname === '/categories';
@@ -166,7 +167,7 @@ function AppContent({ Component, pageProps }) {
       <WhatsAppButton />
       <FixHiddenElement />
 
-      {!isLandingPage && !isLcdBuybackPage && (
+      {!isLandingPage && !isLcdBuybackPage && !isGappPage && (
         <header className="header">
           <div className="container header-content">
             <div className="header-left">
@@ -260,7 +261,7 @@ function AppContent({ Component, pageProps }) {
         </header>
       )}
 
-      <main id="main-content" className={isLandingPage || isLcdBuybackPage ? "" : "main"} tabIndex="-1">
+      <main id="main-content" className={isLandingPage || isLcdBuybackPage || isGappPage ? "" : "main"} tabIndex="-1">
         <Component {...pageProps} />
       </main>
 
