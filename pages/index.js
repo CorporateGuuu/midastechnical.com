@@ -154,45 +154,6 @@ function Home() {
           <Link href="/gapp" className="cta-button">Learn More</Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="landing-footer">
-        <div className="container">
-          <div className="landing-footer-content">
-            <div className="landing-footer-logo">
-              <h3>MDTS</h3>
-              <p>Midas Technical Solutions</p>
-            </div>
-
-            <div className="landing-footer-links">
-              <div className="landing-footer-column">
-                <h4>Shop</h4>
-                <Link href="/products">All Products</Link>
-                <Link href="/categories">Categories</Link>
-                <Link href="/lcd-buyback">LCD Buyback</Link>
-              </div>
-
-              <div className="landing-footer-column">
-                <h4>Company</h4>
-                <Link href="/about">About Us</Link>
-                <Link href="/contact">Contact</Link>
-                <Link href="/faq">FAQ</Link>
-              </div>
-
-              <div className="landing-footer-column">
-                <h4>Contact</h4>
-                <p>Email: support@mdtstech.store</p>
-                <p>Phone: +1 (240) 351-0511</p>
-                <p>Vienna, VA 22182</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="landing-footer-bottom">
-            <p>&copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </>
   );
 }

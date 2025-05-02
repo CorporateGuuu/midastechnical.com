@@ -9,7 +9,14 @@
 /* Adjust position to avoid overlapping with other fixed elements */
 @media (max-width: 768px) {
   .chatbotContainer {
-    bottom: 90px; /* Move up on mobile to avoid overlapping */
+    bottom: 80px;
+    /* Move up on mobile to avoid overlapping */
+    right: 20px;
+  }
+
+  .chatbotToggle {
+    width: 50px;
+    height: 50px;
   }
 }
 
@@ -179,6 +186,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -282,9 +290,13 @@
 }
 
 @keyframes typing {
-  0%, 60%, 100% {
+
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
   }
+
   30% {
     transform: translateY(-4px);
   }

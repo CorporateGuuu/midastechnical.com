@@ -233,24 +233,46 @@
 
 @media (max-width: 768px) {
   .footer {
-    padding: 40px 15px 20px;
+    padding: 20px 15px 10px;
   }
 
-  .top, .middle {
+  .top,
+  .middle {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    margin-bottom: 10px;
   }
 
   .services {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    display: none;
+  }
+
+  .column h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .links li {
+    margin-bottom: 5px;
   }
 
   .bottom {
     flex-direction: column;
     text-align: center;
+    padding-top: 15px;
   }
 
   .copyright {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
   }
 }

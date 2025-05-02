@@ -1,3 +1,4 @@
+import React from 'react';
 import '../styles/globals.css';
 import '../public/css/api-styles.css';
 import '../public/css/product-detail.css';
@@ -98,7 +99,7 @@ function AppContent({ Component, pageProps }) {
       }
 
       if (mobileMenuOpen && !event.target.closest('.mobile-menu') &&
-          !event.target.closest('.mobile-menu-button')) {
+        !event.target.closest('.mobile-menu-button')) {
         setMobileMenuOpen(false);
       }
     };
@@ -130,7 +131,6 @@ function AppContent({ Component, pageProps }) {
   const isCartPage = router.pathname === '/cart';
   const isCategoriesPage = router.pathname === '/categories';
   const isProductsPage = router.pathname === '/products';
-  const isComparePage = router.pathname === '/compare';
   const isWholesalePage = router.pathname === '/wholesale';
 
   // Pages that should have a clean look without navigation
@@ -259,10 +259,10 @@ function AppContent({ Component, pageProps }) {
         <Component {...pageProps} />
       </main>
 
+      <Footer />
+
       {/* Apple Banner */}
       <AppleBanner />
-
-      <Footer />
     </div>
   );
 }
