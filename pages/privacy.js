@@ -1,39 +1,36 @@
+import React from 'react';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 
-export default function PrivacyPolicy() {
+function PrivacyPolicy() {
   return (
     <>
       <Head>
         <title>Privacy Policy - Midas Technical Solutions</title>
         <meta name="description" content="Learn about how Midas Technical Solutions collects, uses, and protects your personal information." />
       </Head>
-      
-      <Header />
-      
+
       <main>
         <div className="container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Privacy Policy</h1>
           <p style={{ marginBottom: '1.5rem', lineHeight: '1.6' }}>
             Last Updated: June 1, 2023
           </p>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Introduction</h2>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
-              Midas Technical Solutions ("we," "our," or "us") respects your privacy and is committed to protecting your personal information. 
-              This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website mdtstech.store, 
+              Midas Technical Solutions ("we," "our," or "us") respects your privacy and is committed to protecting your personal information.
+              This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website mdtstech.store,
               including any other media form, media channel, mobile website, or mobile application related or connected thereto (collectively, the "Site").
             </p>
             <p style={{ lineHeight: '1.6' }}>
               Please read this Privacy Policy carefully. If you do not agree with the terms of this Privacy Policy, please do not access the Site.
             </p>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Information We Collect</h2>
-            
+
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', marginTop: '1.5rem' }}>Personal Information</h3>
             <p style={{ marginBottom: '0.75rem', lineHeight: '1.6' }}>
               We may collect personal information that you voluntarily provide to us when you:
@@ -55,7 +52,7 @@ export default function PrivacyPolicy() {
               <li style={{ marginBottom: '0.5rem' }}>Phone number</li>
               <li style={{ marginBottom: '0.5rem' }}>Payment information (credit card numbers, billing address)</li>
             </ul>
-            
+
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', marginTop: '1.5rem' }}>Automatically Collected Information</h3>
             <p style={{ marginBottom: '0.75rem', lineHeight: '1.6' }}>
               When you access the Site, we may automatically collect certain information, including:
@@ -68,7 +65,7 @@ export default function PrivacyPolicy() {
               <li style={{ marginBottom: '0.5rem' }}>Date and time of access</li>
             </ul>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>How We Use Your Information</h2>
             <p style={{ marginBottom: '0.75rem', lineHeight: '1.6' }}>
@@ -86,40 +83,40 @@ export default function PrivacyPolicy() {
               <li style={{ marginBottom: '0.5rem' }}>Complying with legal obligations</li>
             </ul>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Disclosure of Your Information</h2>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
               We may share your information in the following situations:
             </p>
-            
+
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>Business Partners and Service Providers</h3>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
-              We may share your information with third-party service providers who perform services on our behalf, such as payment processing, 
+              We may share your information with third-party service providers who perform services on our behalf, such as payment processing,
               order fulfillment, data analysis, email delivery, hosting services, and customer service.
             </p>
-            
+
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>Legal Requirements</h3>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
-              We may disclose your information if required to do so by law or in response to valid requests by public authorities 
+              We may disclose your information if required to do so by law or in response to valid requests by public authorities
               (e.g., a court or government agency).
             </p>
-            
+
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>Business Transfers</h3>
             <p style={{ lineHeight: '1.6' }}>
-              We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, 
+              We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets,
               financing, or acquisition of all or a portion of our business to another company.
             </p>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Cookies and Tracking Technologies</h2>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
-              We use cookies and similar tracking technologies to track activity on our Site and store certain information. 
+              We use cookies and similar tracking technologies to track activity on our Site and store certain information.
               Cookies are files with a small amount of data that may include an anonymous unique identifier.
             </p>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
-              You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, 
+              You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However,
               if you do not accept cookies, you may not be able to use some portions of our Site.
             </p>
             <p style={{ lineHeight: '1.6' }}>
@@ -132,7 +129,7 @@ export default function PrivacyPolicy() {
               <li style={{ marginBottom: '0.5rem' }}>Personalizing your experience</li>
             </ul>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Your Privacy Rights</h2>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
@@ -150,32 +147,32 @@ export default function PrivacyPolicy() {
               To exercise these rights, please contact us using the information provided in the "Contact Us" section below.
             </p>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Data Security</h2>
             <p style={{ lineHeight: '1.6' }}>
-              We have implemented appropriate technical and organizational security measures designed to protect the security of any personal 
-              information we process. However, despite our safeguards and efforts to secure your information, no electronic transmission over 
+              We have implemented appropriate technical and organizational security measures designed to protect the security of any personal
+              information we process. However, despite our safeguards and efforts to secure your information, no electronic transmission over
               the Internet or information storage technology can be guaranteed to be 100% secure.
             </p>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Children's Privacy</h2>
             <p style={{ lineHeight: '1.6' }}>
-              Our Site is not intended for children under 13 years of age. We do not knowingly collect personal information from children 
+              Our Site is not intended for children under 13 years of age. We do not knowingly collect personal information from children
               under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us.
             </p>
           </section>
-          
+
           <section style={{ marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Changes to This Privacy Policy</h2>
             <p style={{ lineHeight: '1.6' }}>
-              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page 
+              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page
               and updating the "Last Updated" date. You are advised to review this Privacy Policy periodically for any changes.
             </p>
           </section>
-          
+
           <section>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Contact Us</h2>
             <p style={{ lineHeight: '1.6' }}>
@@ -190,8 +187,8 @@ export default function PrivacyPolicy() {
           </section>
         </div>
       </main>
-      
-      <Footer />
     </>
   );
 }
+
+export default React.memo(PrivacyPolicy);

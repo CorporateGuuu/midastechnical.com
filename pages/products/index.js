@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -34,37 +35,40 @@ export default function Products() {
     { id: 5, name: 'Xiaomi', slug: 'xiaomi' }
   ]);
 
-  // Product images from the Website Content folder
+  // Product images from the New Content folder
   const productImages = useMemo(() => [
-    '0DA4ABBF-40A3-456A-8275-7A18F7831F17.JPG',
-    '1333A34A-20B6-481E-A61A-2144DE8EB250.JPG',
-    '2AA4A703-8C13-4A01-BA85-3B3AD0FC729D.JPG',
-    '31DC2BA3-E822-41C9-8AD4-E901A05C73E2.JPG',
-    '5FE8C433-F216-4C2F-AFAA-B17576A69E70.JPG',
-    '64EA3D01-5BD4-44CB-A7D9-5779ACF06239.JPG',
-    '6B074445-59FB-47A1-AA9E-A6F54F36C28B.JPG',
-    '77A26396-50B6-405B-B76C-C751924A6621.JPG',
-    '78D0434A-D569-40A9-BCD9-FD0C1F113C72.JPG',
-    '84B5F3DD-755C-4E8A-96DD-EA6F63B9642F.JPG',
-    '8A1B4B2E-EDE6-4D12-A79C-AB7ACE5A1460.JPG',
-    '901CCF8F-6A4E-46F3-B319-11F81EE5C240.JPG',
-    'B8C872E3-8F03-4207-88A3-D714D5C5C801.JPG',
-    'BA8EC1D7-89F1-45BD-94E3-0FD68374AA7C.JPG',
-    'C6488984-139C-46D2-BBDA-79717072235B.JPG',
-    'D7AC4198-419E-4992-9E65-6D3AADBDBEE8.JPG',
-    'E31077DE-4766-4F72-AA7F-0CF19CF06A22.JPG',
-    'FCD10084-3B70-4FAB-BDD0-FE04958553D6.JPG'
+    'iphone-parts.png',
+    'samsung-parts.png',
+    'ipad-parts.png',
+    'macbook-parts.png',
+    'repair-tools.png',
+    'apple-logo.png',
+    'warranty.png',
+    'certified.png'
   ], []);
 
-  // Function to get a random product image
-  const getRandomProductImage = () => {
-    const randomIndex = Math.floor(Math.random() * productImages.length);
-    return productImages[randomIndex];
+  // Function to get a product image based on category
+  const getProductImage = (product) => {
+    if (product.category_name?.toLowerCase().includes('iphone')) {
+      return 'iphone-parts.png';
+    } else if (product.category_name?.toLowerCase().includes('samsung')) {
+      return 'samsung-parts.png';
+    } else if (product.category_name?.toLowerCase().includes('ipad')) {
+      return 'ipad-parts.png';
+    } else if (product.category_name?.toLowerCase().includes('macbook')) {
+      return 'macbook-parts.png';
+    } else if (product.category_name?.toLowerCase().includes('tool')) {
+      return 'repair-tools.png';
+    } else {
+      // Fallback to random image
+      const randomIndex = Math.floor(Math.random() * productImages.length);
+      return productImages[randomIndex];
+    }
   };
 
   // Handle filter changes
   const handleFilterChange = (filters) => {
-    console.log('Filters changed:', filters);
+    // // // console.log('Filters changed:', filters);
     // In a real implementation, this would update the query parameters
     // and trigger a new fetch of filtered products
   };
@@ -208,7 +212,7 @@ export default function Products() {
                     <div key={product.id} className={styles.productCard}>
                       <div className={styles.productImageContainer}>
                         <img
-                          src={product.image_url || `/images/products/${getRandomProductImage()}`}
+                          src={product.image_url || `/images/gapp/${getProductImage(product)}`}
                           alt={product.name}
                           className={styles.productImage}
                         />
