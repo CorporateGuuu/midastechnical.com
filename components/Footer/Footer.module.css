@@ -214,6 +214,45 @@
   margin-bottom: 20px;
 }
 
+.trademarkText {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  margin-top: 0.5rem;
+  max-width: 600px;
+}
+
+.certificateSection {
+  margin-top: 1rem;
+}
+
+.certificateList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.certificateList li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.certificateList li:hover {
+  transform: translateY(-2px);
+}
+
+.certificateList img {
+  max-width: 100%;
+  height: auto;
+}
+
 .paymentMethods {
   display: flex;
   gap: 15px;

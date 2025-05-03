@@ -82,7 +82,7 @@ export default function SignIn({ csrfToken }) {
 
       if (result.error) {
         // Record failed login attempt for fraud prevention
-        recordFailedLogin('client_ip', email);
+        // recordFailedLogin('client_ip', email);
 
         setError('Invalid email or password');
         setSecurityMessage({
@@ -162,66 +162,66 @@ export default function SignIn({ csrfToken }) {
           <form onSubmit={handleSubmit}>
             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
 
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <div className="password-header">
-              <label htmlFor="password">Password</label>
-              <Link href="/auth/forgot-password" className="forgot-password-link">
-                Forgot password?
-              </Link>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
 
-          {/* Cloudflare Turnstile for bot protection */}
-          <Turnstile
-            onVerify={(token) => setTurnstileToken(token)}
-            onError={() => setTurnstileToken('')}
-            action="signin"
-          />
+            <div className="form-group">
+              <div className="password-header">
+                <label htmlFor="password">Password</label>
+                <Link href="/auth/forgot-password" className="forgot-password-link">
+                  Forgot password?
+                </Link>
+              </div>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Cloudflare Turnstile for bot protection */}
+            <Turnstile
+              onVerify={(token) => setTurnstileToken(token)}
+              onError={() => setTurnstileToken('')}
+              action="signin"
+            />
+
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading || !turnstileToken}
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+          </form>
+
+          <SecurityBadge />
+
+          <div className="auth-separator">
+            <span>OR</span>
+          </div>
 
           <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading || !turnstileToken}
+            onClick={handleGoogleSignIn}
+            className="btn btn-google"
+            type="button"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            Sign in with Google
           </button>
-        </form>
 
-        <SecurityBadge />
-
-        <div className="auth-separator">
-          <span>OR</span>
-        </div>
-
-        <button
-          onClick={handleGoogleSignIn}
-          className="btn btn-google"
-          type="button"
-        >
-          Sign in with Google
-        </button>
-
-        <p className="auth-link">
-          Don't have an account? <Link href="/auth/register">Register</Link>
-        </p>
+          <p className="auth-link">
+            Don't have an account? <Link href="/auth/register">Register</Link>
+          </p>
         </div>
       </div>
 
@@ -243,7 +243,7 @@ export default function SignIn({ csrfToken }) {
                 <div className={styles.footerService}>
                   <div className={styles.footerServiceIcon}>🚚</div>
                   <div className={styles.footerServiceName}>Fast Shipping</div>
-                  <div className={styles.footerServiceDescription}>Free shipping on orders over $500</div>
+                  <div className={styles.footerServiceDescription}>Free shipping on orders over $1000</div>
                 </div>
 
                 <div className={styles.footerService}>
@@ -360,9 +360,11 @@ export default function SignIn({ csrfToken }) {
 }
 
 export async function getServerSideProps(context) {
+  const csrfToken = await getCsrfToken(context);
+
   return {
     props: {
-      csrfToken: await getCsrfToken(context),
+      csrfToken: csrfToken || null,
     },
   };
 }

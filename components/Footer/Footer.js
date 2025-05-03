@@ -98,7 +98,7 @@ const Footer = () => {
                 <div className={styles.serviceIcon}>🚚</div>
                 <div className={styles.serviceName}>Fast Shipping</div>
                 <div className={styles.serviceDescription}>
-                  Free shipping on orders over $500
+                  Free shipping on orders over $1000
                 </div>
               </div>
 
@@ -182,11 +182,34 @@ const Footer = () => {
               </li>
             </ul>
           </div>
+
+          <div className={styles.column}>
+            <h3>Certifications</h3>
+            <div className={styles.certificateSection}>
+              <ul className={styles.certificateList}>
+                <li>
+                  <img width="36" height="45" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/r2-v3.svg" alt="R2 Certificate" />
+                </li>
+                <li>
+                  <img width="34" height="48" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/cerificate-001.svg" alt="NSAI - Health & Safety" />
+                </li>
+                <li>
+                  <img width="33" height="48" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/cerificate-002.svg" alt="NSAI - Quality" />
+                </li>
+                <li>
+                  <img width="34" height="48" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/cerificate-003.svg" alt="NSAI - Environment" />
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div className={styles.bottom}>
           <div className={styles.copyright}>
             © {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
+            <p className={styles.trademarkText}>
+              All trademarks are properties of their respective holders. Midas Technical Solutions does not own or make claim to those trademarks used on this website in which it is not the holder.
+            </p>
           </div>
 
           <div className={styles.paymentMethods}>

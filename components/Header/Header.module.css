@@ -30,6 +30,19 @@
   align-items: center;
   padding: 15px 40px;
   background-color: white;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.shippingCutoffContainer {
+  background-color: white;
+  padding: 10px 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -256,6 +269,17 @@
 
   .mobileNavLinks a:hover {
     color: #0066cc;
+  }
+
+  .mobileNavDivider {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 0 5px;
+    margin-top: 10px;
+    border-top: 1px solid #f0f0f0;
   }
 
   .closeButton {

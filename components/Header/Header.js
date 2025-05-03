@@ -2,6 +2,8 @@ import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './Header.module.css';
+import ShippingCutoff from './ShippingCutoff';
+import MegaMenu from './MegaMenu';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,6 +49,7 @@ const Header = () => {
             <li><Link href="/products">Products</Link></li>
             <li><Link href="/categories">Categories</Link></li>
             <li><Link href="/lcd-buyback">LCD Buyback</Link></li>
+            <li><Link href="/gapp">Apple Parts Program</Link></li>
           </ul>
         </nav>
 
@@ -100,6 +103,16 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Shipping Cutoff Info */}
+      <div className={styles.shippingCutoffContainer}>
+        <div className={styles.container}>
+          <ShippingCutoff />
+        </div>
+      </div>
+
+      {/* Mega Menu */}
+      <MegaMenu />
+
       {/* Mobile Menu */}
       <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.open : ''}`}>
         <button
@@ -111,10 +124,18 @@ const Header = () => {
         </button>
 
         <ul className={styles.mobileNavLinks}>
+          <li><Link href="/">Home</Link></li>
           <li><Link href="/products">Products</Link></li>
           <li><Link href="/categories">Categories</Link></li>
           <li><Link href="/lcd-buyback">LCD Buyback</Link></li>
           <li><Link href="/gapp">Apple Parts Program</Link></li>
+          <li className={styles.mobileNavDivider}>Shop By Category</li>
+          <li><Link href="/categories/iphone-parts">iPhone Parts</Link></li>
+          <li><Link href="/categories/samsung-parts">Samsung Parts</Link></li>
+          <li><Link href="/categories/ipad-parts">iPad Parts</Link></li>
+          <li><Link href="/categories/macbook-parts">MacBook Parts</Link></li>
+          <li><Link href="/categories/repair-tools">Repair Tools</Link></li>
+          <li className={styles.mobileNavDivider}>Account</li>
           <li><Link href="/cart">Cart</Link></li>
           <li><Link href="/auth/signin">Sign In</Link></li>
           <li><Link href="/auth/register">Register</Link></li>

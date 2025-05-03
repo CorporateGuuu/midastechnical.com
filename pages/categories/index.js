@@ -60,6 +60,8 @@ export default function Categories() {
         setLoading(true);
         setError(null);
 
+        // In a production environment, uncomment this code to fetch from API
+        /*
         const response = await fetch('/api/categories');
 
         if (!response.ok) {
@@ -73,13 +75,17 @@ export default function Categories() {
         } else {
           throw new Error(data.message || 'Failed to fetch categories');
         }
+        */
+
+        // For development, use predefined categories directly
+        setTimeout(() => {
+          setCategories(predefinedCategories);
+          setLoading(false);
+        }, 500); // Simulate network delay
       } catch (err) {
         console.error('Error fetching categories:', err);
         setError(err.message);
-
-        // Set predefined categories in case of error
         setCategories(predefinedCategories);
-      } finally {
         setLoading(false);
       }
     };
