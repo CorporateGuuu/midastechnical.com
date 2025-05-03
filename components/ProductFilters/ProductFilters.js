@@ -138,6 +138,27 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
 
   return (
     <div className={styles.productFilters}>
+      {/* Sort by (desktop) - Moved to the top */}
+      <div className={styles.sortByDesktop}>
+        <label htmlFor="sort-by">Sort By:</label>
+        <select
+          id="sort-by"
+          value={filters.sortBy}
+          onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+        >
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+          <option value="bestselling">Best Selling</option>
+          <option value="rating">Highest Rated</option>
+          <option value="discount">Biggest Discount</option>
+        </select>
+      </div>
+
       {/* Mobile filter toggle */}
       <div className={styles.mobileFilterToggle}>
         <button onClick={toggleMobileFilters}>
@@ -284,27 +305,6 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
         >
           Reset Filters
         </button>
-      </div>
-
-      {/* Sort by (desktop) */}
-      <div className={styles.sortByDesktop}>
-        <label htmlFor="sort-by">Sort By:</label>
-        <select
-          id="sort-by"
-          value={filters.sortBy}
-          onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-        >
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-          <option value="name-asc">Name: A to Z</option>
-          <option value="name-desc">Name: Z to A</option>
-          <option value="bestselling">Best Selling</option>
-          <option value="rating">Highest Rated</option>
-          <option value="discount">Biggest Discount</option>
-        </select>
       </div>
     </div>
   );

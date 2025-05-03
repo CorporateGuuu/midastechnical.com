@@ -138,7 +138,7 @@ function AppContent({ Component, pageProps }) {
 
   // Pages that should have a clean look without navigation
   const isProductDetailPage = router.pathname.startsWith('/products/') && router.pathname !== '/products';
-  const shouldHideNavigation = isAuthPage || isCartPage || isCategoriesPage || isProductsPage || isProductDetailPage;
+  const shouldHideNavigation = isAuthPage || isCartPage || isCategoriesPage || isProductsPage || isProductDetailPage || isAccountPage;
 
   return (
     <div className="app-wrapper">
