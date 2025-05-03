@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -13,32 +14,35 @@ import SavedAddresses from '../../components/Account/SavedAddresses';
 import AccountPreferences from '../../components/Account/AccountPreferences';
 import WishlistItems from '../../components/Account/WishlistItems';
 
+// Admin components
+import AdminIntegrations from '../../components/Admin/AdminIntegrations';
+
 export default function AccountDashboard() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const router = useRouter();
-  
+
   // Get the active tab from the URL query or default to 'overview'
   const [activeTab, setActiveTab] = useState('overview');
-  
+
   useEffect(() => {
     // If the user is not authenticated, redirect to the login page
     if (!loading && !session) {
       router.push('/auth/signin?callbackUrl=/account');
     }
-    
+
     // Set active tab based on URL query
     if (router.query.tab) {
       setActiveTab(router.query.tab);
     }
   }, [session, loading, router]);
-  
+
   // Handle tab change
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     router.push(`/account?tab=${tab}`, undefined, { shallow: true });
   };
-  
+
   // If the page is loading or the user is not authenticated, show a loading state
   if (loading || !session) {
     return (
@@ -50,24 +54,24 @@ export default function AccountDashboard() {
       </div>
     );
   }
-  
+
   return (
     <>
       <Head>
         <title>My Account | MDTS - Midas Technical Solutions</title>
         <meta name="description" content="Manage your account, orders, addresses, and preferences at MDTS - Midas Technical Solutions" />
       </Head>
-      
+
       <div className="container">
         <div className={styles.accountHeader}>
           <h1>My Account</h1>
           <p>Welcome back, {session.user.name || session.user.email}!</p>
         </div>
-        
+
         <div className={styles.accountDashboard}>
           {/* Sidebar with navigation */}
           <AccountSidebar activeTab={activeTab} onTabChange={handleTabChange} />
-          
+
           {/* Main content area */}
           <div className={styles.accountContent}>
             {activeTab === 'overview' && <AccountOverview session={session} />}
@@ -75,6 +79,25 @@ export default function AccountDashboard() {
             {activeTab === 'addresses' && <SavedAddresses />}
             {activeTab === 'preferences' && <AccountPreferences />}
             {activeTab === 'wishlist' && <WishlistItems />}
+
+            {/* Admin tabs */}
+            {activeTab === 'integrations' && <AdminIntegrations />}
+            {activeTab === 'inventory' && (
+              <div className={styles.adminSection}>
+                <h2>Inventory Management</h2>
+                <p className={styles.sectionDescription}>
+                  Manage your product inventory, sync with external systems, and track stock levels.
+                </p>
+                <div className={styles.comingSoon}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <h3>Coming Soon</h3>
+                  <p>The inventory management system is currently under development.</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -85,7 +108,7 @@ export default function AccountDashboard() {
 // Server-side authentication check
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  
+
   if (!session) {
     return {
       redirect: {
@@ -94,7 +117,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  
+
   return {
     props: { session },
   };

@@ -1,8 +1,16 @@
-import { signOut } from 'next-auth/react';
+import React from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import styles from '../../styles/Account.module.css';
 import zIndexStyles from '../../styles/ZIndexFix.module.css';
 
 const AccountSidebar = ({ activeTab, onTabChange }) => {
+  const { data: session } = useSession();
+
+  // Check if user is an admin (in a real app, this would be based on user roles in the database)
+  const isAdmin = session?.user?.email === 'admin@mdtstech.store' ||
+    session?.user?.email === 'support@mdtstech.store' ||
+    session?.user?.isAdmin === true;
+
   return (
     <div className={`${styles.sidebar} ${zIndexStyles.accountSidebar}`}>
       <nav className={`${styles.sidebarNav} ${zIndexStyles.accountSidebarNav}`}>
@@ -62,6 +70,38 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
           </svg>
           Preferences
         </div>
+
+        {/* Admin-only sections */}
+        {isAdmin && (
+          <>
+            <div className={styles.sidebarDivider}>
+              <span>Admin</span>
+            </div>
+
+            <div
+              className={`${styles.navItem} ${activeTab === 'integrations' ? styles.active : ''}`}
+              onClick={() => onTabChange('integrations')}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+              Integrations
+            </div>
+
+            <div
+              className={`${styles.navItem} ${activeTab === 'inventory' ? styles.active : ''}`}
+              onClick={() => onTabChange('inventory')}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                <rect x="1" y="3" width="22" height="5"></rect>
+                <line x1="10" y1="12" x2="14" y2="12"></line>
+              </svg>
+              Inventory
+            </div>
+          </>
+        )}
       </nav>
 
       <button

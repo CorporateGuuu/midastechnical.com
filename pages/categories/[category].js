@@ -1,32 +1,24 @@
-import Image from 'next/image';
-import React, { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import ProductFilters from '../../components/ProductFilters/ProductFilters';
-import styles from '../../styles/ProductsPage.module.css';
+import styles from '../../styles/CategoryPage.module.css';
 
-export default function Products() {
+export default function CategoryPage() {
   const router = useRouter();
-  const { query } = router;
-
+  const { category } = router.query;
+  
   const [products, setProducts] = useState([]);
+  const [categoryInfo, setCategoryInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [limit] = useState(12);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-
-  // Mock categories and brands for filtering
-  const [categories, setCategories] = useState([
-    { id: 1, name: 'iPhone Parts', slug: 'iphone-parts' },
-    { id: 2, name: 'Samsung Parts', slug: 'samsung-parts' },
-    { id: 3, name: 'iPad Parts', slug: 'ipad-parts' },
-    { id: 4, name: 'MacBook Parts', slug: 'macbook-parts' },
-    { id: 5, name: 'Repair Tools', slug: 'repair-tools' }
-  ]);
-
+  
+  // Mock brands for filtering
   const [brands, setBrands] = useState([
     { id: 1, name: 'Apple', slug: 'apple' },
     { id: 2, name: 'Samsung', slug: 'samsung' },
@@ -34,186 +26,152 @@ export default function Products() {
     { id: 4, name: 'Huawei', slug: 'huawei' },
     { id: 5, name: 'Xiaomi', slug: 'xiaomi' }
   ]);
-
-  // Product images from the New Content folder
-  const productImages = useMemo(() => [
-    // iPhone Parts
-    'iphone-parts.png',
-    'iphone-screen.jpg',
-    'iphone-battery.jpg',
-    'iphone-camera.jpg',
-    'iphone-charging-port.jpg',
-    'iphone-back-glass.jpg',
-
-    // Samsung Parts
-    'samsung-parts.png',
-    'samsung-screen.jpg',
-    'samsung-battery.jpg',
-    'samsung-camera.jpg',
-    'samsung-charging-port.jpg',
-
-    // iPad Parts
-    'ipad-parts.png',
-    'ipad-screen.jpg',
-    'ipad-battery.jpg',
-    'ipad-camera.jpg',
-
-    // MacBook Parts
-    'macbook-parts.png',
-    'macbook-screen.jpg',
-    'macbook-keyboard.jpg',
-    'macbook-battery.jpg',
-    'macbook-trackpad.jpg',
-
-    // Repair Tools
-    'repair-tools.png',
-    'screwdriver-set.jpg',
-    'heat-gun.jpg',
-    'opening-tools.jpg',
-    'soldering-kit.jpg',
-    'microscope.jpg',
-
-    // Branding and Certification
-    'apple-logo.png',
-    'warranty.png',
-    'certified.png'
-  ], []);
-
-  // Function to get a product image based on category and product name
+  
+  // Category information mapping
+  const categoryMapping = {
+    'iphone-parts': {
+      name: 'iPhone Parts',
+      description: 'High-quality replacement parts for all iPhone models',
+      image: '/images/gapp/iphone-parts.png',
+      models: ['iPhone 15', 'iPhone 14', 'iPhone 13', 'iPhone 12', 'iPhone 11', 'iPhone X', 'iPhone 8', 'iPhone 7', 'iPhone 6']
+    },
+    'samsung-parts': {
+      name: 'Samsung Parts',
+      description: 'Genuine replacement parts for Samsung Galaxy devices',
+      image: '/images/gapp/samsung-parts.png',
+      models: ['Galaxy S23', 'Galaxy S22', 'Galaxy S21', 'Galaxy S20', 'Galaxy Note 20', 'Galaxy Note 10', 'Galaxy A Series']
+    },
+    'ipad-parts': {
+      name: 'iPad Parts',
+      description: 'Premium replacement parts for all iPad models',
+      image: '/images/gapp/ipad-parts.png',
+      models: ['iPad Pro', 'iPad Air', 'iPad Mini', 'iPad (Standard)']
+    },
+    'macbook-parts': {
+      name: 'MacBook Parts',
+      description: 'High-quality replacement parts for MacBook laptops',
+      image: '/images/gapp/macbook-parts.png',
+      models: ['MacBook Pro', 'MacBook Air', 'MacBook (Standard)']
+    },
+    'repair-tools': {
+      name: 'Repair Tools',
+      description: 'Professional-grade tools for device repair and maintenance',
+      image: '/images/gapp/repair-tools.png',
+      types: ['Screwdriver Sets', 'Opening Tools', 'Heat Guns', 'Soldering Equipment', 'Microscopes', 'Testing Equipment']
+    }
+  };
+  
+  // Function to get product image based on product name and category
   const getProductImage = (product) => {
     const productName = product.name?.toLowerCase() || '';
     const categoryName = product.category_name?.toLowerCase() || '';
-
+    
     // iPhone specific parts
     if (categoryName.includes('iphone')) {
       if (productName.includes('screen') || productName.includes('display') || productName.includes('lcd')) {
-        return 'iphone-screen.jpg';
+        return '/images/gapp/iphone-screen.jpg';
       } else if (productName.includes('battery')) {
-        return 'iphone-battery.jpg';
+        return '/images/gapp/iphone-battery.jpg';
       } else if (productName.includes('camera')) {
-        return 'iphone-camera.jpg';
+        return '/images/gapp/iphone-camera.jpg';
       } else if (productName.includes('charging') || productName.includes('port') || productName.includes('connector')) {
-        return 'iphone-charging-port.jpg';
+        return '/images/gapp/iphone-charging-port.jpg';
       } else if (productName.includes('back') || productName.includes('glass') || productName.includes('housing')) {
-        return 'iphone-back-glass.jpg';
+        return '/images/gapp/iphone-back-glass.jpg';
       } else {
-        return 'iphone-parts.png';
+        return '/images/gapp/iphone-parts.png';
       }
-    }
+    } 
     // Samsung specific parts
     else if (categoryName.includes('samsung')) {
       if (productName.includes('screen') || productName.includes('display') || productName.includes('lcd')) {
-        return 'samsung-screen.jpg';
+        return '/images/gapp/samsung-screen.jpg';
       } else if (productName.includes('battery')) {
-        return 'samsung-battery.jpg';
+        return '/images/gapp/samsung-battery.jpg';
       } else if (productName.includes('camera')) {
-        return 'samsung-camera.jpg';
+        return '/images/gapp/samsung-camera.jpg';
       } else if (productName.includes('charging') || productName.includes('port') || productName.includes('connector')) {
-        return 'samsung-charging-port.jpg';
+        return '/images/gapp/samsung-charging-port.jpg';
       } else {
-        return 'samsung-parts.png';
+        return '/images/gapp/samsung-parts.png';
       }
-    }
+    } 
     // iPad specific parts
     else if (categoryName.includes('ipad')) {
       if (productName.includes('screen') || productName.includes('display') || productName.includes('lcd')) {
-        return 'ipad-screen.jpg';
+        return '/images/gapp/ipad-screen.jpg';
       } else if (productName.includes('battery')) {
-        return 'ipad-battery.jpg';
+        return '/images/gapp/ipad-battery.jpg';
       } else if (productName.includes('camera')) {
-        return 'ipad-camera.jpg';
+        return '/images/gapp/ipad-camera.jpg';
       } else {
-        return 'ipad-parts.png';
+        return '/images/gapp/ipad-parts.png';
       }
-    }
+    } 
     // MacBook specific parts
     else if (categoryName.includes('macbook')) {
       if (productName.includes('screen') || productName.includes('display') || productName.includes('lcd')) {
-        return 'macbook-screen.jpg';
+        return '/images/gapp/macbook-screen.jpg';
       } else if (productName.includes('keyboard')) {
-        return 'macbook-keyboard.jpg';
+        return '/images/gapp/macbook-keyboard.jpg';
       } else if (productName.includes('battery')) {
-        return 'macbook-battery.jpg';
+        return '/images/gapp/macbook-battery.jpg';
       } else if (productName.includes('trackpad')) {
-        return 'macbook-trackpad.jpg';
+        return '/images/gapp/macbook-trackpad.jpg';
       } else {
-        return 'macbook-parts.png';
+        return '/images/gapp/macbook-parts.png';
       }
-    }
+    } 
     // Repair tools
     else if (categoryName.includes('tool')) {
       if (productName.includes('screwdriver') || productName.includes('driver')) {
-        return 'screwdriver-set.jpg';
+        return '/images/gapp/screwdriver-set.jpg';
       } else if (productName.includes('heat') || productName.includes('gun')) {
-        return 'heat-gun.jpg';
+        return '/images/gapp/heat-gun.jpg';
       } else if (productName.includes('opening') || productName.includes('pry')) {
-        return 'opening-tools.jpg';
+        return '/images/gapp/opening-tools.jpg';
       } else if (productName.includes('solder')) {
-        return 'soldering-kit.jpg';
+        return '/images/gapp/soldering-kit.jpg';
       } else if (productName.includes('microscope') || productName.includes('magnifier')) {
-        return 'microscope.jpg';
+        return '/images/gapp/microscope.jpg';
       } else {
-        return 'repair-tools.png';
+        return '/images/gapp/repair-tools.png';
       }
-    }
-    // Fallback to random image
+    } 
+    // Fallback
     else {
-      const randomIndex = Math.floor(Math.random() * productImages.length);
-      return productImages[randomIndex];
+      return '/images/gapp/certified.png';
     }
   };
-
+  
   // Handle filter changes
   const handleFilterChange = (filters) => {
-    // // // console.log('Filters changed:', filters);
     // In a real implementation, this would update the query parameters
     // and trigger a new fetch of filtered products
   };
-
+  
   useEffect(() => {
-    // Update page from query params if present
-    if (query.page) {
-      setPage(parseInt(query.page));
-    }
-  }, [query.page]);
-
-  useEffect(() => {
+    if (!category) return;
+    
+    // Set category info
+    setCategoryInfo(categoryMapping[category] || null);
+    
     // Function to fetch products from API with filters
     const fetchProducts = async () => {
       try {
         setLoading(true);
-
-        // Build query string with all filters
-        let queryString = `page=${page}&limit=${limit}`;
-
-        if (query.category) {
-          queryString += `&category=${query.category}`;
-        }
-
-        if (query.brand) {
-          queryString += `&brand=${query.brand}`;
-        }
-
-        if (query.minPrice && query.maxPrice) {
-          queryString += `&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`;
-        }
-
-        if (query.inStock === 'true') {
-          queryString += '&inStock=true';
-        }
-
-        if (query.sortBy) {
-          queryString += `&sortBy=${query.sortBy}`;
-        }
-
+        
+        // Build query string with category filter
+        let queryString = `page=${page}&limit=${limit}&category=${category}`;
+        
         const response = await fetch(`/api/products?${queryString}`);
-
+        
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
-
+        
         const data = await response.json();
-
+        
         if (data.success) {
           setProducts(data.products);
           setTotalProducts(data.total || data.products.length);
@@ -228,48 +186,92 @@ export default function Products() {
         setLoading(false);
       }
     };
-
+    
     fetchProducts();
-  }, [page, limit, query]);
-
+  }, [category, page, limit]);
+  
   // Handle pagination
   const handleNextPage = () => {
     const nextPage = page + 1;
-    router.push({
-      pathname: router.pathname,
-      query: { ...query, page: nextPage }
-    }, undefined, { shallow: true });
+    setPage(nextPage);
   };
-
+  
   const handlePrevPage = () => {
     const prevPage = Math.max(page - 1, 1);
-    router.push({
-      pathname: router.pathname,
-      query: { ...query, page: prevPage }
-    }, undefined, { shallow: true });
+    setPage(prevPage);
   };
-
+  
+  if (!category || !categoryInfo) {
+    return (
+      <div className="container">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading category...</p>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <>
       <Head>
-        <title>Products | MDTS - Midas Technical Solutions</title>
-        <meta name="description" content="Browse our extensive collection of repair parts and tools for all major device brands." />
+        <title>{categoryInfo.name} | MDTS - Midas Technical Solutions</title>
+        <meta name="description" content={categoryInfo.description} />
       </Head>
-
+      
       <div className="container">
-        <div className={styles.productsHeader}>
-          <h1>Products</h1>
-          <p>Browse our extensive collection of repair parts and tools</p>
+        <div className={styles.categoryHeader}>
+          <div className={styles.categoryInfo}>
+            <h1>{categoryInfo.name}</h1>
+            <p>{categoryInfo.description}</p>
+            
+            <div className={styles.breadcrumbs}>
+              <Link href="/">Home</Link> &gt; 
+              <Link href="/categories">Categories</Link> &gt; 
+              <span>{categoryInfo.name}</span>
+            </div>
+          </div>
+          
+          <div className={styles.categoryImage}>
+            <img src={categoryInfo.image} alt={categoryInfo.name} />
+          </div>
         </div>
-
+        
+        {/* Models/Types Section */}
+        <div className={styles.modelsSection}>
+          <h2>{categoryInfo.models ? 'Available Models' : 'Available Types'}</h2>
+          <div className={styles.modelsList}>
+            {categoryInfo.models ? (
+              categoryInfo.models.map((model, index) => (
+                <Link 
+                  href={`/products?category=${category}&model=${model.toLowerCase().replace(/\s+/g, '-')}`} 
+                  key={index}
+                  className={styles.modelItem}
+                >
+                  {model}
+                </Link>
+              ))
+            ) : (
+              categoryInfo.types.map((type, index) => (
+                <Link 
+                  href={`/products?category=${category}&type=${type.toLowerCase().replace(/\s+/g, '-')}`} 
+                  key={index}
+                  className={styles.modelItem}
+                >
+                  {type}
+                </Link>
+              ))
+            )}
+          </div>
+        </div>
+        
         <div className={styles.productsLayout}>
           {/* Product Filters */}
           <ProductFilters
-            categories={categories}
             brands={brands}
             onFilterChange={handleFilterChange}
           />
-
+          
           {/* Product Grid */}
           <div className={styles.productsContent}>
             {loading ? (
@@ -293,7 +295,7 @@ export default function Products() {
                 <p>Try adjusting your filters or browse all products</p>
                 <button
                   className={styles.resetButton}
-                  onClick={() => router.push('/products')}
+                  onClick={() => router.push(`/categories/${category}`)}
                 >
                   Reset Filters
                 </button>
@@ -303,13 +305,13 @@ export default function Products() {
                 <div className={styles.resultsInfo}>
                   <p>Showing {products.length} of {totalProducts} products</p>
                 </div>
-
+                
                 <div className={styles.productsGrid}>
                   {products.map((product) => (
                     <div key={product.id} className={styles.productCard}>
                       <div className={styles.productImageContainer}>
                         <img
-                          src={product.image_url || `/images/gapp/${getProductImage(product)}`}
+                          src={product.image_url || getProductImage(product)}
                           alt={product.name}
                           className={styles.productImage}
                         />
@@ -332,7 +334,7 @@ export default function Products() {
                           </button>
                         </div>
                       </div>
-
+                      
                       <div className={styles.productContent}>
                         <div className={styles.productCategory}>{product.category_name}</div>
                         <h3 className={styles.productName}>
@@ -340,7 +342,7 @@ export default function Products() {
                             {product.name}
                           </Link>
                         </h3>
-
+                        
                         <div className={styles.productPrice}>
                           {product.discount_percentage > 0 ? (
                             <>
@@ -351,7 +353,7 @@ export default function Products() {
                             <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
                           )}
                         </div>
-
+                        
                         <div className={styles.productButtons}>
                           <Link href={`/products/${product.slug}`} className={styles.viewDetailsButton}>
                             View Details
@@ -368,7 +370,7 @@ export default function Products() {
                     </div>
                   ))}
                 </div>
-
+                
                 <div className={styles.pagination}>
                   <button
                     onClick={handlePrevPage}
@@ -380,24 +382,19 @@ export default function Products() {
                     </svg>
                     Previous
                   </button>
-
+                  
                   <div className={styles.paginationPages}>
                     {[...Array(totalPages)].map((_, i) => (
                       <button
                         key={i}
-                        onClick={() => {
-                          router.push({
-                            pathname: router.pathname,
-                            query: { ...query, page: i + 1 }
-                          }, undefined, { shallow: true });
-                        }}
+                        onClick={() => setPage(i + 1)}
                         className={`${styles.pageNumber} ${page === i + 1 ? styles.activePage : ''}`}
                       >
                         {i + 1}
                       </button>
                     ))}
                   </div>
-
+                  
                   <button
                     onClick={handleNextPage}
                     disabled={page >= totalPages}

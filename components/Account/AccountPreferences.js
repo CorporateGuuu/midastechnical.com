@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../Theme/ThemeProvider';
+import CurrencyConverter from './CurrencyConverter';
 import styles from '../../styles/Account.module.css';
 
 const AccountPreferences = () => {
@@ -193,7 +194,31 @@ const AccountPreferences = () => {
               <option value="EUR">EUR - Euro</option>
               <option value="GBP">GBP - British Pound</option>
               <option value="CAD">CAD - Canadian Dollar</option>
+              <option value="AUD">AUD - Australian Dollar</option>
+              <option value="JPY">JPY - Japanese Yen</option>
+              <option value="CNY">CNY - Chinese Yuan</option>
+              <option value="INR">INR - Indian Rupee</option>
+              <option value="BRL">BRL - Brazilian Real</option>
+              <option value="RUB">RUB - Russian Ruble</option>
+              <option value="KRW">KRW - South Korean Won</option>
+              <option value="CHF">CHF - Swiss Franc</option>
+              <option value="SGD">SGD - Singapore Dollar</option>
+              <option value="NZD">NZD - New Zealand Dollar</option>
+              <option value="MXN">MXN - Mexican Peso</option>
+              <option value="HKD">HKD - Hong Kong Dollar</option>
+              <option value="SEK">SEK - Swedish Krona</option>
+              <option value="NOK">NOK - Norwegian Krone</option>
+              <option value="DKK">DKK - Danish Krone</option>
+              <option value="PLN">PLN - Polish Złoty</option>
+              <option value="ZAR">ZAR - South African Rand</option>
+              <option value="AED">AED - United Arab Emirates Dirham</option>
+              <option value="SAR">SAR - Saudi Riyal</option>
+              <option value="BTC">BTC - Bitcoin</option>
+              <option value="ETH">ETH - Ethereum</option>
             </select>
+            <p className={styles.helperText}>
+              Currency conversion is applied at checkout based on current exchange rates
+            </p>
           </div>
 
           <div className={styles.formGroup}>
@@ -207,8 +232,21 @@ const AccountPreferences = () => {
               <option value="en">English</option>
               <option value="es">Español</option>
               <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Português</option>
+              <option value="ru">Русский</option>
+              <option value="zh">中文</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+              <option value="ar">العربية</option>
             </select>
           </div>
+
+          <div className={styles.divider}></div>
+
+          {/* Currency Converter */}
+          <CurrencyConverter />
         </div>
 
         {/* Privacy Settings */}
