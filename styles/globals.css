@@ -3,6 +3,52 @@
 @import './landing.css';
 @import './ZIndexFix.module.css';
 
+/* Theme Variables */
+:root {
+  /* Light Theme (Default) */
+  --bg-color: #f9fafb;
+  --text-color: #111827;
+  --text-muted: #6b7280;
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --secondary-color: #f3f4f6;
+  --secondary-dark: #e5e7eb;
+  --border-color: #d1d5db;
+  --card-bg: #ffffff;
+  --header-bg: #ffffff;
+  --footer-bg: #f7f7f7;
+}
+
+/* Dark Theme */
+.dark-theme {
+  --bg-color: #111827;
+  --text-color: #f9fafb;
+  --text-muted: #9ca3af;
+  --primary-color: #60a5fa;
+  --primary-dark: #3b82f6;
+  --secondary-color: #1f2937;
+  --secondary-dark: #374151;
+  --border-color: #374151;
+  --card-bg: #1f2937;
+  --header-bg: #1f2937;
+  --footer-bg: #111827;
+}
+
+/* Light Theme */
+.light-theme {
+  --bg-color: #f9fafb;
+  --text-color: #111827;
+  --text-muted: #6b7280;
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --secondary-color: #f3f4f6;
+  --secondary-dark: #e5e7eb;
+  --border-color: #d1d5db;
+  --card-bg: #ffffff;
+  --header-bg: #ffffff;
+  --footer-bg: #f7f7f7;
+}
+
 /* Mobile optimization */
 * {
   -webkit-tap-highlight-color: transparent;
@@ -20,6 +66,9 @@ body {
   overflow-x: hidden;
   width: 100%;
   position: relative;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Fix for iOS input zoom */
@@ -101,12 +150,13 @@ html[data-contrast="high"] {
 }
 
 .header {
-  background-color: #fff;
+  background-color: var(--header-bg);
   box-shadow: var(--shadow-sm);
   padding: var(--spacing-md) 0;
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
+  transition: background-color 0.3s ease;
 }
 
 .header-content {
@@ -307,10 +357,11 @@ html[data-contrast="high"] {
 }
 
 .footer {
-  background-color: #f7f7f7;
+  background-color: var(--footer-bg);
   padding: var(--spacing-lg) 0;
   text-align: center;
   color: var(--text-muted);
+  transition: background-color 0.3s ease;
 }
 
 .footer-nav {
@@ -366,11 +417,11 @@ html[data-contrast="high"] {
 }
 
 .card {
-  background-color: #fff;
+  background-color: var(--card-bg);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;

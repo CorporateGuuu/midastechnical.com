@@ -11,6 +11,7 @@ import MiniCart from '../components/MiniCart/MiniCart';
 import SearchAutocomplete from '../components/SearchAutocomplete/SearchAutocomplete';
 import MobileMenu from '../components/MobileMenu/MobileMenu';
 import dynamic from 'next/dynamic';
+import ThemeProvider from '../components/Theme/ThemeProvider';
 
 // Import navigation component
 import { MainNavigation } from '../components/Navigation';
@@ -130,6 +131,7 @@ function AppContent({ Component, pageProps }) {
   const isGappPage = router.pathname === '/gapp';
   const isAuthPage = router.pathname.startsWith('/auth/');
   const isCartPage = router.pathname === '/cart';
+  const isAccountPage = router.pathname === '/account' || router.pathname.startsWith('/account/');
   const isCategoriesPage = router.pathname === '/categories';
   const isProductsPage = router.pathname === '/products';
   const isWholesalePage = router.pathname === '/wholesale';
@@ -167,7 +169,7 @@ function AppContent({ Component, pageProps }) {
       <WhatsAppButton />
       <FixHiddenElement />
 
-      {!isLandingPage && !isLcdBuybackPage && !isGappPage && (
+      {!isLandingPage && !isLcdBuybackPage && !isGappPage && !isCartPage && !isAccountPage && (
         <header className="header">
           <div className="container header-content">
             <div className="header-left">
@@ -261,7 +263,7 @@ function AppContent({ Component, pageProps }) {
         </header>
       )}
 
-      <main id="main-content" className={isLandingPage || isLcdBuybackPage || isGappPage ? "" : "main"} tabIndex="-1">
+      <main id="main-content" className={isLandingPage || isLcdBuybackPage || isGappPage || isCartPage || isAccountPage ? "" : "main"} tabIndex="-1">
         <Component {...pageProps} />
       </main>
 
@@ -276,7 +278,9 @@ function AppContent({ Component, pageProps }) {
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <AppContent Component={Component} pageProps={pageProps} />
+      <ThemeProvider>
+        <AppContent Component={Component} pageProps={pageProps} />
+      </ThemeProvider>
     </SessionProvider>
   );
 }
