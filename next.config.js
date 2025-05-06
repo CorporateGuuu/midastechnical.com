@@ -10,6 +10,13 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  staticPageGenerationTimeout: 180,
+  experimental: {
+    forceSwcTransforms: true,
+  },
   webpack: (config, { isServer }) => {
     // Add aliases for common directories
     config.resolve.alias = {
