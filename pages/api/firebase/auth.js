@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     // Split name into first_name and last_name
     let firstName = '';
     let lastName = '';
-    
+
     if (name) {
       const nameParts = name.trim().split(' ');
       firstName = nameParts[0];
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
   }
 
   if (action === 'signout') {
-    const { success, error } = await signOutUser();
+    const { error } = await signOutUser();
 
     if (error) {
       return res.status(500).json({ success: false, message: error });

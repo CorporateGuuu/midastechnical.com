@@ -196,7 +196,7 @@ async function insertData() {
   try {
     await client.query('BEGIN');
 
-    console.log('Inserting categories...');
+    // // // console.log('Inserting categories...');
     for (const category of categories) {
       const result = await client.query(
         `INSERT INTO categories (name, slug, description, image_url)
@@ -212,7 +212,7 @@ async function insertData() {
       category.id = result.rows[0].id;
     }
 
-    console.log('Inserting products...');
+    // // // console.log('Inserting products...');
     for (const product of products) {
       // Find category ID based on product type
       let categoryId = null;
@@ -264,7 +264,7 @@ async function insertData() {
       product.id = result.rows[0].id;
     }
 
-    console.log('Inserting product specifications...');
+    // // // console.log('Inserting product specifications...');
     for (const spec of specifications) {
       // Find product ID based on slug
       const product = products.find(p => p.slug === spec.product_slug);
@@ -325,7 +325,7 @@ async function insertData() {
     }
 
     await client.query('COMMIT');
-    console.log('Sample data inserted successfully!');
+    // // // console.log('Sample data inserted successfully!');
   } catch (error) {
     await client.query('ROLLBACK');
     console.error('Error inserting sample data:', error);

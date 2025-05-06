@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -63,7 +64,7 @@ export default function Search() {
 
   // Handle filter changes
   const handleFilterChange = (filters) => {
-    console.log('Filters changed:', filters);
+    // // // console.log('Filters changed:', filters);
     // In a real implementation, this would update the query parameters
     // and trigger a new fetch of filtered products
   };

@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Hero.module.css';
 
@@ -8,7 +10,7 @@ const Hero = ({ heroImageUrl = "/images/hero-repair.jpg" }) => {
 
       <div className={styles.content}>
         <span className={styles.badge}>Premium Quality Parts & Tools</span>
-        <h1 className={styles.title}>Midas Technical Solutions</h1>
+        <h1 className={styles.title}>MDTS</h1>
         <p className={styles.subtitle}>
           Your trusted partner for professional repair parts & tools. We provide high-quality components for iPhone, Samsung, iPad, and MacBook repairs.
         </p>
@@ -37,11 +39,10 @@ const Hero = ({ heroImageUrl = "/images/hero-repair.jpg" }) => {
       </div>
 
       <div className={styles.imageContainer}>
-        <img
-          src={heroImageUrl}
-          alt="Professional repair tools and parts"
-          className={styles.image}
-        />
+        <div className={styles.simpleContent}>
+          <h2>Quality Parts. Fast Shipping. Expert Support.</h2>
+          <p>Everything you need for professional repairs.</p>
+        </div>
       </div>
     </section>
   );

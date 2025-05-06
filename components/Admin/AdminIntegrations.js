@@ -2,112 +2,346 @@ import React, { useState } from 'react';
 import styles from '../../styles/Admin.module.css';
 
 const AdminIntegrations = () => {
+  // Zapier integration state
   const [zapierStatus, setZapierStatus] = useState('connected');
-  const [notionStatus, setNotionStatus] = useState('connected');
   const [zapierKey, setZapierKey] = useState('zap_123456789abcdef');
-  const [notionKey, setNotionKey] = useState('secret_123456789abcdef');
   const [zapierWebhooks, setZapierWebhooks] = useState([
     { id: 1, name: 'New Order', url: 'https://hooks.zapier.com/hooks/catch/123456/abcdef/', active: true },
     { id: 2, name: 'Low Inventory Alert', url: 'https://hooks.zapier.com/hooks/catch/123456/ghijkl/', active: true },
     { id: 3, name: 'Customer Support Request', url: 'https://hooks.zapier.com/hooks/catch/123456/mnopqr/', active: false }
   ]);
+
+  // Notion integration state
+  const [notionStatus, setNotionStatus] = useState('connected');
+  const [notionKey, setNotionKey] = useState('secret_123456789abcdef');
   const [notionDatabases, setNotionDatabases] = useState([
     { id: 1, name: 'Inventory', databaseId: 'abc123def456', active: true },
     { id: 2, name: 'Orders', databaseId: 'ghi789jkl012', active: true },
     { id: 3, name: 'Customers', databaseId: 'mno345pqr678', active: false }
   ]);
-  
+
+  // n8n integration state
+  const [n8nStatus, setN8nStatus] = useState('connected');
+  const [n8nUrl, setN8nUrl] = useState('https://n8n.mdtstech.store');
+  const [n8nKey, setN8nKey] = useState('n8n_api_123456789abcdef');
+  const [n8nWorkflows, setN8nWorkflows] = useState([
+    { id: 1, name: 'Order Processing', workflowId: 'wf_123456', active: true },
+    { id: 2, name: 'Inventory Sync', workflowId: 'wf_234567', active: true },
+    { id: 3, name: 'Customer Notifications', workflowId: 'wf_345678', active: true },
+    { id: 4, name: 'Supplier Orders', workflowId: 'wf_456789', active: false }
+  ]);
+
+  // 4seller integration state
+  const [fourSellerStatus, setFourSellerStatus] = useState('connected');
+  const [fourSellerKey, setFourSellerKey] = useState('4s_api_123456789abcdef');
+  const [fourSellerStores, setFourSellerStores] = useState([
+    { id: 1, name: 'Main Store', storeId: 'store_123456', active: true },
+    { id: 2, name: 'Wholesale Store', storeId: 'store_234567', active: false }
+  ]);
+
+  // Marketplace integrations state
+  const [amazonStatus, setAmazonStatus] = useState('connected');
+  const [ebayStatus, setEbayStatus] = useState('connected');
+  const [tiktokStatus, setTiktokStatus] = useState('disconnected');
+
+  const [amazonAccounts, setAmazonAccounts] = useState([
+    { id: 1, name: 'US Marketplace', accountId: 'amzn_123456', active: true },
+    { id: 2, name: 'Canada Marketplace', accountId: 'amzn_234567', active: false }
+  ]);
+
+  const [ebayAccounts, setEbayAccounts] = useState([
+    { id: 1, name: 'Main eBay Store', accountId: 'ebay_123456', active: true }
+  ]);
+
+  // UI state
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  
+  const [activeTab, setActiveTab] = useState('automation');
+
   const handleZapierConnect = () => {
     setLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setZapierStatus('connected');
       setLoading(false);
       setSuccess(true);
-      
+
       // Reset success message after 3 seconds
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
     }, 1500);
   };
-  
+
   const handleNotionConnect = () => {
     setLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setNotionStatus('connected');
       setLoading(false);
       setSuccess(true);
-      
+
       // Reset success message after 3 seconds
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
     }, 1500);
   };
-  
+
   const handleZapierDisconnect = () => {
     setLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setZapierStatus('disconnected');
       setLoading(false);
       setSuccess(true);
-      
+
       // Reset success message after 3 seconds
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
     }, 1500);
   };
-  
+
   const handleNotionDisconnect = () => {
     setLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setNotionStatus('disconnected');
       setLoading(false);
       setSuccess(true);
-      
+
       // Reset success message after 3 seconds
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
     }, 1500);
   };
-  
+
+  // n8n handlers
+  const handleN8nConnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setN8nStatus('connected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleN8nDisconnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setN8nStatus('disconnected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  // 4seller handlers
+  const handleFourSellerConnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setFourSellerStatus('connected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleFourSellerDisconnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setFourSellerStatus('disconnected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  // Marketplace handlers
+  const handleAmazonConnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setAmazonStatus('connected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleAmazonDisconnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setAmazonStatus('disconnected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleEbayConnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setEbayStatus('connected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleEbayDisconnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setEbayStatus('disconnected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleTiktokConnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setTiktokStatus('connected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  const handleTiktokDisconnect = () => {
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      setTiktokStatus('disconnected');
+      setLoading(false);
+      setSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  // Toggle functions
   const toggleZapierWebhook = (id) => {
-    setZapierWebhooks(prevWebhooks => 
-      prevWebhooks.map(webhook => 
+    setZapierWebhooks(prevWebhooks =>
+      prevWebhooks.map(webhook =>
         webhook.id === id ? { ...webhook, active: !webhook.active } : webhook
       )
     );
   };
-  
+
   const toggleNotionDatabase = (id) => {
-    setNotionDatabases(prevDatabases => 
-      prevDatabases.map(database => 
+    setNotionDatabases(prevDatabases =>
+      prevDatabases.map(database =>
         database.id === id ? { ...database, active: !database.active } : database
       )
     );
   };
-  
+
+  const toggleN8nWorkflow = (id) => {
+    setN8nWorkflows(prevWorkflows =>
+      prevWorkflows.map(workflow =>
+        workflow.id === id ? { ...workflow, active: !workflow.active } : workflow
+      )
+    );
+  };
+
+  const toggleFourSellerStore = (id) => {
+    setFourSellerStores(prevStores =>
+      prevStores.map(store =>
+        store.id === id ? { ...store, active: !store.active } : store
+      )
+    );
+  };
+
+  const toggleAmazonAccount = (id) => {
+    setAmazonAccounts(prevAccounts =>
+      prevAccounts.map(account =>
+        account.id === id ? { ...account, active: !account.active } : account
+      )
+    );
+  };
+
+  const toggleEbayAccount = (id) => {
+    setEbayAccounts(prevAccounts =>
+      prevAccounts.map(account =>
+        account.id === id ? { ...account, active: !account.active } : account
+      )
+    );
+  };
+
   return (
     <div className={styles.adminSection}>
       <h2>Integrations</h2>
       <p className={styles.sectionDescription}>
         Connect your store with third-party services to automate workflows and manage data.
       </p>
-      
+
       {success && (
         <div className={styles.successMessage}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -117,7 +351,7 @@ const AdminIntegrations = () => {
           <p>Integration settings updated successfully!</p>
         </div>
       )}
-      
+
       {error && (
         <div className={styles.errorMessage}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -128,7 +362,7 @@ const AdminIntegrations = () => {
           <p>{error}</p>
         </div>
       )}
-      
+
       <div className={styles.integrationCards}>
         {/* Zapier Integration */}
         <div className={styles.integrationCard}>
@@ -145,19 +379,19 @@ const AdminIntegrations = () => {
               </div>
             </div>
           </div>
-          
+
           <div className={styles.integrationBody}>
             {zapierStatus === 'connected' ? (
               <>
                 <div className={styles.integrationField}>
                   <label>API Key</label>
                   <div className={styles.apiKeyField}>
-                    <input 
-                      type="password" 
-                      value={zapierKey} 
-                      readOnly 
+                    <input
+                      type="password"
+                      value={zapierKey}
+                      readOnly
                     />
-                    <button 
+                    <button
                       className={styles.copyButton}
                       onClick={() => {
                         navigator.clipboard.writeText(zapierKey);
@@ -172,7 +406,7 @@ const AdminIntegrations = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className={styles.webhooksList}>
                   <h4>Active Webhooks</h4>
                   {zapierWebhooks.map(webhook => (
@@ -182,9 +416,9 @@ const AdminIntegrations = () => {
                         <span className={styles.webhookUrl}>{webhook.url}</span>
                       </div>
                       <label className={styles.switch}>
-                        <input 
-                          type="checkbox" 
-                          checked={webhook.active} 
+                        <input
+                          type="checkbox"
+                          checked={webhook.active}
                           onChange={() => toggleZapierWebhook(webhook.id)}
                         />
                         <span className={styles.slider}></span>
@@ -192,8 +426,8 @@ const AdminIntegrations = () => {
                     </div>
                   ))}
                 </div>
-                
-                <button 
+
+                <button
                   className={styles.disconnectButton}
                   onClick={handleZapierDisconnect}
                   disabled={loading}
@@ -204,7 +438,7 @@ const AdminIntegrations = () => {
             ) : (
               <div className={styles.connectContainer}>
                 <p>Connect your Zapier account to automate workflows and integrate with thousands of apps.</p>
-                <button 
+                <button
                   className={styles.connectButton}
                   onClick={handleZapierConnect}
                   disabled={loading}
@@ -215,7 +449,7 @@ const AdminIntegrations = () => {
             )}
           </div>
         </div>
-        
+
         {/* Notion Integration */}
         <div className={styles.integrationCard}>
           <div className={styles.integrationHeader}>
@@ -231,19 +465,19 @@ const AdminIntegrations = () => {
               </div>
             </div>
           </div>
-          
+
           <div className={styles.integrationBody}>
             {notionStatus === 'connected' ? (
               <>
                 <div className={styles.integrationField}>
                   <label>API Key</label>
                   <div className={styles.apiKeyField}>
-                    <input 
-                      type="password" 
-                      value={notionKey} 
-                      readOnly 
+                    <input
+                      type="password"
+                      value={notionKey}
+                      readOnly
                     />
-                    <button 
+                    <button
                       className={styles.copyButton}
                       onClick={() => {
                         navigator.clipboard.writeText(notionKey);
@@ -258,7 +492,7 @@ const AdminIntegrations = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className={styles.databasesList}>
                   <h4>Connected Databases</h4>
                   {notionDatabases.map(database => (
@@ -268,9 +502,9 @@ const AdminIntegrations = () => {
                         <span className={styles.databaseId}>{database.databaseId}</span>
                       </div>
                       <label className={styles.switch}>
-                        <input 
-                          type="checkbox" 
-                          checked={database.active} 
+                        <input
+                          type="checkbox"
+                          checked={database.active}
                           onChange={() => toggleNotionDatabase(database.id)}
                         />
                         <span className={styles.slider}></span>
@@ -278,8 +512,8 @@ const AdminIntegrations = () => {
                     </div>
                   ))}
                 </div>
-                
-                <button 
+
+                <button
                   className={styles.disconnectButton}
                   onClick={handleNotionDisconnect}
                   disabled={loading}
@@ -290,7 +524,7 @@ const AdminIntegrations = () => {
             ) : (
               <div className={styles.connectContainer}>
                 <p>Connect your Notion workspace to sync inventory, orders, and customer data.</p>
-                <button 
+                <button
                   className={styles.connectButton}
                   onClick={handleNotionConnect}
                   disabled={loading}
@@ -302,7 +536,7 @@ const AdminIntegrations = () => {
           </div>
         </div>
       </div>
-      
+
       <div className={styles.integrationHelp}>
         <h3>Need help with integrations?</h3>
         <p>Check out our <a href="/docs/integrations" target="_blank">integration documentation</a> or <a href="/contact" target="_blank">contact support</a> for assistance.</p>

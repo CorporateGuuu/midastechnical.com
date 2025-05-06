@@ -7,17 +7,21 @@
   background-color: white;
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
   padding: 1rem;
-  z-index: 999; /* Lower z-index to prevent overlapping with chatbot */
+  z-index: 1500;
+  /* Higher z-index to ensure visibility */
   display: flex;
   justify-content: space-between;
   align-items: center;
   animation: slideUp 0.3s ease-out;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 @keyframes slideUp {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -99,6 +103,7 @@
 }
 
 @media (max-width: 640px) {
+
   .installBanner,
   .notificationPrompt {
     flex-direction: column;

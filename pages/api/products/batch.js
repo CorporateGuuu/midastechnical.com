@@ -84,7 +84,7 @@ export default async function handler(req, res) {
       }
 
       // If no results from database, fall back to mock data
-      console.log('No products found in database, using mock data');
+      // // // console.log('No products found in database, using mock data');
 
       // Filter mock data based on requested IDs
       const filteredProducts = mockProducts.filter(product =>

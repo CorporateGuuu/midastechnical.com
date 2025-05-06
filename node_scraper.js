@@ -1,3 +1,4 @@
+import Image from 'next/image';
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +12,7 @@ try {
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
-  console.log(`Output directory ready: ${OUTPUT_DIR}`);
+  // // // console.log(`Output directory ready: ${OUTPUT_DIR}`);
 } catch (err) {
   console.error(`Error creating output directory: ${err.message}`);
   process.exit(1);
@@ -20,7 +21,7 @@ try {
 // Function to fetch URL content
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
-    console.log(`Fetching ${url}...`);
+    // // // console.log(`Fetching ${url}...`);
     
     const options = {
       headers: {
@@ -44,7 +45,7 @@ function fetchUrl(url) {
       });
       
       res.on('end', () => {
-        console.log(`Successfully fetched ${url}`);
+        // // // console.log(`Successfully fetched ${url}`);
         resolve(data);
       });
     });
@@ -119,7 +120,7 @@ function extractProducts(html, baseUrl) {
   const productBlockRegex = /<div\s+class=["'](?:product|item)[^"']*["'][^>]*>(.*?)<\/div>\s*(?:<\/div>|<div)/gs;
   const productBlocks = html.match(productBlockRegex) || [];
   
-  console.log(`Found ${productBlocks.length} potential product blocks`);
+  // // // console.log(`Found ${productBlocks.length} potential product blocks`);
   
   // Process up to 30 product blocks
   for (let i = 0; i < Math.min(productBlocks.length, 30); i++) {
@@ -257,7 +258,7 @@ function generateHtmlReport(data) {
         
         <h2>Categories</h2>
         <ul class="category-list">
-            ${data.categories.slice(0, 20).map(cat => `<li><a href="${cat.url}" target="_blank">${cat.name}</a></li>`).join('')}
+            ${data.categories.slice(0, 20).map(cat => `<li><a href="${cat.url}" target="_blank">${cat.name}</Link></li>`).join('')}
         </ul>
         
         <h2>Products</h2>
@@ -267,7 +268,7 @@ function generateHtmlReport(data) {
                 <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1687a4b89fe%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1687a4b89fe%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2274.4296875%22%20y%3D%22104.5%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';">
                 <div class="product-title">${product.name}</div>
                 <div class="product-price">${product.price}</div>
-                <a href="${product.url}" class="btn" target="_blank">View Product</a>
+                <a href="${product.url}" class="btn" target="_blank">View Product</Link>
             </div>
             `).join('')}
         </div>
@@ -286,23 +287,23 @@ function saveDataFiles(data) {
     // Save as JSON
     const jsonPath = path.join(OUTPUT_DIR, 'mobilesentrix_data.json');
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 4), 'utf8');
-    console.log(`Saved JSON data to ${jsonPath}`);
+    // // // console.log(`Saved JSON data to ${jsonPath}`);
     
     // Save image URLs to a text file
     const imgPath = path.join(OUTPUT_DIR, 'mobilesentrix_images.txt');
     fs.writeFileSync(imgPath, data.images.join('\n'), 'utf8');
-    console.log(`Saved image URLs to ${imgPath}`);
+    // // // console.log(`Saved image URLs to ${imgPath}`);
     
     // Save HTML report
     const htmlReport = generateHtmlReport(data);
     const reportPath = path.join(OUTPUT_DIR, 'mobilesentrix_report.html');
     fs.writeFileSync(reportPath, htmlReport, 'utf8');
-    console.log(`Saved HTML report to ${reportPath}`);
+    // // // console.log(`Saved HTML report to ${reportPath}`);
     
     // Save categories to a text file
     const catPath = path.join(OUTPUT_DIR, 'mobilesentrix_categories.txt');
     fs.writeFileSync(catPath, data.categories.map(cat => `${cat.name}: ${cat.url}`).join('\n'), 'utf8');
-    console.log(`Saved categories to ${catPath}`);
+    // // // console.log(`Saved categories to ${catPath}`);
     
     // Save products to a CSV-like text file
     const prodPath = path.join(OUTPUT_DIR, 'mobilesentrix_products.txt');
@@ -311,7 +312,7 @@ function saveDataFiles(data) {
       `Name\tPrice\tURL\tImage URL\n${data.products.map(p => `${p.name}\t${p.price}\t${p.url}\t${p.image}`).join('\n')}`,
       'utf8'
     );
-    console.log(`Saved products to ${prodPath}`);
+    // // // console.log(`Saved products to ${prodPath}`);
     
     return true;
   } catch (err) {
@@ -322,18 +323,18 @@ function saveDataFiles(data) {
 
 // Main function
 async function main() {
-  console.log('='.repeat(60));
-  console.log('MOBILESENTRIX SCRAPER (NODE.JS VERSION)');
-  console.log('='.repeat(60));
-  console.log(`Target URL: ${TARGET_URL}`);
-  console.log(`Started at: ${new Date().toISOString()}`);
-  console.log('-'.repeat(60));
+  // // // console.log('='.repeat(60));
+  // // // console.log('MOBILESENTRIX SCRAPER (NODE.JS VERSION)');
+  // // // console.log('='.repeat(60));
+  // // // console.log(`Target URL: ${TARGET_URL}`);
+  // // // console.log(`Started at: ${new Date().toISOString()}`);
+  // // // console.log('-'.repeat(60));
   
   try {
     // Fetch website content
     const html = await fetchUrl(TARGET_URL);
     
-    console.log('\nExtracting data...');
+    // // // console.log('\nExtracting data...');
     
     // Extract basic information
     const title = extractTitle(html);
@@ -356,25 +357,25 @@ async function main() {
     };
     
     // Print summary
-    console.log('\n' + '='.repeat(60));
-    console.log('SCRAPING RESULTS');
-    console.log('='.repeat(60));
-    console.log(`Website Title: ${title}`);
-    console.log(`Categories Found: ${categories.length}`);
-    console.log(`Products Found: ${products.length}`);
-    console.log(`Images Found: ${images.length}`);
+    // // // console.log('\n' + '='.repeat(60));
+    // // // console.log('SCRAPING RESULTS');
+    // // // console.log('='.repeat(60));
+    // // // console.log(`Website Title: ${title}`);
+    // // // console.log(`Categories Found: ${categories.length}`);
+    // // // console.log(`Products Found: ${products.length}`);
+    // // // console.log(`Images Found: ${images.length}`);
     
     // Save data to files
-    console.log('\nSaving data files...');
+    // // // console.log('\nSaving data files...');
     saveDataFiles(data);
     
-    console.log('\n' + '='.repeat(60));
-    console.log('SCRAPING COMPLETED SUCCESSFULLY');
-    console.log('='.repeat(60));
-    console.log(`Finished at: ${new Date().toISOString()}`);
-    console.log(`Output directory: ${path.resolve(OUTPUT_DIR)}`);
-    console.log('\nTo view the report, open:');
-    console.log(`${path.resolve(path.join(OUTPUT_DIR, 'mobilesentrix_report.html'))}`);
+    // // // console.log('\n' + '='.repeat(60));
+    // // // console.log('SCRAPING COMPLETED SUCCESSFULLY');
+    // // // console.log('='.repeat(60));
+    // // // console.log(`Finished at: ${new Date().toISOString()}`);
+    // // // console.log(`Output directory: ${path.resolve(OUTPUT_DIR)}`);
+    // // // console.log('\nTo view the report, open:');
+    // // // console.log(`${path.resolve(path.join(OUTPUT_DIR, 'mobilesentrix_report.html'))}`);
   } catch (err) {
     console.error(`\nAn error occurred: ${err.message}`);
     process.exit(1);

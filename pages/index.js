@@ -1,15 +1,47 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
-import Hero from '../components/Hero/Hero';
-import FeaturedProducts from '../components/FeaturedProducts/FeaturedProducts';
-import ProductList from '../components/ProductList/ProductList';
-import CategoryCards from '../components/CategoryCards/CategoryCards';
-import Testimonials from '../components/Testimonials/Testimonials';
-import TrustBadges from '../components/TrustBadges/TrustBadges';
-import RecentlyViewed from '../components/RecentlyViewed/RecentlyViewed';
-import PersonalizedRecommendations from '../components/Recommendations/PersonalizedRecommendations';
-import { MarketplaceIntegration } from '../components/Marketplace';
+import dynamic from 'next/dynamic';
+import Layout from '../components/Layout/Layout';
+
+// Dynamic imports for code splitting
+const Hero = dynamic(() => import('../components/Hero/Hero'), {
+  loading: () => <div style={{ height: '500px', background: '#f3f4f6' }}></div>,
+  ssr: true
+});
+
+const FeaturedProducts = dynamic(() => import('../components/FeaturedProducts/FeaturedProducts'), {
+  ssr: true
+});
+
+const ProductList = dynamic(() => import('../components/ProductList/ProductList'), {
+  ssr: true
+});
+
+const CategoryCards = dynamic(() => import('../components/CategoryCards/CategoryCards'), {
+  ssr: true
+});
+
+const Testimonials = dynamic(() => import('../components/Testimonials/Testimonials'), {
+  ssr: true
+});
+
+const TrustBadges = dynamic(() => import('../components/TrustBadges/TrustBadges'), {
+  ssr: true
+});
+
+const RecentlyViewed = dynamic(() => import('../components/RecentlyViewed/RecentlyViewed'), {
+  ssr: false // Client-side only component
+});
+
+const PersonalizedRecommendations = dynamic(
+  () => import('../components/Recommendations/PersonalizedRecommendations'),
+  { ssr: false } // Client-side only component
+);
+
+const MarketplaceIntegration = dynamic(
+  () => import('../components/Marketplace').then(mod => ({ default: mod.MarketplaceIntegration })),
+  { ssr: true }
+);
 
 // Simulating data from CSV since we can't use getStaticProps in this environment
 const featuredProducts = [
@@ -19,7 +51,7 @@ const featuredProducts = [
     category: 'Replacement Parts',
     price: 129.99,
     discount_percentage: 13.33,
-    imageUrl: '/images/iphone-screen.svg',
+    imageUrl: '/images/products/iphone/iphone-13-pro-screen.jpg',
     badge: 'Best Seller'
   },
   {
@@ -28,7 +60,7 @@ const featuredProducts = [
     category: 'Tools',
     price: 89.99,
     discount_percentage: 0,
-    imageUrl: '/images/repair-tools.svg',
+    imageUrl: '/images/products/tools/repair-tool-kit.svg',
     badge: 'New'
   },
   {
@@ -37,7 +69,7 @@ const featuredProducts = [
     category: 'Batteries',
     price: 39.99,
     discount_percentage: 20,
-    imageUrl: '/images/samsung-battery.svg',
+    imageUrl: '/images/products/samsung/galaxy-s22-battery.jpg',
     badge: '20% OFF'
   },
   {
@@ -46,7 +78,7 @@ const featuredProducts = [
     category: 'Replacement Parts',
     price: 199.99,
     discount_percentage: 0,
-    imageUrl: '/images/ipad-screen.svg',
+    imageUrl: '/images/products/ipad/ipad-pro-lcd.jpg',
     badge: null
   }
 ];
@@ -58,7 +90,7 @@ const popularProducts = [
     category: 'iPhone Parts',
     price: 89.99,
     discount_percentage: 0,
-    imageUrl: '/images/iphone12-screen.svg'
+    imageUrl: '/images/products/iphone/iphone-12-screen.jpg'
   },
   {
     id: 6,
@@ -66,7 +98,7 @@ const popularProducts = [
     category: 'Samsung Parts',
     price: 34.99,
     discount_percentage: 0,
-    imageUrl: '/images/s21-battery.svg'
+    imageUrl: '/images/products/samsung/galaxy-s21-battery.jpg'
   },
   {
     id: 7,
@@ -103,48 +135,71 @@ const popularProducts = [
 ];
 
 function Home() {
-  const heroImageUrl = "/images/hero-repair.svg";
+  const heroImageUrl = "/images/hero-banner.jpg";
+
+  // Loading fallback component
+  const LoadingFallback = () => (
+    <div style={{
+      height: '200px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#f3f4f6'
+    }}>
+      <div className="loading-spinner"></div>
+    </div>
+  );
 
   return (
-    <>
-      <Head>
-        <title>MDTS - Midas Technical Solutions</title>
-        <meta name="description" content="Your trusted partner for professional repair parts & tools. Find everything you need for phone, tablet, and laptop repairs." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0066cc" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* Hero Section */}
+    <Layout
+      title="MDTS - Midas Technical Solutions"
+      description="Your trusted partner for professional repair parts & tools. Find everything you need for phone, tablet, and laptop repairs."
+    >
+      {/* Hero Section - Critical for LCP */}
       <Hero heroImageUrl={heroImageUrl} />
 
       {/* Trust Badges */}
-      <TrustBadges />
+      <Suspense fallback={<LoadingFallback />}>
+        <TrustBadges />
+      </Suspense>
 
       {/* Category Cards */}
-      <CategoryCards />
+      <Suspense fallback={<LoadingFallback />}>
+        <CategoryCards />
+      </Suspense>
 
       {/* Featured Products */}
-      <FeaturedProducts products={featuredProducts} />
+      <Suspense fallback={<LoadingFallback />}>
+        <FeaturedProducts products={featuredProducts} />
+      </Suspense>
 
       {/* Testimonials */}
-      <Testimonials />
+      <Suspense fallback={<LoadingFallback />}>
+        <Testimonials />
+      </Suspense>
 
       {/* Popular Products */}
-      <ProductList products={popularProducts} title="Popular Products" />
+      <Suspense fallback={<LoadingFallback />}>
+        <ProductList products={popularProducts} title="Popular Products" />
+      </Suspense>
 
-      {/* Personalized Recommendations */}
-      <PersonalizedRecommendations
-        title="Recommended For You"
-        subtitle="Based on your browsing history and preferences"
-        limit={4}
-      />
+      {/* Below-the-fold content that can be loaded later */}
+      <Suspense fallback={<LoadingFallback />}>
+        {/* Personalized Recommendations */}
+        <PersonalizedRecommendations
+          title="Recommended For You"
+          subtitle="Based on your browsing history and preferences"
+          limit={4}
+        />
+      </Suspense>
 
       {/* Recently Viewed */}
-      <RecentlyViewed
-        title="Recently Viewed Products"
-        subtitle="Products you've viewed recently"
-      />
+      <Suspense fallback={<LoadingFallback />}>
+        <RecentlyViewed
+          title="Recently Viewed Products"
+          subtitle="Products you've viewed recently"
+        />
+      </Suspense>
 
       {/* CTA Section */}
       <section className="cta-section">
@@ -154,7 +209,7 @@ function Home() {
           <Link href="/gapp" className="cta-button">Learn More</Link>
         </div>
       </section>
-    </>
+    </Layout>
   );
 }
 

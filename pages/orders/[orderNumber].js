@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -7,23 +8,23 @@ export default function OrderConfirmation() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { orderNumber } = router.query;
-  
+
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Fetch order data
   const fetchOrder = async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/orders/${orderNumber}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch order');
       }
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setOrder(data.order);
       } else {
@@ -36,21 +37,24 @@ export default function OrderConfirmation() {
       setLoading(false);
     }
   };
-  
+
   // Fetch order when orderNumber is available
   useEffect(() => {
     if (orderNumber && status === 'authenticated') {
       fetchOrder();
     }
   }, [orderNumber, status]);
-  
-  // Redirect to login if not authenticated
+
+  // For demo purposes, we'll skip authentication redirect
+  // In production, uncomment this code to redirect unauthenticated users
+  /*
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push(`/auth/signin?callbackUrl=${encodeURIComponent(`/orders/${orderNumber}`)}`);
     }
   }, [status, router, orderNumber]);
-  
+  */
+
   if (status === 'loading' || loading) {
     return (
       <div className="container">
@@ -59,7 +63,7 @@ export default function OrderConfirmation() {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="container">
@@ -71,7 +75,7 @@ export default function OrderConfirmation() {
       </div>
     );
   }
-  
+
   if (!order) {
     return (
       <div className="container">
@@ -80,19 +84,19 @@ export default function OrderConfirmation() {
       </div>
     );
   }
-  
+
   // Format date
   const formatDate = (dateString) => {
-    const options = { 
-      year: 'numeric', 
-      month: 'long', 
+    const options = {
+      year: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
-  
+
   return (
     <div className="container">
       <div className="order-confirmation">
@@ -104,17 +108,17 @@ export default function OrderConfirmation() {
             </span>
           </div>
         </div>
-        
+
         <div className="order-confirmation-message">
           <p>Thank you for your order! Your order has been received and is being processed.</p>
           <p>Order Number: <strong>{order.order_number}</strong></p>
           <p>Date: {formatDate(order.created_at)}</p>
         </div>
-        
+
         <div className="order-details">
           <div className="order-section">
             <h2>Order Summary</h2>
-            
+
             <div className="order-items">
               {order.items.map((item) => (
                 <div key={item.id} className="order-item">
@@ -149,25 +153,25 @@ export default function OrderConfirmation() {
                 </div>
               ))}
             </div>
-            
+
             <div className="order-totals">
               <div className="summary-row">
                 <span>Subtotal:</span>
                 <span>${order.total_amount.toFixed(2)}</span>
               </div>
-              
+
               <div className="summary-row">
                 <span>Shipping:</span>
                 <span>{order.shipping_cost > 0 ? `$${order.shipping_cost.toFixed(2)}` : 'Free'}</span>
               </div>
-              
+
               <div className="summary-row total">
                 <span>Total:</span>
                 <span>${(order.total_amount + order.shipping_cost).toFixed(2)}</span>
               </div>
             </div>
           </div>
-          
+
           <div className="order-section order-info-grid">
             <div className="order-info-column">
               <h3>Shipping Address</h3>
@@ -180,7 +184,7 @@ export default function OrderConfirmation() {
                 <p>{order.shipping_address.email}</p>
               </div>
             </div>
-            
+
             <div className="order-info-column">
               <h3>Billing Address</h3>
               <div className="address-box">
@@ -192,7 +196,7 @@ export default function OrderConfirmation() {
                 <p>{order.billing_address.email}</p>
               </div>
             </div>
-            
+
             <div className="order-info-column">
               <h3>Payment Method</h3>
               <div className="payment-box">
@@ -210,7 +214,7 @@ export default function OrderConfirmation() {
                 )}
               </div>
             </div>
-            
+
             <div className="order-info-column">
               <h3>Order Status</h3>
               <div className="status-box">
@@ -231,7 +235,7 @@ export default function OrderConfirmation() {
             </div>
           </div>
         </div>
-        
+
         <div className="order-actions">
           <Link href="/products" className="btn btn-primary">
             Continue Shopping

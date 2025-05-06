@@ -7,7 +7,7 @@ const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 generateSitemap(baseUrl)
   .then(success => {
     if (success) {
-      console.log('Sitemap generated successfully');
+      // // // console.log('Sitemap generated successfully');
       process.exit(0);
     } else {
       console.error('Failed to generate sitemap');

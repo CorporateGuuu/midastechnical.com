@@ -66,7 +66,7 @@ async function setupTestDatabase() {
       client.release();
     }
     
-    console.log('Test database setup complete');
+    // // // console.log('Test database setup complete');
   } catch (error) {
     console.error('Error setting up test database:', error);
     throw error;
@@ -76,7 +76,7 @@ async function setupTestDatabase() {
 // Teardown function to run after tests
 async function teardownTestDatabase() {
   await pool.end();
-  console.log('Test database connection closed');
+  // // // console.log('Test database connection closed');
 }
 
 // Export setup and teardown functions

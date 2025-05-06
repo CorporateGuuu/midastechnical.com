@@ -1,7 +1,6 @@
-import Head from 'next/head';
-import Header from '../../components/Header/Header';
+import React from 'react';
+import Layout from '../../components/Layout/Layout';
 import ProductList from '../../components/ProductList/ProductList';
-import Footer from '../../components/Footer/Footer';
 
 // Sample Samsung parts data
 const samsungParts = [
@@ -41,29 +40,23 @@ const samsungParts = [
   }
 ];
 
-export default function SamsungParts() {
+function SamsungParts() {
   return (
-    <>
-      <Head>
-        <title>Samsung Parts - Midas Technical Solutions</title>
-        <meta name="description" content="High-quality Samsung replacement parts for all models. Screens, batteries, charging ports, and more." />
-      </Head>
-      
-      <Header />
-      
-      <main>
-        <div className="container" style={{ padding: '40px 20px' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Samsung Parts</h1>
-          <p style={{ marginBottom: '2rem' }}>
-            Find high-quality replacement parts for all Samsung Galaxy models. We offer screens, batteries, 
-            charging ports, cameras, and more to help you repair your Samsung device.
-          </p>
-          
-          <ProductList products={samsungParts} title="Samsung Replacement Parts" />
-        </div>
-      </main>
-      
-      <Footer />
-    </>
+    <Layout
+      title="Samsung Parts - Midas Technical Solutions"
+      description="High-quality Samsung replacement parts for all models. Screens, batteries, charging ports, and more."
+    >
+      <div className="container" style={{ padding: '40px 20px' }}>
+        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Samsung Parts</h1>
+        <p style={{ marginBottom: '2rem' }}>
+          Find high-quality replacement parts for all Samsung Galaxy models. We offer screens, batteries,
+          charging ports, cameras, and more to help you repair your Samsung device.
+        </p>
+
+        <ProductList products={samsungParts} title="Samsung Replacement Parts" />
+      </div>
+    </Layout>
   );
 }
+
+export default React.memo(SamsungParts);

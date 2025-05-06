@@ -16,6 +16,7 @@ import WishlistItems from '../../components/Account/WishlistItems';
 
 // Admin components
 import AdminIntegrations from '../../components/Admin/AdminIntegrations';
+import InventoryManagement from '../../components/Admin/InventoryManagement';
 
 export default function AccountDashboard() {
   const { data: session, status } = useSession();
@@ -82,22 +83,7 @@ export default function AccountDashboard() {
 
             {/* Admin tabs */}
             {activeTab === 'integrations' && <AdminIntegrations />}
-            {activeTab === 'inventory' && (
-              <div className={styles.adminSection}>
-                <h2>Inventory Management</h2>
-                <p className={styles.sectionDescription}>
-                  Manage your product inventory, sync with external systems, and track stock levels.
-                </p>
-                <div className={styles.comingSoon}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <h3>Coming Soon</h3>
-                  <p>The inventory management system is currently under development.</p>
-                </div>
-              </div>
-            )}
+            {activeTab === 'inventory' && <InventoryManagement />}
           </div>
         </div>
       </div>

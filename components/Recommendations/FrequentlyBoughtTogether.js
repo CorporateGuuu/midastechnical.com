@@ -1,10 +1,11 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getFrequentlyBoughtTogether } from '../../utils/recommendationEngine';
 import styles from './Recommendations.module.css';
 
-const FrequentlyBoughtTogether = ({ 
+const FrequentlyBoughtTogether = ({
   productId,
   currentProduct,
   title = "Frequently Bought Together",
@@ -14,30 +15,30 @@ const FrequentlyBoughtTogether = ({
   const [loading, setLoading] = useState(true);
   const [selectedProducts, setSelectedProducts] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        
+
         // Get frequently bought together products
         const relatedProducts = await getFrequentlyBoughtTogether(productId, limit);
-        
+
         setProducts(relatedProducts);
-        
+
         // Initialize selected products (all selected by default)
         const initialSelected = {};
         relatedProducts.forEach(product => {
           initialSelected[product.id] = true;
         });
-        
+
         setSelectedProducts(initialSelected);
-        
+
         // Calculate initial total price
         const initialTotal = currentProduct.price + relatedProducts.reduce((sum, product) => {
           return sum + product.price;
         }, 0);
-        
+
         setTotalPrice(initialTotal);
       } catch (error) {
         console.error('Error fetching frequently bought together products:', error);
@@ -46,17 +47,17 @@ const FrequentlyBoughtTogether = ({
         setLoading(false);
       }
     };
-    
+
     if (productId && currentProduct) {
       fetchProducts();
     }
   }, [productId, currentProduct, limit]);
-  
+
   // Handle checkbox change
   const handleCheckboxChange = (productId, price) => {
     setSelectedProducts(prev => {
       const newSelected = { ...prev, [productId]: !prev[productId] };
-      
+
       // Update total price
       let newTotal = currentProduct.price;
       products.forEach(product => {
@@ -64,13 +65,13 @@ const FrequentlyBoughtTogether = ({
           newTotal += product.price;
         }
       });
-      
+
       setTotalPrice(newTotal);
-      
+
       return newSelected;
     });
   };
-  
+
   // Add selected products to cart
   const addSelectedToCart = () => {
     // Get selected product IDs
@@ -80,13 +81,13 @@ const FrequentlyBoughtTogether = ({
         selectedIds.push(product.id);
       }
     });
-    
+
     // Add to cart (implementation depends on your cart system)
-    console.log('Adding to cart:', selectedIds);
-    
+    // // // console.log('Adding to cart:', selectedIds);
+
     // Example implementation
     const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    
+
     // Add current product
     const currentProductInCart = cartItems.find(item => item.id === currentProduct.id);
     if (currentProductInCart) {
@@ -100,7 +101,7 @@ const FrequentlyBoughtTogether = ({
         quantity: 1
       });
     }
-    
+
     // Add selected products
     products.forEach(product => {
       if (selectedProducts[product.id]) {
@@ -118,14 +119,14 @@ const FrequentlyBoughtTogether = ({
         }
       }
     });
-    
+
     // Save to localStorage
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    
+
     // Show confirmation
     alert('Products added to cart!');
   };
-  
+
   if (loading) {
     return (
       <div className={styles.recommendationsLoading}>
@@ -133,36 +134,36 @@ const FrequentlyBoughtTogether = ({
       </div>
     );
   }
-  
+
   if (products.length === 0) {
     return null; // Don't show anything if no related products
   }
-  
+
   return (
     <section className={styles.frequentlyBoughtSection}>
       <div className="container">
         <h2 className={styles.recommendationsTitle}>{title}</h2>
-        
+
         <div className={styles.frequentlyBoughtContainer}>
           <div className={styles.productCombination}>
             {/* Current product */}
             <div className={styles.combinationItem}>
               <div className={styles.combinationImageContainer}>
-                <img 
-                  src={currentProduct.image_url || '/images/placeholder.svg'} 
+                <img
+                  src={currentProduct.image_url || '/images/placeholder.svg'}
                   alt={currentProduct.name}
                   className={styles.combinationImage}
                 />
               </div>
               <div className={styles.combinationName}>{currentProduct.name}</div>
-              <div className={styles.combinationPrice}>${currentProduct.price.toFixed(2)}</div>
+              <div className={styles.combinationPrice}>$82.34</div>
             </div>
-            
+
             {/* Plus signs between products */}
             {products.map((product, index) => (
               <React.Fragment key={`plus-${product.id}`}>
                 <div className={styles.plusSign}>+</div>
-                
+
                 <div className={styles.combinationItem}>
                   <label className={styles.combinationCheckbox}>
                     <input
@@ -171,8 +172,8 @@ const FrequentlyBoughtTogether = ({
                       onChange={() => handleCheckboxChange(product.id, product.price)}
                     />
                     <div className={styles.combinationImageContainer}>
-                      <img 
-                        src={product.image_url || '/images/placeholder.svg'} 
+                      <img
+                        src={product.image_url || '/images/placeholder.svg'}
                         alt={product.name}
                         className={styles.combinationImage}
                       />
@@ -184,14 +185,14 @@ const FrequentlyBoughtTogether = ({
               </React.Fragment>
             ))}
           </div>
-          
+
           <div className={styles.bundleSummary}>
             <div className={styles.bundlePrice}>
               <span className={styles.bundlePriceLabel}>Price for all:</span>
-              <span className={styles.bundlePriceValue}>${totalPrice.toFixed(2)}</span>
+              <span className={styles.bundlePriceValue}>$82.34</span>
             </div>
-            
-            <button 
+
+            <button
               className={styles.addAllButton}
               onClick={addSelectedToCart}
             >

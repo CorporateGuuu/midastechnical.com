@@ -1,8 +1,9 @@
+import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from '../styles/LcdBuyback.module.css';
 
-export default function LcdBuyback() {
+function LcdBuyback() {
   return (
     <>
       <Header />
@@ -38,3 +39,4 @@ export default function LcdBuyback() {
     </>
   );
 }
+export default React.memo(LcdBuyback);

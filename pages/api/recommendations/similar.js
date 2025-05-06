@@ -101,7 +101,7 @@ export default async function handler(req, res) {
       }
       
       // If no results from database, fall back to mock data
-      console.log('No similar products found in database, using mock data');
+      // // // console.log('No similar products found in database, using mock data');
       return res.status(200).json(getMockSimilarProducts(productId, categoryId, limit));
     } catch (dbError) {
       // If database query fails, log and fall back to mock data

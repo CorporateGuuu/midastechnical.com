@@ -1,8 +1,8 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import FirebaseAuth from '../components/FirebaseAuth';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 
 const FirebaseAuthPage = () => {
   return (
@@ -12,16 +12,14 @@ const FirebaseAuthPage = () => {
         <meta name="description" content="Sign in or create an account using Firebase Authentication" />
       </Head>
 
-      <Header />
+      <Layout title="Firebase Authentication | MDTS Tech" description="Sign in or create an account using Firebase Authentication">
 
-      <main style={{ padding: '40px 20px', minHeight: 'calc(100vh - 200px)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Firebase Authentication</h1>
           <FirebaseAuth />
         </div>
-      </main>
-
-      <Footer />
+      
+</Layout>
     </div>
   );
 };

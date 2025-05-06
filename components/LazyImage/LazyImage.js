@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import styles from './LazyImage.module.css';
 
@@ -14,13 +16,22 @@ const LazyImage = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const imgRef = useRef(null);
-  
+
+  // Convert width and height to numbers for next/image
+  const widthNum = typeof width === 'string' && width.includes('%')
+    ? 500 // Default width if percentage is used
+    : parseInt(width, 10) || 500;
+
+  const heightNum = typeof height === 'string' && height.includes('%')
+    ? 500 // Default height if percentage is used
+    : parseInt(height, 10) || 500;
+
   useEffect(() => {
     // Reset state when src changes
     setIsLoaded(false);
     setIsInView(false);
   }, [src]);
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -31,29 +42,24 @@ const LazyImage = ({
       },
       { threshold }
     );
-    
+
     const currentImgRef = imgRef.current;
-    
+
     if (currentImgRef) {
       observer.observe(currentImgRef);
     }
-    
+
     return () => {
       if (currentImgRef) {
         observer.disconnect();
       }
     };
   }, [threshold]);
-  
+
   const handleImageLoad = () => {
     setIsLoaded(true);
   };
-  
-  const handleImageError = () => {
-    console.error(`Failed to load image: ${src}`);
-    // Keep the placeholder visible on error
-  };
-  
+
   return (
     <div
       ref={imgRef}
@@ -62,25 +68,32 @@ const LazyImage = ({
       {...props}
     >
       {/* Placeholder image */}
-      <img
-        src={placeholderSrc}
-        alt={alt}
-        className={`${styles.placeholder} ${isLoaded ? styles.hidden : ''}`}
-        width={width}
-        height={height}
-      />
-      
+      <div className={`${styles.placeholder} ${isLoaded ? styles.hidden : ''}`}>
+        <Image
+          src={placeholderSrc}
+          alt={alt}
+          width={widthNum}
+          height={heightNum}
+          layout="responsive"
+          objectFit="contain"
+          priority={false}
+        />
+      </div>
+
       {/* Actual image (only loads when in view) */}
       {isInView && (
-        <img
-          src={src}
-          alt={alt}
-          className={`${styles.actualImage} ${isLoaded ? styles.visible : ''}`}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          width={width}
-          height={height}
-        />
+        <div className={`${styles.actualImage} ${isLoaded ? styles.visible : ''}`}>
+          <Image
+            src={src}
+            alt={alt}
+            width={widthNum}
+            height={heightNum}
+            layout="responsive"
+            objectFit="contain"
+            onLoadingComplete={handleImageLoad}
+            priority={false}
+          />
+        </div>
       )}
     </div>
   );

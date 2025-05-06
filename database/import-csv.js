@@ -62,9 +62,9 @@ async function runImport() {
     // Check if normalized data directory exists
     if (!fs.existsSync(normalizedDataDir)) {
       console.error(`Normalized data directory not found: ${normalizedDataDir}`);
-      console.log('Please run the data conversion and normalization scripts first:');
-      console.log('1. python3 database/convert_excel_to_csv.py');
-      console.log('2. python3 database/merge_data.py');
+      // // // console.log('Please run the data conversion and normalization scripts first:');
+      // // // console.log('1. python3 database/convert_excel_to_csv.py');
+      // // // console.log('2. python3 database/merge_data.py');
       return;
     }
 
@@ -76,14 +76,14 @@ async function runImport() {
 
       // Check if file exists
       if (fs.existsSync(csvPath)) {
-        console.log(`Importing data into ${table} table...`);
+        // // // console.log(`Importing data into ${table} table...`);
         await importCsvData(csvPath, table, columnMappings[table]);
       } else {
-        console.log(`No data file found for ${table} table.`);
+        // // // console.log(`No data file found for ${table} table.`);
       }
     }
 
-    console.log('CSV import completed successfully');
+    // // // console.log('CSV import completed successfully');
   } catch (error) {
     console.error('Error during CSV import:', error);
   }

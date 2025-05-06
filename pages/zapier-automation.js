@@ -1,7 +1,7 @@
+import React from 'react';
 import { useState } from 'react';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 
 const ZapierAutomationPage = () => {
   const [formType, setFormType] = useState('support');
@@ -101,9 +101,8 @@ const ZapierAutomationPage = () => {
         <meta name="description" content="Test Zapier automation integrations" />
       </Head>
 
-      <Header />
+      <Layout title="Zapier Automation | MDTS Tech" description="Test Zapier automation integrations">
 
-      <main style={{ padding: '40px 20px', minHeight: 'calc(100vh - 200px)' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Zapier Automation</h1>
           
@@ -468,9 +467,8 @@ const ZapierAutomationPage = () => {
             )}
           </div>
         </div>
-      </main>
-
-      <Footer />
+      
+</Layout>
     </div>
   );
 };

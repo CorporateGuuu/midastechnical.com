@@ -1,17 +1,90 @@
+import React from 'react';
 import Head from 'next/head';
 import styles from '../styles/LcdBuyback.module.css';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Layout from '../components/Layout/Layout';
 
 export default function LcdBuyback() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    deviceType: '',
+    deviceModel: '',
+    condition: '',
+    quantity: 1,
+    email: '',
+    phone: '',
+    comments: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitStatus, setSubmitStatus] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage('');
+    setSubmitStatus('');
+
+    try {
+      // Send email notification
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: 'midastechnicalsolutions@gmail.com',
+          subject: 'New LCD Buyback Request',
+          formData
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setSubmitMessage('Your request has been submitted successfully! We will contact you shortly with a quote.');
+        setFormData({
+          deviceType: '',
+          deviceModel: '',
+          condition: '',
+          quantity: 1,
+          email: '',
+          phone: '',
+          comments: ''
+        });
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage('There was an error submitting your request. Please try again or contact us directly.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setSubmitMessage('There was an error submitting your request. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <>
-      <Head>
-        <title>LCD Buyback Program - Midas Technical Solutions</title>
-        <meta name="description" content="Sell your old LCD screens and get cash back with our LCD Buyback Program. Fast, easy, and competitive prices." />
-      </Head>
-
-
+    <Layout
+      title="LCD Buyback Program - Midas Technical Solutions"
+      description="Sell your old LCD screens and get cash back with our LCD Buyback Program. Fast, easy, and competitive prices."
+    >
+      {/* Custom breadcrumb only for LCD Buyback page */}
+      <div className={styles.breadcrumb}>
+        <div className={styles.container}>
+          <span>Home</span> &gt; <span className={styles.active}>LCD Buyback</span>
+        </div>
+      </div>
 
       <main>
         <section className={styles.hero}>
@@ -34,7 +107,7 @@ export default function LcdBuyback() {
               <div className={styles.infoCard}>
                 <div className={styles.infoIcon}>🚚</div>
                 <h3>Free Shipping</h3>
-                <p>We provide free shipping labels for all buyback orders over $100.</p>
+                <p>We provide free shipping labels for all buyback orders over $1000.</p>
               </div>
 
               <div className={styles.infoCard}>
@@ -58,10 +131,22 @@ export default function LcdBuyback() {
               <h2>Submit Your Device Details</h2>
               <p>Fill out the form below to get an instant quote for your LCD screens.</p>
 
-              <form className={styles.buybackForm}>
+              <form className={styles.buybackForm} onSubmit={handleSubmit}>
+                {submitMessage && (
+                  <div className={`${styles.formMessage} ${styles[submitStatus]}`}>
+                    {submitMessage}
+                  </div>
+                )}
+
                 <div className={styles.formGroup}>
                   <label htmlFor="deviceType">Device Type</label>
-                  <select id="deviceType" name="deviceType">
+                  <select
+                    id="deviceType"
+                    name="deviceType"
+                    value={formData.deviceType}
+                    onChange={handleChange}
+                    required
+                  >
                     <option value="">Select Device Type</option>
                     <option value="iphone">iPhone</option>
                     <option value="samsung">Samsung</option>
@@ -78,12 +163,21 @@ export default function LcdBuyback() {
                     id="deviceModel"
                     name="deviceModel"
                     placeholder="e.g., iPhone 13 Pro, Galaxy S22"
+                    value={formData.deviceModel}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="condition">Condition</label>
-                  <select id="condition" name="condition">
+                  <select
+                    id="condition"
+                    name="condition"
+                    value={formData.condition}
+                    onChange={handleChange}
+                    required
+                  >
                     <option value="">Select Condition</option>
                     <option value="new">New/Like New</option>
                     <option value="good">Good (Minor Scratches)</option>
@@ -100,7 +194,9 @@ export default function LcdBuyback() {
                     id="quantity"
                     name="quantity"
                     min="1"
-                    defaultValue="1"
+                    value={formData.quantity}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
 
@@ -111,6 +207,9 @@ export default function LcdBuyback() {
                     id="email"
                     name="email"
                     placeholder="Your email address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                   />
                 </div>
 
@@ -121,6 +220,8 @@ export default function LcdBuyback() {
                     id="phone"
                     name="phone"
                     placeholder="Your phone number"
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
                 </div>
 
@@ -131,10 +232,18 @@ export default function LcdBuyback() {
                     name="comments"
                     rows="3"
                     placeholder="Any additional information about your LCD screens"
+                    value={formData.comments}
+                    onChange={handleChange}
                   ></textarea>
                 </div>
 
-                <button type="submit" className={styles.submitButton}>Get Quote</button>
+                <button
+                  type="submit"
+                  className={styles.submitButton}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Get Quote'}
+                </button>
               </form>
             </div>
           </div>
@@ -157,7 +266,7 @@ export default function LcdBuyback() {
 
               <div className={styles.faqItem}>
                 <h3>How do I ship my LCD screens to you?</h3>
-                <p>After accepting our quote, we'll provide shipping instructions and a prepaid shipping label for orders over $100. For smaller orders, you can use your preferred shipping method.</p>
+                <p>After accepting our quote, we'll provide shipping instructions and a prepaid shipping label for orders over $1000. For smaller orders, you can use your preferred shipping method.</p>
               </div>
 
               <div className={styles.faqItem}>
@@ -168,138 +277,6 @@ export default function LcdBuyback() {
           </div>
         </section>
       </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerContainer}>
-          <div className={styles.footerTop}>
-            <div className={styles.footerNewsletter}>
-              <h3>Subscribe to Our Newsletter</h3>
-              <p>Stay updated with our latest products, promotions, and repair guides.</p>
-              <form className={styles.footerForm}>
-                <input type="email" placeholder="Your email address" required />
-                <button type="submit">Subscribe</button>
-              </form>
-            </div>
-
-            <div>
-              <h3>Our Services</h3>
-              <div className={styles.footerServices}>
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>🚚</div>
-                  <div className={styles.footerServiceName}>Fast Shipping</div>
-                  <div className={styles.footerServiceDescription}>Free shipping on orders over $500</div>
-                </div>
-
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>🔧</div>
-                  <div className={styles.footerServiceName}>Repair Guides</div>
-                  <div className={styles.footerServiceDescription}>Step-by-step tutorials</div>
-                </div>
-
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>💬</div>
-                  <div className={styles.footerServiceName}>Support</div>
-                  <div className={styles.footerServiceDescription}>24/7 customer service</div>
-                </div>
-
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>🔄</div>
-                  <div className={styles.footerServiceName}>Returns</div>
-                  <div className={styles.footerServiceDescription}>30-day money back</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.footerMiddle}>
-            <div className={styles.footerColumn}>
-              <h3>Shop</h3>
-              <ul className={styles.footerLinks}>
-                <li><Link href="/products/iphone">iPhone Parts</Link></li>
-                <li><Link href="/products/samsung">Samsung Parts</Link></li>
-                <li><Link href="/products/ipad">iPad Parts</Link></li>
-                <li><Link href="/products/macbook">MacBook Parts</Link></li>
-                <li><Link href="/products/tools">Repair Tools</Link></li>
-              </ul>
-            </div>
-
-            <div className={styles.footerColumn}>
-              <h3>Information</h3>
-              <ul className={styles.footerLinks}>
-                <li><Link href="/about">About Us</Link></li>
-                <li><Link href="/contact">Contact Us</Link></li>
-                <li><Link href="/blog">Repair Guides</Link></li>
-                <li><Link href="/lcd-buyback">LCD Buyback Program</Link></li>
-                <li><Link href="/wholesale">Wholesale Program</Link></li>
-                <li><Link href="/careers">Careers</Link></li>
-              </ul>
-            </div>
-
-            <div className={styles.footerColumn}>
-              <h3>Customer Service</h3>
-              <ul className={styles.footerLinks}>
-                <li><Link href="/faq">FAQ</Link></li>
-                <li><Link href="/shipping">Shipping Policy</Link></li>
-                <li><Link href="/returns">Returns & Warranty</Link></li>
-                <li><Link href="/privacy">Privacy Policy</Link></li>
-                <li><Link href="/terms">Terms & Conditions</Link></li>
-              </ul>
-            </div>
-
-            <div className={styles.footerColumn}>
-              <h3>Contact Us</h3>
-              <ul className={styles.footerLinks}>
-                <li>Vienna, VA 22182</li>
-                <li>Phone: +1 (240) 351-0511</li>
-                <li>Email: support@mdtstech.store</li>
-                <li>Hours: Mon-Fri 9AM-10PM EST</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className={styles.footerBottom}>
-            <div className={styles.footerCopyright}>
-              &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
-            </div>
-            <div className={styles.footerPaymentMethods}>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <line x1="2" y1="10" x2="22" y2="10" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <circle cx="12" cy="12" r="3" />
-                  <circle cx="18" cy="12" r="3" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <path d="M12 9v6" />
-                  <path d="M8 9h8" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z" />
-                  <path d="M12 16V8" />
-                  <path d="M8 12h8" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </>
+    </Layout>
   );
 }

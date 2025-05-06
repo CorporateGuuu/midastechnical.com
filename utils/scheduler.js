@@ -11,7 +11,7 @@ const scheduledJobs = new Map();
 // Initialize the scheduler
 async function initialize() {
   try {
-    console.log('Initializing outreach scheduler...');
+    // // // console.log('Initializing outreach scheduler...');
     
     // Load scheduled campaigns from database
     const campaignsQuery = `
@@ -28,7 +28,7 @@ async function initialize() {
       await scheduleCampaign(campaign.id, JSON.parse(campaign.schedule_options));
     }
     
-    console.log(`Initialized scheduler with ${scheduledJobs.size} campaigns`);
+    // // // console.log(`Initialized scheduler with ${scheduledJobs.size} campaigns`);
     
     // Set up daily maintenance job
     cron.schedule('0 0 * * *', async () => {
@@ -72,7 +72,7 @@ async function scheduleCampaign(campaignId, options) {
     // Store the job
     scheduledJobs.set(campaignId, job);
     
-    console.log(`Scheduled campaign ${campaignId} with cron: ${cronExpression}`);
+    // // // console.log(`Scheduled campaign ${campaignId} with cron: ${cronExpression}`);
     
     return true;
   } catch (error) {
@@ -136,7 +136,7 @@ function getCronExpression(options) {
  */
 async function executeCampaignBatch(campaignId, options) {
   try {
-    console.log(`Executing batch for campaign ${campaignId}`);
+    // // // console.log(`Executing batch for campaign ${campaignId}`);
     
     // Get campaign details
     const campaignQuery = `
@@ -155,7 +155,7 @@ async function executeCampaignBatch(campaignId, options) {
     
     // Check if campaign should still be executed
     if (campaign.status !== 'scheduled' && campaign.status !== 'in_progress') {
-      console.log(`Campaign ${campaignId} is no longer active (status: ${campaign.status})`);
+      // // // console.log(`Campaign ${campaignId} is no longer active (status: ${campaign.status})`);
       
       // Stop the scheduled job
       if (scheduledJobs.has(campaignId)) {
@@ -168,7 +168,7 @@ async function executeCampaignBatch(campaignId, options) {
     
     // Check if end date has passed
     if (campaign.end_date && new Date(campaign.end_date) < new Date()) {
-      console.log(`Campaign ${campaignId} has reached its end date`);
+      // // // console.log(`Campaign ${campaignId} has reached its end date`);
       
       // Update campaign status
       await pool.query(`
@@ -203,7 +203,7 @@ async function executeCampaignBatch(campaignId, options) {
     const recipients = recipientsResult.rows;
     
     if (recipients.length === 0) {
-      console.log(`No pending recipients for campaign ${campaignId}`);
+      // // // console.log(`No pending recipients for campaign ${campaignId}`);
       
       // Check if all recipients have been processed
       const pendingCountQuery = `
@@ -215,7 +215,7 @@ async function executeCampaignBatch(campaignId, options) {
       const pendingCountResult = await pool.query(pendingCountQuery, [campaignId]);
       
       if (pendingCountResult.rows[0].count === 0) {
-        console.log(`All recipients processed for campaign ${campaignId}`);
+        // // // console.log(`All recipients processed for campaign ${campaignId}`);
         
         // Update campaign status
         await pool.query(`
@@ -246,10 +246,10 @@ async function executeCampaignBatch(campaignId, options) {
     // Execute the campaign for this batch
     const result = await executeCampaignNow(campaignId);
     
-    console.log(`Executed batch for campaign ${campaignId}: ${result.success ? 'Success' : 'Failed'}`);
+    // // // console.log(`Executed batch for campaign ${campaignId}: ${result.success ? 'Success' : 'Failed'}`);
     
     if (result.success) {
-      console.log(`Results: ${result.results.successful} successful, ${result.results.failed} failed`);
+      // // // console.log(`Results: ${result.results.successful} successful, ${result.results.failed} failed`);
     }
   } catch (error) {
     console.error(`Error executing campaign batch ${campaignId}:`, error);
@@ -262,7 +262,7 @@ async function executeCampaignBatch(campaignId, options) {
  */
 async function performMaintenance() {
   try {
-    console.log('Performing scheduler maintenance...');
+    // // // console.log('Performing scheduler maintenance...');
     
     // Check for new scheduled campaigns
     const newCampaignsQuery = `
@@ -297,11 +297,11 @@ async function performMaintenance() {
       if (scheduledJobs.has(campaign.id)) {
         scheduledJobs.get(campaign.id).stop();
         scheduledJobs.delete(campaign.id);
-        console.log(`Stopped scheduled job for campaign ${campaign.id}`);
+        // // // console.log(`Stopped scheduled job for campaign ${campaign.id}`);
       }
     }
     
-    console.log(`Maintenance complete. Active scheduled campaigns: ${scheduledJobs.size}`);
+    // // // console.log(`Maintenance complete. Active scheduled campaigns: ${scheduledJobs.size}`);
   } catch (error) {
     console.error('Error performing scheduler maintenance:', error);
   }
@@ -314,11 +314,11 @@ async function performMaintenance() {
 function stopAll() {
   for (const [campaignId, job] of scheduledJobs.entries()) {
     job.stop();
-    console.log(`Stopped scheduled job for campaign ${campaignId}`);
+    // // // console.log(`Stopped scheduled job for campaign ${campaignId}`);
   }
   
   scheduledJobs.clear();
-  console.log('All scheduled jobs stopped');
+  // // // console.log('All scheduled jobs stopped');
 }
 
 module.exports = {

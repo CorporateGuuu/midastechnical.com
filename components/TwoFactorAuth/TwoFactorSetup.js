@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './TwoFactorAuth.module.css';
@@ -29,7 +30,7 @@ const TwoFactorSetup = () => {
     try {
       setLoading(true);
       const response = await fetch('/api/user/2fa/settings');
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data.settings);
@@ -48,7 +49,7 @@ const TwoFactorSetup = () => {
   const fetchUserPhone = async () => {
     try {
       const response = await fetch('/api/user/profile');
-      
+
       if (response.ok) {
         const data = await response.json();
         setPhoneNumber(data.user.phone_number || '');
@@ -62,13 +63,13 @@ const TwoFactorSetup = () => {
     try {
       setError('');
       setSuccess('');
-      
+
       // If enabling 2FA, make sure at least one method is selected
       if (!settings.enabled && !settings.email_enabled && !settings.sms_enabled && !settings.duo_enabled) {
         setError('Please enable at least one verification method');
         return;
       }
-      
+
       const response = await fetch('/api/user/2fa/settings', {
         method: 'PUT',
         headers: {
@@ -79,12 +80,12 @@ const TwoFactorSetup = () => {
           enabled: !settings.enabled,
         }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data.settings);
         setSuccess(settings.enabled ? '2FA has been disabled' : '2FA has been enabled');
-        
+
         // Generate backup codes if enabling 2FA
         if (!settings.enabled) {
           generateBackupCodes();
@@ -103,28 +104,28 @@ const TwoFactorSetup = () => {
     try {
       setError('');
       setSuccess('');
-      
+
       // Check if phone number is provided for SMS
       if (method === 'sms' && !settings.sms_enabled && !phoneNumber) {
         setError('Please add a phone number in your profile before enabling SMS verification');
         return;
       }
-      
+
       const updatedSettings = {
         ...settings,
         [`${method}_enabled`]: !settings[`${method}_enabled`],
       };
-      
+
       // If disabling the preferred method, reset it
       if (settings.preferred_method === method && !updatedSettings[`${method}_enabled`]) {
         updatedSettings.preferred_method = null;
       }
-      
+
       // If enabling the first method, set it as preferred
       if (!settings.email_enabled && !settings.sms_enabled && !settings.duo_enabled && updatedSettings[`${method}_enabled`]) {
         updatedSettings.preferred_method = method;
       }
-      
+
       const response = await fetch('/api/user/2fa/settings', {
         method: 'PUT',
         headers: {
@@ -132,7 +133,7 @@ const TwoFactorSetup = () => {
         },
         body: JSON.stringify(updatedSettings),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data.settings);
@@ -151,13 +152,13 @@ const TwoFactorSetup = () => {
     try {
       setError('');
       setSuccess('');
-      
+
       // Make sure the method is enabled
       if (!settings[`${method}_enabled`]) {
         setError(`${method.toUpperCase()} verification is not enabled`);
         return;
       }
-      
+
       const response = await fetch('/api/user/2fa/settings', {
         method: 'PUT',
         headers: {
@@ -168,7 +169,7 @@ const TwoFactorSetup = () => {
           preferred_method: method,
         }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data.settings);
@@ -187,11 +188,11 @@ const TwoFactorSetup = () => {
     try {
       setError('');
       setSuccess('');
-      
+
       const response = await fetch('/api/user/2fa/backup-codes', {
         method: 'POST',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setBackupCodes(data.codes);
@@ -211,7 +212,7 @@ const TwoFactorSetup = () => {
     try {
       setError('');
       setSuccess('');
-      
+
       const response = await fetch('/api/user/2fa/test', {
         method: 'POST',
         headers: {
@@ -219,7 +220,7 @@ const TwoFactorSetup = () => {
         },
         body: JSON.stringify({ method }),
       });
-      
+
       if (response.ok) {
         setSuccess(`Test verification sent to your ${method === 'email' ? 'email' : 'phone'}`);
       } else {
@@ -247,10 +248,10 @@ const TwoFactorSetup = () => {
       <p className={styles.description}>
         Two-factor authentication adds an extra layer of security to your account by requiring a verification code in addition to your password.
       </p>
-      
+
       {error && <div className={styles.error}>{error}</div>}
       {success && <div className={styles.success}>{success}</div>}
-      
+
       <div className={styles.toggleContainer}>
         <label className={styles.toggle}>
           <span>Enable Two-Factor Authentication</span>
@@ -264,11 +265,11 @@ const TwoFactorSetup = () => {
           </div>
         </label>
       </div>
-      
+
       <div className={styles.methodsContainer}>
         <h3>Verification Methods</h3>
         <p>Choose one or more verification methods:</p>
-        
+
         <div className={styles.method}>
           <label className={styles.toggle}>
             <span>Email Verification</span>
@@ -293,7 +294,7 @@ const TwoFactorSetup = () => {
             </button>
           )}
         </div>
-        
+
         <div className={styles.method}>
           <label className={styles.toggle}>
             <span>SMS Verification</span>
@@ -309,9 +310,9 @@ const TwoFactorSetup = () => {
           <p className={styles.methodDescription}>
             Receive verification codes via SMS at {phoneNumber || 'No phone number added'}
             {!phoneNumber && (
-              <a href="/user/profile" className={styles.addPhoneLink}>
+              <Link href="/user/profile" className={styles.addPhoneLink}>
                 Add phone number
-              </a>
+              </Link>
             )}
           </p>
           {settings.sms_enabled && (
@@ -323,7 +324,7 @@ const TwoFactorSetup = () => {
             </button>
           )}
         </div>
-        
+
         <div className={styles.method}>
           <label className={styles.toggle}>
             <span>DUO Security</span>
@@ -351,12 +352,12 @@ const TwoFactorSetup = () => {
           )}
         </div>
       </div>
-      
+
       {(settings.email_enabled || settings.sms_enabled || settings.duo_enabled) && (
         <div className={styles.preferredMethod}>
           <h3>Preferred Method</h3>
           <p>Select your preferred verification method:</p>
-          
+
           <div className={styles.radioGroup}>
             {settings.email_enabled && (
               <label className={styles.radio}>
@@ -370,7 +371,7 @@ const TwoFactorSetup = () => {
                 <span>Email</span>
               </label>
             )}
-            
+
             {settings.sms_enabled && (
               <label className={styles.radio}>
                 <input
@@ -383,7 +384,7 @@ const TwoFactorSetup = () => {
                 <span>SMS</span>
               </label>
             )}
-            
+
             {settings.duo_enabled && (
               <label className={styles.radio}>
                 <input
@@ -399,7 +400,7 @@ const TwoFactorSetup = () => {
           </div>
         </div>
       )}
-      
+
       {settings.enabled && (
         <div className={styles.backupCodes}>
           <h3>Backup Codes</h3>
@@ -407,20 +408,20 @@ const TwoFactorSetup = () => {
             Backup codes can be used to access your account if you cannot receive verification codes.
             Each code can only be used once.
           </p>
-          
+
           <button
             className={styles.generateButton}
             onClick={generateBackupCodes}
           >
             Generate New Backup Codes
           </button>
-          
+
           {showBackupCodes && backupCodes.length > 0 && (
             <div className={styles.codesContainer}>
               <p className={styles.warning}>
                 Save these backup codes in a secure location. They will not be shown again!
               </p>
-              
+
               <div className={styles.codes}>
                 {backupCodes.map((code, index) => (
                   <div key={index} className={styles.code}>
@@ -428,14 +429,14 @@ const TwoFactorSetup = () => {
                   </div>
                 ))}
               </div>
-              
+
               <button
                 className={styles.printButton}
                 onClick={() => window.print()}
               >
                 Print Backup Codes
               </button>
-              
+
               <button
                 className={styles.closeButton}
                 onClick={() => setShowBackupCodes(false)}

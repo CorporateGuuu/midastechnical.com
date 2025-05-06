@@ -242,7 +242,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <Truck className="h-5 w-5 text-burgundy-600 mr-3 mt-0.5" />
                   <div>
                     <h4 className="font-medium text-gray-900">Free Shipping</h4>
-                    <p className="text-sm text-gray-500">Free standard shipping on orders over $50</p>
+                    <p className="text-sm text-gray-500">Free standard shipping on orders over $1000</p>
                   </div>
                 </div>
                 <div className="flex items-start">

@@ -42,7 +42,7 @@ async function initialize() {
     // Verify connection
     await transporter.verify();
     
-    console.log('Email connector initialized successfully');
+    // // // console.log('Email connector initialized successfully');
     return true;
   } catch (error) {
     console.error('Error initializing email connector:', error);

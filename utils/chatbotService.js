@@ -429,8 +429,8 @@ function formatOrderStatus(order) {
 // Format order summary
 function formatOrderSummary(order, index) {
   return `${index}. Order #${order.order_number} - ${new Date(order.created_at).toLocaleDateString()}\n` +
-         `   Status: ${order.status.toUpperCase()}\n` +
-         `   Total: $${order.total_amount.toFixed(2)}\n\n`;
+    `   Status: ${order.status.toUpperCase()}\n` +
+    `   Total: $${order.total_amount.toFixed(2)}\n\n`;
 }
 
 // Handle return request
@@ -555,8 +555,8 @@ async function handleShippingInfo(message) {
   // Extract shipping-related keywords
   const shippingKeywords = extractShippingKeywords(message);
 
-  // Default shipping information
-  const standardShipping = "Standard Shipping (3-5 business days): Free for orders over $50, $4.99 for orders under $50.";
+  // Updated shipping information
+  const standardShipping = "Standard Shipping (3-5 business days): Free for orders over $1000, $4.99 for orders under $1000.";
   const expressShipping = "Express Shipping (1-2 business days): $12.99";
   const internationalShipping = "International Shipping (7-14 business days): Starting at $19.99, varies by country.";
 
@@ -570,19 +570,24 @@ async function handleShippingInfo(message) {
     return `${expressShipping}\n\nExpress orders placed before 2 PM EST Monday-Friday will ship the same day. Orders placed after 2 PM EST or on weekends will ship the next business day.\n\nFor overnight or priority overnight options, please call our customer service at +1 (240) 351-0511.`;
   }
 
+  // Check for free shipping inquiry
+  if (shippingKeywords.some(keyword => ['free'].includes(keyword))) {
+    return "Yes, we offer free shipping on all orders over $1000. For orders under $1000, standard shipping costs $4.99.";
+  }
+
   // General shipping information with better formatting
   return `# Shipping Options\n\n` +
-         `## Standard Shipping\n` +
-         `${standardShipping}\n\n` +
-         `## Express Shipping\n` +
-         `${expressShipping}\n\n` +
-         `## International Shipping\n` +
-         `${internationalShipping}\n\n` +
-         `# Additional Information\n` +
-         `- All orders are processed within 1 business day\n` +
-         `- Tracking information will be emailed once your order ships\n` +
-         `- Free shipping on orders over $500\n\n` +
-         `For more details, please visit mdtstech.store/shipping.`;
+    `## Standard Shipping\n` +
+    `${standardShipping}\n\n` +
+    `## Express Shipping\n` +
+    `${expressShipping}\n\n` +
+    `## International Shipping\n` +
+    `${internationalShipping}\n\n` +
+    `# Additional Information\n` +
+    `- All orders are processed within 1 business day\n` +
+    `- Tracking information will be emailed once your order ships\n` +
+    `- Free shipping on orders over $1000\n\n` +
+    `For more details, please visit mdtstech.store/shipping.`;
 }
 
 // Extract shipping keywords
@@ -701,7 +706,14 @@ async function handleGeneral(message, history) {
     'business hours': "Our customer service team is available Monday-Friday from 9 AM to 10 PM EST. Our physical location in Vienna, VA is open Monday-Friday from 10 AM to 7 PM EST.",
     'contact': "You can reach our customer service team at +1 (240) 351-0511 or by email at support@mdtstech.store. Our address is Vienna, VA 22182.",
     'payment': "We accept all major credit cards (Visa, Mastercard, American Express, Discover), PayPal, Apple Pay, and Google Pay. For business orders, we also accept purchase orders and bank transfers.",
-    'repair service': "Yes, we offer repair services for iPhones, iPads, Samsung devices, and MacBooks. You can schedule a repair at mdtstech.store/repair-services or call us at +1 (240) 351-0511."
+    'repair service': "Yes, we offer repair services for iPhones, iPads, Samsung devices, and MacBooks. You can schedule a repair at mdtstech.store/repair-services or call us at +1 (240) 351-0511.",
+    'cryptocurrency': "Yes, we accept Bitcoin and several other cryptocurrencies as payment methods.",
+    'apple parts': "Our Genuine Apple Parts Program (GAPP) provides access to authentic Apple parts for repairs. These parts are sourced directly from Apple and come with full warranty support. Visit mdtstech.store/gapp for more information.",
+    'lcd buyback': "Our LCD Buyback Program allows you to sell your old LCD screens to us for cash. We accept screens from iPhones, Samsung phones, iPads, and other devices in various conditions. Visit mdtstech.store/lcd-buyback for more information.",
+    'iphone parts': "Yes, we sell a wide range of iPhone parts including screens, batteries, cameras, and other components for all iPhone models.",
+    'samsung parts': "Yes, we carry Samsung parts including screens, batteries, and other components for Galaxy S and Note series phones.",
+    'repair tools': "Yes, we offer professional repair tools including precision screwdriver sets, pry tools, heat guns, and complete repair kits.",
+    'return policy': "Our return policy allows returns within 30 days of delivery for most items. Items must be in original condition with all packaging and accessories."
   };
 
   // Check if message matches any FAQ

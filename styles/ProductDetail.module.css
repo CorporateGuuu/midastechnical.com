@@ -148,7 +148,12 @@
   overflow: hidden;
 }
 
-.quantitySelector button {
+.horizontalQuantity {
+  flex-direction: row;
+  width: fit-content;
+}
+
+.quantityButton {
   width: 36px;
   height: 36px;
   background-color: #f3f4f6;
@@ -169,7 +174,7 @@
   cursor: not-allowed;
 }
 
-.quantitySelector input {
+.quantityInput {
   width: 50px;
   height: 36px;
   border: none;

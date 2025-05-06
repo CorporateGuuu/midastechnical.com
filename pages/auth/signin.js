@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { Turnstile, SecurityBadge, SecurityMessage } from '../../components/Security';
 import { recordFailedLogin } from '../../lib/fraudPrevention';
 import styles from '../../styles/AuthPages.module.css';
+import Layout from '../../components/Layout/Layout';
 
 export default function SignIn({ csrfToken }) {
   const [email, setEmail] = useState('');
@@ -47,29 +48,32 @@ export default function SignIn({ csrfToken }) {
     setError('');
     setSecurityMessage(null);
 
-    // Check if Turnstile token is present
-    if (!turnstileToken) {
+    // Check if Turnstile token is present (skip in development)
+    if (!turnstileToken && process.env.NODE_ENV !== 'development') {
       setError('Please complete the security check');
       setLoading(false);
       return;
     }
 
     try {
-      // First, verify the Turnstile token
-      const verifyResponse = await fetch('/api/security/verify-turnstile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token: turnstileToken }),
-      });
+      // Skip Turnstile verification in development
+      if (process.env.NODE_ENV !== 'development') {
+        // Verify the Turnstile token
+        const verifyResponse = await fetch('/api/security/verify-turnstile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: turnstileToken }),
+        });
 
-      const verifyData = await verifyResponse.json();
+        const verifyData = await verifyResponse.json();
 
-      if (!verifyData.success) {
-        setError('Security check failed. Please try again.');
-        setLoading(false);
-        return;
+        if (!verifyData.success) {
+          setError('Security check failed. Please try again.');
+          setLoading(false);
+          return;
+        }
       }
 
       // Proceed with sign in
@@ -117,11 +121,10 @@ export default function SignIn({ csrfToken }) {
 
   if (initialLoading) {
     return (
-      <>
-        <Head>
-          <title>Sign In - Midas Technical Solutions</title>
-          <meta name="description" content="Sign in to your Midas Technical Solutions account." />
-        </Head>
+      <Layout
+        title="Sign In - Midas Technical Solutions"
+        description="Sign in to your Midas Technical Solutions account."
+      >
         <div className={styles.mainContent}>
           <div className={styles.authForm}>
             <div className="loading-spinner">
@@ -130,18 +133,15 @@ export default function SignIn({ csrfToken }) {
             </div>
           </div>
         </div>
-      </>
+      </Layout>
     );
   }
 
   return (
-    <>
-      <Head>
-        <title>Sign In - Midas Technical Solutions</title>
-        <meta name="description" content="Sign in to your Midas Technical Solutions account." />
-      </Head>
-
-
+    <Layout
+      title="Sign In - Midas Technical Solutions"
+      description="Sign in to your Midas Technical Solutions account."
+    >
 
       <div className={styles.mainContent}>
         <div className={styles.authForm}>
@@ -199,7 +199,7 @@ export default function SignIn({ csrfToken }) {
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={loading || !turnstileToken}
+              disabled={loading || (!turnstileToken && process.env.NODE_ENV !== 'development')}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -224,138 +224,7 @@ export default function SignIn({ csrfToken }) {
           </p>
         </div>
       </div>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerContainer}>
-          <div className={styles.footerTop}>
-            <div className={styles.footerNewsletter}>
-              <h3>Subscribe to Our Newsletter</h3>
-              <p>Stay updated with our latest products, promotions, and repair guides.</p>
-              <form className={styles.footerForm}>
-                <input type="email" placeholder="Your email address" required />
-                <button type="submit">Subscribe</button>
-              </form>
-            </div>
-
-            <div>
-              <h3>Our Services</h3>
-              <div className={styles.footerServices}>
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>🚚</div>
-                  <div className={styles.footerServiceName}>Fast Shipping</div>
-                  <div className={styles.footerServiceDescription}>Free shipping on orders over $1000</div>
-                </div>
-
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>🔧</div>
-                  <div className={styles.footerServiceName}>Repair Guides</div>
-                  <div className={styles.footerServiceDescription}>Step-by-step tutorials</div>
-                </div>
-
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>💬</div>
-                  <div className={styles.footerServiceName}>Support</div>
-                  <div className={styles.footerServiceDescription}>24/7 customer service</div>
-                </div>
-
-                <div className={styles.footerService}>
-                  <div className={styles.footerServiceIcon}>🔄</div>
-                  <div className={styles.footerServiceName}>Returns</div>
-                  <div className={styles.footerServiceDescription}>30-day money back</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.footerMiddle}>
-            <div className={styles.footerColumn}>
-              <h3>Shop</h3>
-              <ul className={styles.footerLinks}>
-                <li><Link href="/products/iphone">iPhone Parts</Link></li>
-                <li><Link href="/products/samsung">Samsung Parts</Link></li>
-                <li><Link href="/products/ipad">iPad Parts</Link></li>
-                <li><Link href="/products/macbook">MacBook Parts</Link></li>
-                <li><Link href="/products/tools">Repair Tools</Link></li>
-              </ul>
-            </div>
-
-            <div className={styles.footerColumn}>
-              <h3>Information</h3>
-              <ul className={styles.footerLinks}>
-                <li><Link href="/about">About Us</Link></li>
-                <li><Link href="/contact">Contact Us</Link></li>
-                <li><Link href="/blog">Repair Guides</Link></li>
-                <li><Link href="/lcd-buyback">LCD Buyback Program</Link></li>
-                <li><Link href="/wholesale">Wholesale Program</Link></li>
-              </ul>
-            </div>
-
-            <div className={styles.footerColumn}>
-              <h3>Customer Service</h3>
-              <ul className={styles.footerLinks}>
-                <li><Link href="/faq">FAQ</Link></li>
-                <li><Link href="/shipping">Shipping Policy</Link></li>
-                <li><Link href="/returns">Returns & Warranty</Link></li>
-                <li><Link href="/privacy">Privacy Policy</Link></li>
-                <li><Link href="/terms">Terms & Conditions</Link></li>
-              </ul>
-            </div>
-
-            <div className={styles.footerColumn}>
-              <h3>Contact Us</h3>
-              <ul className={styles.footerLinks}>
-                <li>Vienna, VA 22182</li>
-                <li>Phone: +1 (240) 351-0511</li>
-                <li>Email: support@mdtstech.store</li>
-                <li>Hours: Mon-Fri 9AM-10PM EST</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className={styles.footerBottom}>
-            <div className={styles.footerCopyright}>
-              &copy; {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
-            </div>
-            <div className={styles.footerPaymentMethods}>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <line x1="2" y1="10" x2="22" y2="10" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <circle cx="12" cy="12" r="3" />
-                  <circle cx="18" cy="12" r="3" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <path d="M12 9v6" />
-                  <path d="M8 9h8" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
-              </div>
-              <div className={styles.footerPaymentIcon}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z" />
-                  <path d="M12 16V8" />
-                  <path d="M8 12h8" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </>
+    </Layout>
   );
 }
 

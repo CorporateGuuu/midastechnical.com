@@ -337,7 +337,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
           await client.query('COMMIT');
 
-          console.log('Order processed successfully:', orderId);
+          // // // console.log('Order processed successfully:', orderId);
         } catch (error) {
           await client.query('ROLLBACK');
           console.error('Error processing order:', error);
@@ -350,7 +350,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       break;
 
     default:
-      console.log(`Unhandled event type ${event.type}`);
+      // // // console.log(`Unhandled event type ${event.type}`);
   }
 
   res.json({ received: true });

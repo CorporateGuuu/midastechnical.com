@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AdminLayout from '../../components/AdminLayout';
@@ -20,33 +21,33 @@ const NotionAdminPage = () => {
   useEffect(() => {
     const checkNotionConfig = async () => {
       // In a real app, you would check if the Notion API key and database IDs are configured
-      const hasNotionConfig = process.env.NOTION_API_KEY && 
-                             process.env.NOTION_PRODUCTS_DATABASE_ID;
-      
+      const hasNotionConfig = process.env.NOTION_API_KEY &&
+        process.env.NOTION_PRODUCTS_DATABASE_ID;
+
       setNotionStatus(hasNotionConfig ? 'configured' : 'not_configured');
-      
+
       // If configured, fetch some sample data
       if (hasNotionConfig) {
         await fetchNotionData(contentType);
       }
     };
-    
+
     checkNotionConfig();
   }, [contentType]);
 
   const fetchNotionData = async (type) => {
     setLoading(true);
     setError('');
-    
+
     try {
       // In a real app, this would be a real API call to your Notion endpoints
       // For demo purposes, we'll simulate a response
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       let data = [];
-      
+
       if (type === 'products') {
         data = [
           { id: 'prod-1', name: 'iPhone 13 Pro Screen', price: 149.99, category: 'iPhone Parts', inStock: true },
@@ -64,7 +65,7 @@ const NotionAdminPage = () => {
           { id: 'faq-1', title: 'Common Repair Questions', type: 'FAQ', publishDate: '2023-05-05' },
         ];
       }
-      
+
       setNotionData(data);
     } catch (err) {
       console.error('Error fetching Notion data:', err);
@@ -83,20 +84,20 @@ const NotionAdminPage = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
       // In a real app, this would save the configuration to your backend
       // For demo purposes, we'll simulate a successful configuration
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Update status
       setNotionStatus('configured');
-      
+
       // Fetch initial data
       await fetchNotionData(contentType);
-      
+
       alert('Notion configuration saved successfully!');
     } catch (err) {
       console.error('Error saving Notion configuration:', err);
@@ -107,9 +108,9 @@ const NotionAdminPage = () => {
   };
 
   const renderConfigurationForm = () => (
-    <div style={{ 
-      backgroundColor: 'white', 
-      padding: '20px', 
+    <div style={{
+      backgroundColor: 'white',
+      padding: '20px',
       borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
     }}>
@@ -117,19 +118,19 @@ const NotionAdminPage = () => {
       <p style={{ marginBottom: '20px' }}>
         Enter your Notion API key and database IDs to connect your Notion workspace.
       </p>
-      
+
       {error && (
-        <div style={{ 
-          backgroundColor: '#f8d7da', 
-          color: '#721c24', 
-          padding: '10px', 
+        <div style={{
+          backgroundColor: '#f8d7da',
+          color: '#721c24',
+          padding: '10px',
           borderRadius: '4px',
           marginBottom: '20px'
         }}>
           {error}
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
@@ -141,9 +142,9 @@ const NotionAdminPage = () => {
             value={formData.apiKey}
             onChange={handleInputChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
+            style={{
+              width: '100%',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '4px'
             }}
@@ -153,7 +154,7 @@ const NotionAdminPage = () => {
             Get this from <a href="https://www.notion.so/my-integrations" target="_blank" rel="noopener noreferrer">Notion Integrations</a>
           </p>
         </div>
-        
+
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
             Products Database ID
@@ -164,16 +165,16 @@ const NotionAdminPage = () => {
             value={formData.productsDbId}
             onChange={handleInputChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
+            style={{
+              width: '100%',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '4px'
             }}
             placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
           />
         </div>
-        
+
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
             Orders Database ID
@@ -184,16 +185,16 @@ const NotionAdminPage = () => {
             value={formData.ordersDbId}
             onChange={handleInputChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
+            style={{
+              width: '100%',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '4px'
             }}
             placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
           />
         </div>
-        
+
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
             Customers Database ID
@@ -204,16 +205,16 @@ const NotionAdminPage = () => {
             value={formData.customersDbId}
             onChange={handleInputChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
+            style={{
+              width: '100%',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '4px'
             }}
             placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
           />
         </div>
-        
+
         <div style={{ marginBottom: '20px' }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
             Content Database ID
@@ -224,16 +225,16 @@ const NotionAdminPage = () => {
             value={formData.contentDbId}
             onChange={handleInputChange}
             required
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
+            style={{
+              width: '100%',
+              padding: '10px',
               border: '1px solid #ddd',
               borderRadius: '4px'
             }}
             placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
           />
         </div>
-        
+
         <button
           type="submit"
           disabled={loading}
@@ -255,9 +256,9 @@ const NotionAdminPage = () => {
 
   const renderNotionDashboard = () => (
     <>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '20px'
       }}>
@@ -302,7 +303,7 @@ const NotionAdminPage = () => {
             Content
           </button>
         </div>
-        
+
         <button
           onClick={() => setNotionStatus('not_configured')}
           style={{
@@ -317,12 +318,12 @@ const NotionAdminPage = () => {
           Reconfigure
         </button>
       </div>
-      
+
       {loading ? (
         <div style={{ textAlign: 'center', padding: '40px 0' }}>
-          <div style={{ 
-            width: '40px', 
-            height: '40px', 
+          <div style={{
+            width: '40px',
+            height: '40px',
             border: '4px solid #f3f3f3',
             borderTop: '4px solid #0066cc',
             borderRadius: '50%',
@@ -332,24 +333,24 @@ const NotionAdminPage = () => {
           <p>Loading data from Notion...</p>
         </div>
       ) : error ? (
-        <div style={{ 
-          backgroundColor: '#f8d7da', 
-          color: '#721c24', 
-          padding: '15px', 
+        <div style={{
+          backgroundColor: '#f8d7da',
+          color: '#721c24',
+          padding: '15px',
           borderRadius: '4px',
           marginBottom: '20px'
         }}>
           {error}
         </div>
       ) : (
-        <div style={{ 
-          backgroundColor: 'white', 
-          padding: '20px', 
+        <div style={{
+          backgroundColor: 'white',
+          padding: '20px',
           borderRadius: '8px',
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
         }}>
           <h2>{contentType === 'products' ? 'Products' : contentType === 'orders' ? 'Orders' : 'Content'} from Notion</h2>
-          
+
           {notionData.length === 0 ? (
             <p style={{ padding: '20px 0', textAlign: 'center' }}>No data found in Notion.</p>
           ) : (
@@ -364,7 +365,7 @@ const NotionAdminPage = () => {
                       <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #ddd' }}>In Stock</th>
                     </>
                   )}
-                  
+
                   {contentType === 'orders' && (
                     <>
                       <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #ddd' }}>Order #</th>
@@ -373,7 +374,7 @@ const NotionAdminPage = () => {
                       <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #ddd' }}>Status</th>
                     </>
                   )}
-                  
+
                   {contentType === 'content' && (
                     <>
                       <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #ddd' }}>Title</th>
@@ -381,7 +382,7 @@ const NotionAdminPage = () => {
                       <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #ddd' }}>Published</th>
                     </>
                   )}
-                  
+
                   <th style={{ textAlign: 'left', padding: '10px', borderBottom: '1px solid #ddd' }}>Actions</th>
                 </tr>
               </thead>
@@ -394,10 +395,10 @@ const NotionAdminPage = () => {
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>${item.price.toFixed(2)}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{item.category}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-                          <span style={{ 
-                            backgroundColor: item.inStock ? '#d4edda' : '#f8d7da', 
-                            color: item.inStock ? '#155724' : '#721c24', 
-                            padding: '3px 8px', 
+                          <span style={{
+                            backgroundColor: item.inStock ? '#d4edda' : '#f8d7da',
+                            color: item.inStock ? '#155724' : '#721c24',
+                            padding: '3px 8px',
                             borderRadius: '4px',
                             fontSize: '0.85rem'
                           }}>
@@ -406,23 +407,23 @@ const NotionAdminPage = () => {
                         </td>
                       </>
                     )}
-                    
+
                     {contentType === 'orders' && (
                       <>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{item.orderNumber}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{item.customer}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>${item.total.toFixed(2)}</td>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-                          <span style={{ 
-                            backgroundColor: 
-                              item.status === 'Delivered' ? '#d4edda' : 
-                              item.status === 'Processing' ? '#fff3cd' : 
-                              item.status === 'Shipped' ? '#cce5ff' : '#f8d7da', 
-                            color: 
-                              item.status === 'Delivered' ? '#155724' : 
-                              item.status === 'Processing' ? '#856404' : 
-                              item.status === 'Shipped' ? '#004085' : '#721c24', 
-                            padding: '3px 8px', 
+                          <span style={{
+                            backgroundColor:
+                              item.status === 'Delivered' ? '#d4edda' :
+                                item.status === 'Processing' ? '#fff3cd' :
+                                  item.status === 'Shipped' ? '#cce5ff' : '#f8d7da',
+                            color:
+                              item.status === 'Delivered' ? '#155724' :
+                                item.status === 'Processing' ? '#856404' :
+                                  item.status === 'Shipped' ? '#004085' : '#721c24',
+                            padding: '3px 8px',
                             borderRadius: '4px',
                             fontSize: '0.85rem'
                           }}>
@@ -431,7 +432,7 @@ const NotionAdminPage = () => {
                         </td>
                       </>
                     )}
-                    
+
                     {contentType === 'content' && (
                       <>
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{item.title}</td>
@@ -439,7 +440,7 @@ const NotionAdminPage = () => {
                         <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{new Date(item.publishDate).toLocaleDateString()}</td>
                       </>
                     )}
-                    
+
                     <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
                       <button
                         style={{
@@ -489,16 +490,18 @@ const NotionAdminPage = () => {
         <p style={{ marginBottom: '30px' }}>
           Connect your Notion workspace to sync products, orders, and content.
         </p>
-        
+
         {notionStatus === 'not_configured' ? renderConfigurationForm() : renderNotionDashboard()}
       </AdminLayout>
-      
-      <style jsx global>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `
+      }} />
     </>
   );
 };

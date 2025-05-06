@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function CheckoutCancel() {
+function CheckoutCancel() {
   return (
     <div className="container">
       <div className="checkout-cancel">
@@ -30,3 +30,5 @@ export default function CheckoutCancel() {
     </div>
   );
 }
+
+export default React.memo(CheckoutCancel);

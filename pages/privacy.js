@@ -1,14 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
+import Layout from '../components/Layout/Layout';
 
 function PrivacyPolicy() {
   return (
-    <>
-      <Head>
-        <title>Privacy Policy - Midas Technical Solutions</title>
-        <meta name="description" content="Learn about how Midas Technical Solutions collects, uses, and protects your personal information." />
-      </Head>
-
+    <Layout
+      title="Privacy Policy - Midas Technical Solutions"
+      description="Learn about how Midas Technical Solutions collects, uses, and protects your personal information."
+    >
       <main>
         <div className="container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Privacy Policy</h1>
@@ -187,7 +186,7 @@ function PrivacyPolicy() {
           </section>
         </div>
       </main>
-    </>
+    </Layout>
   );
 }
 

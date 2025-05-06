@@ -1,7 +1,7 @@
+import React from 'react';
 import Head from 'next/head';
-import Header from '../../components/Header/Header';
+import Layout from '../../components/Layout/Layout';
 import ProductList from '../../components/ProductList/ProductList';
-import Footer from '../../components/Footer/Footer';
 
 // Sample MacBook parts data
 const macbookParts = [
@@ -41,29 +41,23 @@ const macbookParts = [
   }
 ];
 
-export default function MacBookParts() {
+function MacBookParts() {
   return (
-    <>
-      <Head>
-        <title>MacBook Parts - Midas Technical Solutions</title>
-        <meta name="description" content="High-quality MacBook replacement parts for all models. Keyboards, batteries, displays, trackpads, and more." />
-      </Head>
-      
-      <Header />
-      
-      <main>
-        <div className="container" style={{ padding: '40px 20px' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>MacBook Parts</h1>
-          <p style={{ marginBottom: '2rem' }}>
-            Find high-quality replacement parts for all MacBook models. We offer keyboards, batteries, 
-            displays, trackpads, and more to help you repair your MacBook.
-          </p>
-          
-          <ProductList products={macbookParts} title="MacBook Replacement Parts" />
-        </div>
-      </main>
-      
-      <Footer />
-    </>
+    <Layout
+      title="MacBook Parts"
+      description="High-quality MacBook replacement parts for all models. Keyboards, batteries, displays, trackpads, and more."
+    >
+      <div className="container" style={{ padding: '40px 20px' }}>
+        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>MacBook Parts</h1>
+        <p style={{ marginBottom: '2rem' }}>
+          Find high-quality replacement parts for all MacBook models. We offer keyboards, batteries,
+          displays, trackpads, and more to help you repair your MacBook.
+        </p>
+
+        <ProductList products={macbookParts} title="MacBook Replacement Parts" />
+      </div>
+    </Layout>
   );
 }
+
+export default React.memo(MacBookParts);

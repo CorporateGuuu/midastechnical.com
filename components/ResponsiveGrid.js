@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ResponsiveGrid({ 
+function ResponsiveGrid({ 
   children, 
   columns = { 
     xs: 1,      // 0-639px
@@ -45,3 +45,5 @@ export default function ResponsiveGrid({
     </div>
   );
 }
+
+export default React.memo(ResponsiveGrid);

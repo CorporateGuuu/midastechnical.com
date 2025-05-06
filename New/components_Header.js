@@ -1,7 +1,9 @@
+import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Header.module.css';
 
-export default function Header() {
+function Header() {
   return (
     <header>
       <div className={styles.topBanner}>
@@ -24,3 +26,4 @@ export default function Header() {
     </header>
   );
 }
+export default React.memo(Header);

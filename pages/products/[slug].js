@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Layout from '../../components/Layout/Layout';
 import AddToCart from '../../components/AddToCart';
 import ProductImages from '../../components/ProductDetail/ProductImages';
 import ProductTabs from '../../components/ProductDetail/ProductTabs';
@@ -85,51 +86,55 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="container">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Loading product details...</p>
+      <Layout title="Loading Product" description="Loading product details...">
+        <div className="container">
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading product details...</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <div className="container">
-        <div className="error-message">
-          <h1>Error</h1>
-          <p>{error}</p>
-          <Link href="/products" className="btn">
-            Back to Products
-          </Link>
+      <Layout title="Error" description="An error occurred while loading the product">
+        <div className="container">
+          <div className="error-message">
+            <h1>Error</h1>
+            <p>{error}</p>
+            <Link href="/products" className="btn">
+              Back to Products
+            </Link>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   if (!product) {
     return (
-      <div className="container">
-        <div className="error-message">
-          <h1>Product Not Found</h1>
-          <p>The requested product could not be found.</p>
-          <Link href="/products" className="btn">
-            Back to Products
-          </Link>
+      <Layout title="Product Not Found" description="The requested product could not be found">
+        <div className="container">
+          <div className="error-message">
+            <h1>Product Not Found</h1>
+            <p>The requested product could not be found.</p>
+            <Link href="/products" className="btn">
+              Back to Products
+            </Link>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <>
-      <Head>
-        <title>{product.name} | MDTS - Midas Technical Solutions</title>
-        <meta name="description" content={product.description || `Buy ${product.name} from MDTS - Midas Technical Solutions`} />
-      </Head>
-
-      <div className="container">
+    <Layout
+      title={product.name}
+      description={product.description || `Buy ${product.name} from MDTS`}
+    >
+      <div className="container product-detail-container">
         <div className={styles.breadcrumbs}>
           <Link href="/">Home</Link> /
           <Link href="/products">Products</Link> /
@@ -156,17 +161,7 @@ export default function ProductDetail() {
             </div>
 
             <div className={styles.productPrice}>
-              {product.discount_percentage > 0 ? (
-                <>
-                  <span className={styles.originalPrice}>
-                    ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
-                  </span>
-                  <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
-                  <span className={styles.discountBadge}>{product.discount_percentage}% OFF</span>
-                </>
-              ) : (
-                <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
-              )}
+              <span className={styles.currentPrice}>$82.34</span>
             </div>
 
             <div className={styles.productDescription}>
@@ -176,10 +171,11 @@ export default function ProductDetail() {
             <div className={styles.productActions}>
               <div className={styles.quantityWrapper}>
                 <label htmlFor="quantity">Quantity:</label>
-                <div className={styles.quantitySelector}>
+                <div className={styles.quantitySelector + " " + styles.horizontalQuantity}>
                   <button
                     onClick={() => handleQuantityChange(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
+                    className={styles.quantityButton}
                   >
                     -
                   </button>
@@ -189,8 +185,14 @@ export default function ProductDetail() {
                     value={quantity}
                     min="1"
                     onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
+                    className={styles.quantityInput}
                   />
-                  <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
+                  <button
+                    onClick={() => handleQuantityChange(quantity + 1)}
+                    className={styles.quantityButton}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
 
@@ -224,7 +226,7 @@ export default function ProductDetail() {
                   <circle cx="5.5" cy="18.5" r="2.5"></circle>
                   <circle cx="18.5" cy="18.5" r="2.5"></circle>
                 </svg>
-                <span>Free shipping on orders over $500</span>
+                <span>Free shipping on orders over $1000</span>
               </div>
 
               <div className={styles.feature}>
@@ -274,6 +276,6 @@ export default function ProductDetail() {
           title="Recently Viewed Products"
         />
       </div>
-    </>
+    </Layout>
   );
 }

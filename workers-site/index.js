@@ -81,7 +81,7 @@ async function handleRequest(event) {
     
     if (highRiskCountries.includes(country)) {
       // Log the suspicious access attempt
-      console.log(`Suspicious access attempt to ${pathname} from ${country} (${clientIP})`);
+      // // // console.log(`Suspicious access attempt to ${pathname} from ${country} (${clientIP})`);
       
       // For admin paths, you might want to implement additional security
       if (pathname.startsWith('/admin')) {

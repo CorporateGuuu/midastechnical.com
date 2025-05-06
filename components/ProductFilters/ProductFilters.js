@@ -138,28 +138,7 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
 
   return (
     <div className={styles.productFilters}>
-      {/* Sort by (desktop) - Moved to the top */}
-      <div className={styles.sortByDesktop}>
-        <label htmlFor="sort-by">Sort By:</label>
-        <select
-          id="sort-by"
-          value={filters.sortBy}
-          onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-        >
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-          <option value="name-asc">Name: A to Z</option>
-          <option value="name-desc">Name: Z to A</option>
-          <option value="bestselling">Best Selling</option>
-          <option value="rating">Highest Rated</option>
-          <option value="discount">Biggest Discount</option>
-        </select>
-      </div>
-
-      {/* Mobile filter toggle */}
+      {/* Unified filter bar */}
       <div className={styles.mobileFilterToggle}>
         <button onClick={toggleMobileFilters}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -177,7 +156,9 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
         </button>
 
         <div className={styles.sortByMobile}>
+          <label htmlFor="sort-by-mobile" style={{ marginRight: '8px', fontSize: '0.875rem', color: '#4b5563' }}>Sort By:</label>
           <select
+            id="sort-by-mobile"
             value={filters.sortBy}
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
           >
@@ -193,6 +174,27 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
             <option value="discount">Biggest Discount</option>
           </select>
         </div>
+      </div>
+
+      {/* Hidden desktop sort (we're using the unified bar now) */}
+      <div className={styles.sortByDesktop} style={{ display: 'none' }}>
+        <label htmlFor="sort-by">Sort By:</label>
+        <select
+          id="sort-by"
+          value={filters.sortBy}
+          onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+        >
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+          <option value="bestselling">Best Selling</option>
+          <option value="rating">Highest Rated</option>
+          <option value="discount">Biggest Discount</option>
+        </select>
       </div>
 
       {/* Filter sidebar */}
@@ -225,15 +227,41 @@ const ProductFilters = ({ categories, brands, onFilterChange }) => {
             </div>
 
             {categories && categories.map((category) => (
-              <div key={category.id} className={styles.filterOption}>
-                <input
-                  type="radio"
-                  id={`category-${category.id}`}
-                  name="category"
-                  checked={filters.category === category.slug}
-                  onChange={() => handleFilterChange('category', category.slug)}
-                />
-                <label htmlFor={`category-${category.id}`}>{category.name}</label>
+              <div key={category.id} className={styles.categoryGroup}>
+                <div className={styles.filterOption}>
+                  <input
+                    type="radio"
+                    id={`category-${category.id}`}
+                    name="category"
+                    checked={filters.category === category.slug}
+                    onChange={() => handleFilterChange('category', category.slug)}
+                  />
+                  <label htmlFor={`category-${category.id}`}>{category.name}</label>
+                </div>
+
+                {/* Show subcategories if this category is selected */}
+                {filters.category === category.slug && category.subcategories && (
+                  <div className={styles.subcategories}>
+                    {category.subcategories.map((subcategory) => (
+                      <div key={subcategory.id} className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          id={`subcategory-${subcategory.id}`}
+                          name="subcategory"
+                          checked={query.subcategory === subcategory.slug}
+                          onChange={() => {
+                            const queryParams = { ...query, subcategory: subcategory.slug };
+                            router.push({
+                              pathname: router.pathname,
+                              query: queryParams
+                            }, undefined, { shallow: true });
+                          }}
+                        />
+                        <label htmlFor={`subcategory-${subcategory.id}`}>{subcategory.name}</label>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

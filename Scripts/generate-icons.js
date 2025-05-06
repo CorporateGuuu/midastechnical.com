@@ -32,12 +32,12 @@ sizes.forEach(size => {
   const svgPath = path.join(iconsDir, `icon-${size}x${size}.svg`);
   fs.writeFileSync(svgPath, createIconSVG(size));
   
-  console.log(`Created icon: ${svgPath}`);
+  // // // console.log(`Created icon: ${svgPath}`);
 });
 
 // Create badge icon
 const badgePath = path.join(iconsDir, `badge-${badgeSize}x${badgeSize}.svg`);
 fs.writeFileSync(badgePath, createIconSVG(badgeSize, '#dc2626'));
-console.log(`Created badge: ${badgePath}`);
+// // // console.log(`Created badge: ${badgePath}`);
 
-console.log('Icon generation complete!');
+// // // console.log('Icon generation complete!');

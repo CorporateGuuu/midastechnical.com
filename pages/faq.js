@@ -1,6 +1,7 @@
+import React from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 import { useState } from 'react';
 
 // Sample FAQ data
@@ -98,38 +99,37 @@ const faqData = [
 export default function FAQ() {
   const [activeCategory, setActiveCategory] = useState(1);
   const [openQuestions, setOpenQuestions] = useState({});
-  
+
   const toggleQuestion = (questionId) => {
     setOpenQuestions(prev => ({
       ...prev,
       [questionId]: !prev[questionId]
     }));
   };
-  
+
   return (
     <>
       <Head>
         <title>Frequently Asked Questions - Midas Technical Solutions</title>
         <meta name="description" content="Find answers to common questions about orders, shipping, returns, product compatibility, and technical support at Midas Technical Solutions." />
       </Head>
-      
-      <Header />
-      
-      <main>
+
+      <Layout title="Frequently Asked Questions - Midas Technical Solutions" description="Find answers to common questions about orders, shipping, returns, product compatibility, and technical support at Midas Technical Solutions.">
+
         <div className="container" style={{ padding: '40px 20px', maxWidth: '1000px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Frequently Asked Questions</h1>
-          
+
           <p style={{ marginBottom: '2rem', lineHeight: '1.6' }}>
-            Find answers to common questions about our products, ordering process, shipping, returns, and technical support. 
-            If you can't find the answer you're looking for, please <a href="/contact" style={{ color: '#0066cc' }}>contact us</a>.
+            Find answers to common questions about our products, ordering process, shipping, returns, and technical support.
+            If you can't find the answer you're looking for, please <Link href="/contact" style={{ color: '#0066cc' }}>contact us</Link>.
           </p>
-          
+
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
             {/* Category sidebar */}
             <div style={{ flex: '0 0 250px' }}>
-              <div style={{ 
-                backgroundColor: '#f8f9fa', 
-                padding: '1.5rem', 
+              <div style={{
+                backgroundColor: '#f8f9fa',
+                padding: '1.5rem',
                 borderRadius: '8px',
                 position: 'sticky',
                 top: '20px'
@@ -138,7 +138,7 @@ export default function FAQ() {
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                   {faqData.map(category => (
                     <li key={category.id} style={{ marginBottom: '0.75rem' }}>
-                      <button 
+                      <button
                         onClick={() => setActiveCategory(category.id)}
                         style={{
                           background: 'none',
@@ -160,13 +160,13 @@ export default function FAQ() {
                 </ul>
               </div>
             </div>
-            
+
             {/* FAQ content */}
             <div style={{ flex: '1 1 600px' }}>
               {faqData.find(cat => cat.id === activeCategory)?.questions.map((item, index) => (
-                <div 
-                  key={index} 
-                  style={{ 
+                <div
+                  key={index}
+                  style={{
                     marginBottom: '1rem',
                     border: '1px solid #eee',
                     borderRadius: '8px',
@@ -194,10 +194,10 @@ export default function FAQ() {
                       {openQuestions[`${activeCategory}-${index}`] ? '−' : '+'}
                     </span>
                   </button>
-                  
+
                   {openQuestions[`${activeCategory}-${index}`] && (
-                    <div style={{ 
-                      padding: '1rem', 
+                    <div style={{
+                      padding: '1rem',
                       backgroundColor: '#f9f9f9',
                       borderTop: '1px solid #eee',
                       lineHeight: '1.6'
@@ -209,11 +209,11 @@ export default function FAQ() {
               ))}
             </div>
           </div>
-          
-          <div style={{ 
-            marginTop: '3rem', 
-            padding: '1.5rem', 
-            backgroundColor: '#f0f7ff', 
+
+          <div style={{
+            marginTop: '3rem',
+            padding: '1.5rem',
+            backgroundColor: '#f0f7ff',
             borderRadius: '8px',
             textAlign: 'center'
           }}>
@@ -221,8 +221,8 @@ export default function FAQ() {
             <p style={{ marginBottom: '1.5rem' }}>
               Our customer support team is ready to help you with any questions or concerns.
             </p>
-            <a 
-              href="/contact" 
+            <Link
+              href="/contact"
               style={{
                 display: 'inline-block',
                 backgroundColor: '#0066cc',
@@ -234,12 +234,11 @@ export default function FAQ() {
               }}
             >
               Contact Us
-            </a>
+            </Link>
           </div>
         </div>
-      </main>
       
-      <Footer />
+</Layout>
     </>
   );
 }

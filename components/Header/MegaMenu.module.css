@@ -3,6 +3,7 @@
   border-bottom: 1px solid #e9ecef;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   display: none;
+  /* Hide the mega menu */
 }
 
 .megaMenu {
@@ -75,9 +76,9 @@
   color: #0066cc;
 }
 
-@media (min-width: 992px) {
+@media (max-width: 991px) {
   .megaMenuContainer {
-    display: block;
+    display: none;
   }
 }
 

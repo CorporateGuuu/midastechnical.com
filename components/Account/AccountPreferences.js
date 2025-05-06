@@ -79,6 +79,24 @@ const AccountPreferences = () => {
     });
   };
 
+  // Function to save preferences to localStorage
+  const savePreferencesToStorage = (prefs) => {
+    localStorage.setItem('userPreferences', JSON.stringify(prefs));
+  };
+
+  // Load preferences from localStorage on component mount
+  useEffect(() => {
+    const savedPreferences = localStorage.getItem('userPreferences');
+    if (savedPreferences) {
+      try {
+        const parsedPrefs = JSON.parse(savedPreferences);
+        setPreferences(parsedPrefs);
+      } catch (error) {
+        console.error('Error parsing saved preferences:', error);
+      }
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,9 +104,47 @@ const AccountPreferences = () => {
       setLoading(true);
       setError(null);
 
-      // In a real app, this would call an API to save preferences
+      // Save preferences to localStorage
+      savePreferencesToStorage(preferences);
+
+      // In a real app, this would also call an API to save preferences
       // Simulate API call with timeout
       await new Promise(resolve => setTimeout(resolve, 800));
+
+      // If email notifications are enabled, send test notifications
+      if (window.notificationCenter) {
+        if (preferences.emailNotifications.orderUpdates) {
+          window.notificationCenter.addNotification(
+            'Order Updates Enabled',
+            'You will now receive notifications about your order status and shipping updates.',
+            'success'
+          );
+        }
+
+        if (preferences.emailNotifications.promotions) {
+          window.notificationCenter.addNotification(
+            'Promotions Enabled',
+            'You will now receive notifications about special offers and discounts.',
+            'info'
+          );
+        }
+
+        if (preferences.emailNotifications.newProducts) {
+          window.notificationCenter.addNotification(
+            'New Product Announcements Enabled',
+            'You will now receive notifications when new products are added to our store.',
+            'info'
+          );
+        }
+
+        if (preferences.emailNotifications.blog) {
+          window.notificationCenter.addNotification(
+            'Blog Updates Enabled',
+            'You will now receive notifications about new blog posts and repair guides.',
+            'info'
+          );
+        }
+      }
 
       setSuccess(true);
 

@@ -28,7 +28,7 @@ async function initialize() {
     const config = configResult.rows[0];
     apiConfig = JSON.parse(config.settings);
     
-    console.log('WhatsApp connector initialized successfully');
+    // // // console.log('WhatsApp connector initialized successfully');
     return true;
   } catch (error) {
     console.error('Error initializing WhatsApp connector:', error);

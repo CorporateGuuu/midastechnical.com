@@ -4,46 +4,17 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  background-color: white;
 }
 
-.topBanner {
-  background-color: black;
-  color: white;
-  text-align: center;
-  padding: 8px 0;
-  font-size: 14px;
-}
-
-.topBanner a {
-  color: #4dabf7;
-  text-decoration: none;
-  margin-left: 5px;
-}
-
-.topBanner a:hover {
-  text-decoration: underline;
-}
-
-.mainHeader {
+/* Placeholder for the new header design */
+.headerPlaceholder {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
   background-color: white;
   border-bottom: 1px solid #e9ecef;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 20px;
-}
-
-.shippingCutoffContainer {
-  background-color: white;
-  padding: 10px 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .logo {

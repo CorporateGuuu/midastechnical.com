@@ -1,7 +1,6 @@
-import Head from 'next/head';
-import Header from '../../components/Header/Header';
+import React from 'react';
+import Layout from '../../components/Layout/Layout';
 import ProductList from '../../components/ProductList/ProductList';
-import Footer from '../../components/Footer/Footer';
 
 // Sample repair tools data
 const repairTools = [
@@ -58,29 +57,23 @@ const repairTools = [
   }
 ];
 
-export default function RepairTools() {
+function RepairTools() {
   return (
-    <>
-      <Head>
-        <title>Repair Tools - Midas Technical Solutions</title>
-        <meta name="description" content="Professional repair tools for electronics. Screwdriver sets, heat guns, soldering equipment, and more." />
-      </Head>
-      
-      <Header />
-      
-      <main>
-        <div className="container" style={{ padding: '40px 20px' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Repair Tools</h1>
-          <p style={{ marginBottom: '2rem' }}>
-            Find professional-grade tools for all your electronics repair needs. We offer precision screwdriver sets, 
-            heat guns, soldering equipment, and more to help you with your repairs.
-          </p>
-          
-          <ProductList products={repairTools} title="Professional Repair Tools" />
-        </div>
-      </main>
-      
-      <Footer />
-    </>
+    <Layout
+      title="Repair Tools - Midas Technical Solutions"
+      description="Professional repair tools for electronics. Screwdriver sets, heat guns, soldering equipment, and more."
+    >
+      <div className="container" style={{ padding: '40px 20px' }}>
+        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Repair Tools</h1>
+        <p style={{ marginBottom: '2rem' }}>
+          Find professional-grade tools for all your electronics repair needs. We offer precision screwdriver sets,
+          heat guns, soldering equipment, and more to help you with your repairs.
+        </p>
+
+        <ProductList products={repairTools} title="Professional Repair Tools" />
+      </div>
+    </Layout>
   );
 }
+
+export default React.memo(RepairTools);

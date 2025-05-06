@@ -1,7 +1,8 @@
+import React from 'react';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 
 const NotionContentPage = () => {
   const [content, setContent] = useState([]);
@@ -15,7 +16,7 @@ const NotionContentPage = () => {
       try {
         const response = await fetch(`/api/notion/content?type=${contentType}`);
         const data = await response.json();
-        
+
         if (data.success) {
           setContent(data.pages || []);
         } else {
@@ -39,12 +40,11 @@ const NotionContentPage = () => {
         <meta name="description" content="Content managed with Notion" />
       </Head>
 
-      <Header />
+      <Layout title="Notion Content | MDTS Tech" description="Content managed with Notion">
 
-      <main style={{ padding: '40px 20px', minHeight: 'calc(100vh - 200px)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Notion Content</h1>
-          
+
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
             <div style={{ display: 'flex', gap: '10px' }}>
               {['Blog', 'FAQ', 'Page'].map(type => (
@@ -65,12 +65,12 @@ const NotionContentPage = () => {
               ))}
             </div>
           </div>
-          
+
           {loading ? (
             <p style={{ textAlign: 'center' }}>Loading content...</p>
           ) : error ? (
-            <div style={{ 
-              textAlign: 'center', 
+            <div style={{
+              textAlign: 'center',
               color: '#e53e3e',
               padding: '20px',
               backgroundColor: '#fed7d7',
@@ -85,7 +85,7 @@ const NotionContentPage = () => {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
               {content.map(page => (
-                <div key={page.id} style={{ 
+                <div key={page.id} style={{
                   border: '1px solid #ddd',
                   borderRadius: '8px',
                   overflow: 'hidden',
@@ -93,8 +93,8 @@ const NotionContentPage = () => {
                 }}>
                   {page.featuredImage && (
                     <div style={{ height: '200px', overflow: 'hidden' }}>
-                      <img 
-                        src={page.featuredImage} 
+                      <img
+                        src={page.featuredImage}
                         alt={page.title}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
@@ -115,8 +115,8 @@ const NotionContentPage = () => {
                     {page.excerpt && (
                       <p style={{ marginBottom: '20px' }}>{page.excerpt}</p>
                     )}
-                    <a 
-                      href={`/notion-content/${page.id}`} 
+                    <a
+                      href={`/notion-content/${page.id}`}
                       style={{
                         display: 'inline-block',
                         padding: '8px 16px',
@@ -134,9 +134,8 @@ const NotionContentPage = () => {
             </div>
           )}
         </div>
-      </main>
-
-      <Footer />
+      
+</Layout>
     </div>
   );
 };

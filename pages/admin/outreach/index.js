@@ -1,15 +1,16 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import AdminLayout from '../../../components/Admin/AdminLayout';
-import { 
-  Box, 
-  Button, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
+import AdminLayout from '../../../components/AdminLayout';
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
   CardActions,
   Chip,
   TextField,
@@ -28,8 +29,8 @@ import {
   ListItemText,
   OutlinedInput
 } from '@mui/material';
-import { 
-  Add as AddIcon, 
+import {
+  Add as AddIcon,
   Search as SearchIcon,
   FilterList as FilterIcon,
   Email as EmailIcon,
@@ -75,48 +76,48 @@ export default function OutreachDashboard() {
     description: '',
     channels: []
   });
-  
+
   // Fetch campaigns on load and when filters change
   useEffect(() => {
     if (status === 'authenticated') {
       fetchCampaigns();
     }
   }, [status, page, search, statusFilter]);
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/signin?callbackUrl=/admin/outreach');
     }
   }, [status, router]);
-  
+
   // Fetch campaigns from API
   const fetchCampaigns = async () => {
     try {
       setLoading(true);
-      
+
       // Build query parameters
       const params = new URLSearchParams();
       params.append('page', page);
       params.append('limit', 12);
-      
+
       if (search) {
         params.append('search', search);
       }
-      
+
       if (statusFilter) {
         params.append('status', statusFilter);
       }
-      
+
       // Fetch campaigns
       const response = await fetch(`/api/outreach/campaigns?${params.toString()}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch campaigns');
       }
-      
+
       const data = await response.json();
-      
+
       setCampaigns(data.campaigns);
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
@@ -126,29 +127,29 @@ export default function OutreachDashboard() {
       setLoading(false);
     }
   };
-  
+
   // Handle page change
   const handlePageChange = (event, value) => {
     setPage(value);
   };
-  
+
   // Handle search
   const handleSearch = (event) => {
     setSearch(event.target.value);
     setPage(1); // Reset to first page when search changes
   };
-  
+
   // Handle status filter change
   const handleStatusFilterChange = (event) => {
     setStatusFilter(event.target.value);
     setPage(1); // Reset to first page when filter changes
   };
-  
+
   // Handle create dialog open
   const handleOpenCreateDialog = () => {
     setOpenCreateDialog(true);
   };
-  
+
   // Handle create dialog close
   const handleCloseCreateDialog = () => {
     setOpenCreateDialog(false);
@@ -158,7 +159,7 @@ export default function OutreachDashboard() {
       channels: []
     });
   };
-  
+
   // Handle new campaign input change
   const handleNewCampaignChange = (event) => {
     const { name, value } = event.target;
@@ -167,7 +168,7 @@ export default function OutreachDashboard() {
       [name]: value
     }));
   };
-  
+
   // Handle channels selection change
   const handleChannelsChange = (event) => {
     const { value } = event.target;
@@ -176,7 +177,7 @@ export default function OutreachDashboard() {
       channels: value
     }));
   };
-  
+
   // Handle create campaign
   const handleCreateCampaign = async () => {
     try {
@@ -185,7 +186,7 @@ export default function OutreachDashboard() {
         // TODO: Show validation error
         return;
       }
-      
+
       // Create campaign
       const response = await fetch('/api/outreach/campaigns', {
         method: 'POST',
@@ -194,17 +195,17 @@ export default function OutreachDashboard() {
         },
         body: JSON.stringify(newCampaign)
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to create campaign');
       }
-      
+
       const data = await response.json();
-      
+
       // Close dialog and refresh campaigns
       handleCloseCreateDialog();
       fetchCampaigns();
-      
+
       // Navigate to the new campaign
       router.push(`/admin/outreach/campaigns/${data.campaign.id}`);
     } catch (error) {
@@ -212,12 +213,12 @@ export default function OutreachDashboard() {
       // TODO: Show error notification
     }
   };
-  
+
   // Handle view campaign
   const handleViewCampaign = (campaignId) => {
     router.push(`/admin/outreach/campaigns/${campaignId}`);
   };
-  
+
   // Available channels
   const availableChannels = [
     { value: 'email', label: 'Email' },
@@ -227,7 +228,7 @@ export default function OutreachDashboard() {
     { value: 'instagram', label: 'Instagram' },
     { value: 'telegram', label: 'Telegram' }
   ];
-  
+
   return (
     <AdminLayout title="Outreach Dashboard">
       <Container maxWidth="xl">
@@ -250,7 +251,7 @@ export default function OutreachDashboard() {
             </Grid>
           </Grid>
         </Box>
-        
+
         <Box sx={{ mb: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -290,7 +291,7 @@ export default function OutreachDashboard() {
             </Grid>
           </Grid>
         </Box>
-        
+
         <Box sx={{ mb: 4 }}>
           <Grid container spacing={3}>
             {loading ? (
@@ -312,17 +313,17 @@ export default function OutreachDashboard() {
                         <Typography variant="h6" component="h2" noWrap>
                           {campaign.name}
                         </Typography>
-                        <Chip 
-                          label={campaign.status} 
-                          color={statusColors[campaign.status] || 'default'} 
-                          size="small" 
+                        <Chip
+                          label={campaign.status}
+                          color={statusColors[campaign.status] || 'default'}
+                          size="small"
                         />
                       </Box>
-                      
+
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 2, height: 40, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {campaign.description || 'No description'}
                       </Typography>
-                      
+
                       <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                         {campaign.channels && JSON.parse(campaign.channels).map(channel => (
                           <Chip
@@ -334,7 +335,7 @@ export default function OutreachDashboard() {
                           />
                         ))}
                       </Box>
-                      
+
                       <Grid container spacing={1}>
                         <Grid item xs={4}>
                           <Typography variant="caption" color="text.secondary">
@@ -363,8 +364,8 @@ export default function OutreachDashboard() {
                       </Grid>
                     </CardContent>
                     <CardActions>
-                      <Button 
-                        size="small" 
+                      <Button
+                        size="small"
                         onClick={() => handleViewCampaign(campaign.id)}
                       >
                         View Details
@@ -376,7 +377,7 @@ export default function OutreachDashboard() {
             )}
           </Grid>
         </Box>
-        
+
         {totalPages > 1 && (
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
             <Pagination
@@ -387,7 +388,7 @@ export default function OutreachDashboard() {
             />
           </Box>
         )}
-        
+
         {/* Create Campaign Dialog */}
         <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog} maxWidth="sm" fullWidth>
           <DialogTitle>Create New Campaign</DialogTitle>
@@ -402,7 +403,7 @@ export default function OutreachDashboard() {
                 margin="normal"
                 required
               />
-              
+
               <TextField
                 fullWidth
                 label="Description"
@@ -413,7 +414,7 @@ export default function OutreachDashboard() {
                 multiline
                 rows={3}
               />
-              
+
               <FormControl fullWidth margin="normal" required>
                 <InputLabel id="channels-label">Channels</InputLabel>
                 <Select
@@ -425,11 +426,11 @@ export default function OutreachDashboard() {
                   renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                       {selected.map((value) => (
-                        <Chip 
-                          key={value} 
-                          label={value} 
-                          icon={channelIcons[value]} 
-                          size="small" 
+                        <Chip
+                          key={value}
+                          label={value}
+                          icon={channelIcons[value]}
+                          size="small"
                         />
                       ))}
                     </Box>
@@ -447,9 +448,9 @@ export default function OutreachDashboard() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseCreateDialog}>Cancel</Button>
-            <Button 
-              onClick={handleCreateCampaign} 
-              variant="contained" 
+            <Button
+              onClick={handleCreateCampaign}
+              variant="contained"
               color="primary"
               disabled={!newCampaign.name || newCampaign.channels.length === 0}
             >

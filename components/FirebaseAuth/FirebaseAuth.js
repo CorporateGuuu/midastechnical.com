@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { signInWithEmail, signUpWithEmail, signOutUser } from '../../lib/firebase';
 import styles from './FirebaseAuth.module.css';

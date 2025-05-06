@@ -1,8 +1,9 @@
+import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Offline.module.css';
 
-export default function Offline() {
+function Offline() {
   return (
     <>
       <Head>
@@ -63,3 +64,5 @@ export default function Offline() {
     </>
   );
 }
+
+export default React.memo(Offline);

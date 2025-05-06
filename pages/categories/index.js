@@ -16,7 +16,7 @@ export default function Categories() {
       name: 'iPhone Parts',
       slug: 'iphone-parts',
       product_count: 124,
-      image_url: '/images/gapp/iphone-parts.png',
+      image_url: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
       description: 'Genuine Apple parts and high-quality replacements for all iPhone models'
     },
     {
@@ -24,7 +24,7 @@ export default function Categories() {
       name: 'Samsung Parts',
       slug: 'samsung-parts',
       product_count: 98,
-      image_url: '/images/gapp/samsung-parts.png',
+      image_url: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80',
       description: 'Premium quality replacement parts for all Samsung Galaxy models'
     },
     {
@@ -32,7 +32,7 @@ export default function Categories() {
       name: 'iPad Parts',
       slug: 'ipad-parts',
       product_count: 76,
-      image_url: '/images/gapp/ipad-parts.png',
+      image_url: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80',
       description: 'Genuine Apple parts and quality replacements for all iPad models'
     },
     {
@@ -40,7 +40,7 @@ export default function Categories() {
       name: 'MacBook Parts',
       slug: 'macbook-parts',
       product_count: 52,
-      image_url: '/images/gapp/macbook-parts.png',
+      image_url: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1026&q=80',
       description: 'High-quality replacement parts for all MacBook models'
     },
     {
@@ -48,7 +48,7 @@ export default function Categories() {
       name: 'Repair Tools',
       slug: 'repair-tools',
       product_count: 87,
-      image_url: '/images/gapp/repair-tools.png',
+      image_url: 'https://images.unsplash.com/photo-1581092921461-7031e8fbc6e5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
       description: 'Professional repair tools for all your device repair needs'
     }
   ];

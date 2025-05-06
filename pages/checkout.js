@@ -1,8 +1,11 @@
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import StripeCheckoutButton from '../components/StripeCheckoutButton';
+import CryptoCheckoutButton from '../components/CryptoCheckoutButton';
+import PayPalCheckoutButton from '../components/PayPalCheckoutButton';
 
 export default function Checkout() {
   const { data: session, status } = useSession();
@@ -12,6 +15,7 @@ export default function Checkout() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [taxRate, setTaxRate] = useState(0.0625); // 6.25% tax rate
 
   // Form state
   const [formData, setFormData] = useState({
@@ -123,25 +127,25 @@ export default function Checkout() {
         },
         billing_address: formData.same_as_shipping
           ? {
-              name: formData.shipping_name,
-              email: formData.shipping_email,
-              phone: formData.shipping_phone,
-              address: formData.shipping_address,
-              city: formData.shipping_city,
-              state: formData.shipping_state,
-              zip: formData.shipping_zip,
-              country: formData.shipping_country
-            }
+            name: formData.shipping_name,
+            email: formData.shipping_email,
+            phone: formData.shipping_phone,
+            address: formData.shipping_address,
+            city: formData.shipping_city,
+            state: formData.shipping_state,
+            zip: formData.shipping_zip,
+            country: formData.shipping_country
+          }
           : {
-              name: formData.billing_name,
-              email: formData.billing_email,
-              phone: formData.billing_phone,
-              address: formData.billing_address,
-              city: formData.billing_city,
-              state: formData.billing_state,
-              zip: formData.billing_zip,
-              country: formData.billing_country
-            },
+            name: formData.billing_name,
+            email: formData.billing_email,
+            phone: formData.billing_phone,
+            address: formData.billing_address,
+            city: formData.billing_city,
+            state: formData.billing_state,
+            zip: formData.billing_zip,
+            country: formData.billing_country
+          },
         payment_method: {
           type: formData.payment_method,
           card_number: formData.card_number ? formData.card_number.replace(/\s+/g, '') : null,
@@ -482,10 +486,37 @@ export default function Checkout() {
 
             <div className="form-section">
               <h2>Payment Information</h2>
-              <p>We use Stripe for secure payment processing. You will be redirected to Stripe to complete your payment.</p>
-              <div className="stripe-info">
-                <img src="/stripe-logo.svg" alt="Stripe" className="stripe-logo" />
-                <p>Your payment information is securely processed by Stripe. We never store your card details.</p>
+              <div className="payment-options">
+                <div className="payment-option">
+                  <h3>Credit Card Payment</h3>
+                  <p>We use Stripe for secure credit card processing. You will be redirected to Stripe to complete your payment.</p>
+                  <div className="stripe-info">
+                    <img src="/stripe-logo.svg" alt="Stripe" className="stripe-logo" />
+                    <p>Your payment information is securely processed by Stripe. We never store your card details.</p>
+                  </div>
+                </div>
+
+                <div className="payment-option">
+                  <h3>PayPal Payment</h3>
+                  <p>Pay securely with PayPal. You can use your PayPal balance, bank account, or credit card.</p>
+                  <div className="paypal-info">
+                    <img src="/images/payments/paypal.svg" alt="PayPal" className="paypal-logo" />
+                    <p>Fast, secure checkout with PayPal. No account required for credit card payments.</p>
+                  </div>
+                </div>
+
+                <div className="payment-option">
+                  <h3>Cryptocurrency Payment</h3>
+                  <p>We accept Bitcoin, Ethereum, and other cryptocurrencies. Select this option to pay with cryptocurrency.</p>
+                  <div className="crypto-info">
+                    <div className="crypto-icons">
+                      <img src="/images/crypto/bitcoin.svg" alt="Bitcoin" className="crypto-icon" />
+                      <img src="/images/crypto/ethereum.svg" alt="Ethereum" className="crypto-icon" />
+                      <img src="/images/crypto/usdt.svg" alt="Tether" className="crypto-icon" />
+                    </div>
+                    <p>Cryptocurrency payments are processed instantly. No account required.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -510,27 +541,81 @@ export default function Checkout() {
                 Back to Cart
               </Link>
 
-              <StripeCheckoutButton
-                shippingAddress={formData.same_as_shipping ? {
-                  name: formData.shipping_name,
-                  email: formData.shipping_email,
-                  phone: formData.shipping_phone,
-                  address: formData.shipping_address,
-                  city: formData.shipping_city,
-                  state: formData.shipping_state,
-                  zip: formData.shipping_zip,
-                  country: formData.shipping_country
-                } : {
-                  name: formData.billing_name,
-                  email: formData.billing_email,
-                  phone: formData.billing_phone,
-                  address: formData.billing_address,
-                  city: formData.billing_city,
-                  state: formData.billing_state,
-                  zip: formData.billing_zip,
-                  country: formData.billing_country
-                }}
-              />
+              <div className="payment-buttons">
+                <StripeCheckoutButton
+                  shippingAddress={formData.same_as_shipping ? {
+                    name: formData.shipping_name,
+                    email: formData.shipping_email,
+                    phone: formData.shipping_phone,
+                    address: formData.shipping_address,
+                    city: formData.shipping_city,
+                    state: formData.shipping_state,
+                    zip: formData.shipping_zip,
+                    country: formData.shipping_country
+                  } : {
+                    name: formData.billing_name,
+                    email: formData.billing_email,
+                    phone: formData.billing_phone,
+                    address: formData.billing_address,
+                    city: formData.billing_city,
+                    state: formData.billing_state,
+                    zip: formData.billing_zip,
+                    country: formData.billing_country
+                  }}
+                />
+
+                <PayPalCheckoutButton
+                  amount={cart.subtotal + (cart.subtotal * taxRate)}
+                  shippingAddress={formData.same_as_shipping ? {
+                    name: formData.shipping_name,
+                    email: formData.shipping_email,
+                    phone: formData.shipping_phone,
+                    address: formData.shipping_address,
+                    city: formData.shipping_city,
+                    state: formData.shipping_state,
+                    zip: formData.shipping_zip,
+                    country: formData.shipping_country
+                  } : {
+                    name: formData.billing_name,
+                    email: formData.billing_email,
+                    phone: formData.billing_phone,
+                    address: formData.billing_address,
+                    city: formData.billing_city,
+                    state: formData.billing_state,
+                    zip: formData.billing_zip,
+                    country: formData.billing_country
+                  }}
+                  onSuccess={(data) => {
+                    router.push(`/checkout/success?order_id=${data.orderNumber}`);
+                  }}
+                  onError={(error) => {
+                    setError(error.message || 'There was an error processing your PayPal payment');
+                  }}
+                />
+
+                <CryptoCheckoutButton
+                  shippingAddress={formData.same_as_shipping ? {
+                    name: formData.shipping_name,
+                    email: formData.shipping_email,
+                    phone: formData.shipping_phone,
+                    address: formData.shipping_address,
+                    city: formData.shipping_city,
+                    state: formData.shipping_state,
+                    zip: formData.shipping_zip,
+                    country: formData.shipping_country
+                  } : {
+                    name: formData.billing_name,
+                    email: formData.billing_email,
+                    phone: formData.billing_phone,
+                    address: formData.billing_address,
+                    city: formData.billing_city,
+                    state: formData.billing_state,
+                    zip: formData.billing_zip,
+                    country: formData.billing_country
+                  }}
+                  amount={cart.subtotal + (cart.subtotal * taxRate)}
+                />
+              </div>
             </div>
           </form>
         </div>
@@ -568,9 +653,14 @@ export default function Checkout() {
               <span>Free</span>
             </div>
 
+            <div className="summary-row">
+              <span>Tax ({(taxRate * 100).toFixed(2)}%):</span>
+              <span>${(cart.subtotal * taxRate).toFixed(2)}</span>
+            </div>
+
             <div className="summary-row total">
               <span>Total:</span>
-              <span>${cart.subtotal.toFixed(2)}</span>
+              <span>${(cart.subtotal + (cart.subtotal * taxRate)).toFixed(2)}</span>
             </div>
           </div>
         </div>

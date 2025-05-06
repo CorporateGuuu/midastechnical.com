@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: 'Product ID is required' });
     }
 
-    const { success, error } = await updateDocument('products', id, productData);
+    const { error } = await updateDocument('products', id, productData);
 
     if (error) {
       return res.status(500).json({ success: false, message: error });
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: 'Product ID is required' });
     }
 
-    const { success, error } = await deleteDocument('products', id);
+    const { error } = await deleteDocument('products', id);
 
     if (error) {
       return res.status(500).json({ success: false, message: error });

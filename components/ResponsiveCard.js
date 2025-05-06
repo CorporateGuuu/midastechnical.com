@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 
-export default function ResponsiveCard({ 
+function ResponsiveCard({ 
   product,
   imageHeight = 'auto',
   showCategory = true,
@@ -67,3 +68,5 @@ export default function ResponsiveCard({
     </div>
   );
 }
+
+export default React.memo(ResponsiveCard);

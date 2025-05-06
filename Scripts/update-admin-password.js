@@ -53,7 +53,7 @@ async function updateAdminPassword() {
     const checkResult = await client.query(checkQuery);
     
     if (checkResult.rows.length === 0) {
-      console.log('Admin user not found. Creating new admin user...');
+      // // // console.log('Admin user not found. Creating new admin user...');
       
       // Generate a secure password
       const password = generateSecurePassword();
@@ -69,10 +69,10 @@ async function updateAdminPassword() {
       `;
       await client.query(insertQuery, [hashedPassword]);
       
-      console.log('Admin user created successfully!');
-      console.log('Email: admin@mdtstech.store');
-      console.log('Password:', password);
-      console.log('\nPlease save these credentials in a secure location.');
+      // // // console.log('Admin user created successfully!');
+      // // // console.log('Email: admin@mdtstech.store');
+      // // // console.log('Password:', password);
+      // // // console.log('\nPlease save these credentials in a secure location.');
     } else {
       // Generate a secure password
       const password = generateSecurePassword();
@@ -86,10 +86,10 @@ async function updateAdminPassword() {
       `;
       await client.query(updateQuery, [hashedPassword]);
       
-      console.log('Admin password updated successfully!');
-      console.log('Email: admin@example.com');
-      console.log('New Password:', password);
-      console.log('\nPlease save these credentials in a secure location.');
+      // // // console.log('Admin password updated successfully!');
+      // // // console.log('Email: admin@example.com');
+      // // // console.log('New Password:', password);
+      // // // console.log('\nPlease save these credentials in a secure location.');
     }
     
     // Commit transaction

@@ -36,14 +36,14 @@ async function initialize() {
     if (apiConfig.useWebhook) {
       // Use webhook mode
       await bot.telegram.setWebhook(`${apiConfig.webhookUrl}/telegram-webhook`);
-      console.log('Telegram bot initialized in webhook mode');
+      // // // console.log('Telegram bot initialized in webhook mode');
     } else {
       // Use polling mode
       bot.launch();
-      console.log('Telegram bot initialized in polling mode');
+      // // // console.log('Telegram bot initialized in polling mode');
     }
     
-    console.log('Telegram connector initialized successfully');
+    // // // console.log('Telegram connector initialized successfully');
     return true;
   } catch (error) {
     console.error('Error initializing Telegram connector:', error);
@@ -230,7 +230,7 @@ async function stop() {
     } else {
       bot.stop();
     }
-    console.log('Telegram bot stopped');
+    // // // console.log('Telegram bot stopped');
   }
 }
 

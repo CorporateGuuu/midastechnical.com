@@ -8,4 +8,4 @@ Disallow: /login
 Disallow: /register
 Disallow: /logout
 
-Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://mdtstech.store/sitemap.xml

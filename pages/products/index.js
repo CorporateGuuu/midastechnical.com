@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Layout from '../../components/Layout/Layout';
 import ProductFilters from '../../components/ProductFilters/ProductFilters';
 import styles from '../../styles/ProductsPage.module.css';
 
@@ -18,13 +19,54 @@ export default function Products() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Mock categories and brands for filtering
+  // Categories for filtering - updated to match header structure
   const [categories, setCategories] = useState([
-    { id: 1, name: 'iPhone Parts', slug: 'iphone-parts' },
-    { id: 2, name: 'Samsung Parts', slug: 'samsung-parts' },
-    { id: 3, name: 'iPad Parts', slug: 'ipad-parts' },
-    { id: 4, name: 'MacBook Parts', slug: 'macbook-parts' },
-    { id: 5, name: 'Repair Tools', slug: 'repair-tools' }
+    {
+      id: 1, name: 'iPhone Parts', slug: 'iphone-parts', subcategories: [
+        { id: 101, name: 'iPhone 15 Series', slug: 'iphone-parts/iphone-15' },
+        { id: 102, name: 'iPhone 14 Series', slug: 'iphone-parts/iphone-14' },
+        { id: 103, name: 'iPhone 13 Series', slug: 'iphone-parts/iphone-13' },
+        { id: 104, name: 'iPhone 12 Series', slug: 'iphone-parts/iphone-12' },
+        { id: 105, name: 'Screens & LCDs', slug: 'iphone-parts/screens' },
+        { id: 106, name: 'Batteries', slug: 'iphone-parts/batteries' },
+        { id: 107, name: 'Charging Ports', slug: 'iphone-parts/charging-ports' },
+      ]
+    },
+    {
+      id: 2, name: 'Samsung Parts', slug: 'samsung-parts', subcategories: [
+        { id: 201, name: 'Galaxy S Series', slug: 'samsung-parts/galaxy-s' },
+        { id: 202, name: 'Galaxy Note Series', slug: 'samsung-parts/galaxy-note' },
+        { id: 203, name: 'Galaxy A Series', slug: 'samsung-parts/galaxy-a' },
+        { id: 204, name: 'Screens & LCDs', slug: 'samsung-parts/screens' },
+        { id: 205, name: 'Batteries', slug: 'samsung-parts/batteries' },
+      ]
+    },
+    {
+      id: 3, name: 'iPad Parts', slug: 'ipad-parts', subcategories: [
+        { id: 301, name: 'iPad Pro', slug: 'ipad-parts/ipad-pro' },
+        { id: 302, name: 'iPad Air', slug: 'ipad-parts/ipad-air' },
+        { id: 303, name: 'iPad Mini', slug: 'ipad-parts/ipad-mini' },
+        { id: 304, name: 'Screens & LCDs', slug: 'ipad-parts/screens' },
+      ]
+    },
+    {
+      id: 4, name: 'MacBook Parts', slug: 'macbook-parts', subcategories: [
+        { id: 401, name: 'MacBook Pro', slug: 'macbook-parts/macbook-pro' },
+        { id: 402, name: 'MacBook Air', slug: 'macbook-parts/macbook-air' },
+        { id: 403, name: 'Screens', slug: 'macbook-parts/screens' },
+        { id: 404, name: 'Keyboards', slug: 'macbook-parts/keyboards' },
+        { id: 405, name: 'Batteries', slug: 'macbook-parts/batteries' },
+      ]
+    },
+    {
+      id: 5, name: 'Repair Tools', slug: 'repair-tools', subcategories: [
+        { id: 501, name: 'Tool Kits', slug: 'repair-tools/tool-kits' },
+        { id: 502, name: 'Screwdrivers', slug: 'repair-tools/screwdrivers' },
+        { id: 503, name: 'Heat Guns', slug: 'repair-tools/heat-guns' },
+        { id: 504, name: 'Soldering Equipment', slug: 'repair-tools/soldering' },
+        { id: 505, name: 'Adhesives & Tapes', slug: 'repair-tools/adhesives' },
+      ]
+    }
   ]);
 
   const [brands, setBrands] = useState([
@@ -250,13 +292,11 @@ export default function Products() {
   };
 
   return (
-    <>
-      <Head>
-        <title>Products | MDTS - Midas Technical Solutions</title>
-        <meta name="description" content="Browse our extensive collection of repair parts and tools for all major device brands." />
-      </Head>
-
-      <div className="container">
+    <Layout
+      title="Products | MDTS - Midas Technical Solutions"
+      description="Browse our extensive collection of repair parts and tools for all major device brands."
+    >
+      <div className={`container ${styles.productsContainer}`}>
         <div className={styles.productsHeader}>
           <h1>Products</h1>
           <p>Browse our extensive collection of repair parts and tools</p>
@@ -414,6 +454,6 @@ export default function Products() {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

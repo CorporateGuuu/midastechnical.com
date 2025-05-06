@@ -1,8 +1,9 @@
+import React from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 
-export default function ShippingPolicy() {
+function ShippingPolicy() {
   return (
     <>
       <Head>
@@ -10,9 +11,8 @@ export default function ShippingPolicy() {
         <meta name="description" content="Learn about our shipping options, delivery times, and international shipping policies at Midas Technical Solutions." />
       </Head>
 
-      <Header />
+      <Layout title="Shipping Policy - Midas Technical Solutions" description="Learn about our shipping options, delivery times, and international shipping policies at Midas Technical Solutions.">
 
-      <main>
         <div className="container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Shipping Policy</h1>
 
@@ -34,7 +34,7 @@ export default function ShippingPolicy() {
                 <tr>
                   <td style={{ padding: '0.75rem', border: '1px solid #ddd' }}>Standard Shipping</td>
                   <td style={{ padding: '0.75rem', border: '1px solid #ddd' }}>3-5 business days</td>
-                  <td style={{ padding: '0.75rem', border: '1px solid #ddd' }}>$5.99 (Free on orders over $500)</td>
+                  <td style={{ padding: '0.75rem', border: '1px solid #ddd' }}>$5.99 (Free on orders over $1,000)</td>
                 </tr>
                 <tr>
                   <td style={{ padding: '0.75rem', border: '1px solid #ddd' }}>Expedited Shipping</td>
@@ -104,7 +104,7 @@ export default function ShippingPolicy() {
             </ul>
 
             <p style={{ marginTop: '1rem', lineHeight: '1.6' }}>
-              If you have questions about shipping restrictions to your location, please <a href="/contact" style={{ color: '#0066cc' }}>contact us</a> before placing your order.
+              If you have questions about shipping restrictions to your location, please <Link href="/contact" style={{ color: '#0066cc' }}>contact us</Link> before placing your order.
             </p>
           </section>
 
@@ -118,13 +118,14 @@ export default function ShippingPolicy() {
           <section>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Questions About Shipping?</h2>
             <p style={{ lineHeight: '1.6' }}>
-              If you have any questions about our shipping policies or need assistance with a specific order, please <a href="/contact" style={{ color: '#0066cc' }}>contact our customer service team</a>.
+              If you have any questions about our shipping policies or need assistance with a specific order, please <Link href="/contact" style={{ color: '#0066cc' }}>contact our customer service team</Link>.
             </p>
           </section>
         </div>
-      </main>
 
-      <Footer />
+      </Layout>
     </>
   );
 }
+
+export default React.memo(ShippingPolicy);

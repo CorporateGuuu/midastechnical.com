@@ -4,3 +4,6 @@ pandas==2.1.0
 sqlalchemy==2.0.20
 psycopg2-binary==2.9.7
 asyncio==3.4.3
+python-dotenv==1.0.0
+lxml==4.9.3
+requests==2.31.0

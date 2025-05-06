@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import styles from '../styles/CartPage.module.css';
+import Layout from '../components/Layout/Layout';
 
 export default function Cart() {
   const { data: session } = useSession();
@@ -128,6 +129,31 @@ export default function Cart() {
   const removeItem = async (itemId) => {
     try {
       setUpdating(true);
+
+      // For development, use a mock implementation
+      if (process.env.NODE_ENV === 'development') {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Update local state to remove the item
+        setCart(prevCart => {
+          const updatedItems = prevCart.items.filter(item => item.id !== itemId);
+          const updatedItemCount = updatedItems.reduce((count, item) => count + item.quantity, 0);
+          const updatedSubtotal = updatedItems.reduce((total, item) => total + item.total, 0);
+
+          return {
+            ...prevCart,
+            items: updatedItems,
+            item_count: updatedItemCount,
+            subtotal: updatedSubtotal
+          };
+        });
+
+        setUpdating(false);
+        return;
+      }
+
+      // For production, use the real API
       const response = await fetch('/api/cart', {
         method: 'DELETE',
         headers: {
@@ -163,6 +189,25 @@ export default function Cart() {
 
     try {
       setUpdating(true);
+
+      // For development, use a mock implementation
+      if (process.env.NODE_ENV === 'development') {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Update local state to clear cart
+        setCart(prevCart => ({
+          ...prevCart,
+          items: [],
+          item_count: 0,
+          subtotal: 0
+        }));
+
+        setUpdating(false);
+        return;
+      }
+
+      // For production, use the real API
       const response = await fetch('/api/cart/clear', {
         method: 'DELETE',
       });
@@ -198,20 +243,20 @@ export default function Cart() {
 
   if (loading) {
     return (
-      <>
+      <Layout title="Your Cart" description="View and manage your shopping cart">
         <div className="container">
           <div className="loading-container">
             <div className="loading-spinner"></div>
             <p>Loading your cart...</p>
           </div>
         </div>
-      </>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <>
+      <Layout title="Your Cart" description="View and manage your shopping cart">
         <div className="container">
           <h1>Your Cart</h1>
           <div className="error-message">
@@ -219,13 +264,13 @@ export default function Cart() {
             <button onClick={fetchCart} className="btn btn-primary">Try Again</button>
           </div>
         </div>
-      </>
+      </Layout>
     );
   }
 
   if (!cart || cart.items.length === 0) {
     return (
-      <>
+      <Layout title="Your Cart" description="View and manage your shopping cart">
         <div className="container">
           <h1>Your Cart</h1>
           <div className="empty-cart">
@@ -239,17 +284,17 @@ export default function Cart() {
             </Link>
           </div>
         </div>
-      </>
+      </Layout>
     );
   }
 
   return (
-    <>
+    <Layout title="Your Cart" description="View and manage your shopping cart">
       <div className="container">
         <h1>Your Cart</h1>
-        <div className="cart-container">
-          <div className="cart-items">
-            <table className="cart-table">
+        <div className={styles.cart_container}>
+          <div className={styles.cart_items}>
+            <table className={styles.cart_table}>
               <thead>
                 <tr>
                   <th>Product</th>
@@ -261,29 +306,29 @@ export default function Cart() {
               </thead>
               <tbody>
                 {cart.items.map((item) => (
-                  <tr key={item.id} className="cart-item">
-                    <td className="cart-item-product">
-                      <div className="cart-item-image">
+                  <tr key={item.id} className={styles.cart_item}>
+                    <td className={styles.cart_item_product}>
+                      <div className={styles.cart_item_image}>
                         <img src={item.image_url || "/images/products/0DA4ABBF-40A3-456A-8275-7A18F7831F17.JPG"} alt={item.name} />
                       </div>
-                      <div className="cart-item-details">
-                        <Link href={`/products/${item.slug}`} className="cart-item-name">
+                      <div className={styles.cart_item_details}>
+                        <Link href={`/products/${item.slug}`} className={styles.cart_item_name}>
                           {item.name}
                         </Link>
                       </div>
                     </td>
-                    <td className="cart-item-price">
+                    <td className={styles.cart_item_price}>
                       {item.discount_percentage > 0 ? (
                         <>
-                          <span className="original-price">${item.price.toFixed(2)}</span>
-                          <span className="discounted-price">${item.discounted_price.toFixed(2)}</span>
+                          <span className={styles.original_price}>${item.price.toFixed(2)}</span>
+                          <span className={styles.discounted_price}>${item.discounted_price.toFixed(2)}</span>
                         </>
                       ) : (
                         <span>${item.price.toFixed(2)}</span>
                       )}
                     </td>
-                    <td className="cart-item-quantity">
-                      <div className="quantity-control">
+                    <td className={styles.cart_item_quantity}>
+                      <div className={styles.quantity_control}>
                         <button
                           onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                           disabled={updating || item.quantity <= 1}
@@ -299,14 +344,14 @@ export default function Cart() {
                         </button>
                       </div>
                     </td>
-                    <td className="cart-item-total">
+                    <td className={styles.cart_item_total}>
                       ${item.total.toFixed(2)}
                     </td>
-                    <td className="cart-item-actions">
+                    <td className={styles.cart_item_actions}>
                       <button
                         onClick={() => removeItem(item.id)}
                         disabled={updating}
-                        className="remove-item-button"
+                        className={styles.remove_item_button}
                       >
                         Remove
                       </button>
@@ -316,7 +361,7 @@ export default function Cart() {
               </tbody>
             </table>
 
-            <div className="cart-actions">
+            <div className={styles.cart_actions}>
               <button
                 onClick={clearCart}
                 disabled={updating}
@@ -330,20 +375,20 @@ export default function Cart() {
             </div>
           </div>
 
-          <div className="cart-summary">
+          <div className={styles.cart_summary}>
             <h2>Order Summary</h2>
 
-            <div className="summary-row">
+            <div className={styles.summary_row}>
               <span>Items ({cart.item_count}):</span>
               <span>${cart.subtotal.toFixed(2)}</span>
             </div>
 
-            <div className="summary-row">
+            <div className={styles.summary_row}>
               <span>Shipping:</span>
               <span>Free</span>
             </div>
 
-            <div className="summary-row total">
+            <div className={`${styles.summary_row} ${styles.total}`}>
               <span>Total:</span>
               <span>${cart.subtotal.toFixed(2)}</span>
             </div>
@@ -351,13 +396,13 @@ export default function Cart() {
             <button
               onClick={proceedToCheckout}
               disabled={updating}
-              className="btn btn-primary checkout-button"
+              className="btn btn-primary checkout_button"
             >
               Proceed to Checkout
             </button>
 
             {!session && (
-              <div className="guest-checkout-notice">
+              <div className={styles.guest_checkout_notice}>
                 <p>
                   <Link href={`/auth/signin?callbackUrl=${encodeURIComponent('/cart')}`}>
                     Sign in
@@ -368,6 +413,6 @@ export default function Cart() {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

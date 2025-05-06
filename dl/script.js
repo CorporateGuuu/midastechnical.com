@@ -1,3 +1,4 @@
+import React from 'react';
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Handle the "Learn More" button click

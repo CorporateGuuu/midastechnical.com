@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import { useState } from 'react';
 import LazyImage from '../LazyImage/LazyImage';
@@ -152,12 +153,7 @@ const ProductCard = ({ product }) => {
         <div className={styles.productPrice}>
           {product.price !== undefined && product.price !== null ? (
             product.discount_percentage > 0 ? (
-              <>
-                <span className={styles.originalPrice}>
-                  ${(product.price / (1 - product.discount_percentage / 100)).toFixed(2)}
-                </span>
-                <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
-              </>
+              <span className={styles.currentPrice}>${product.price.toFixed(2)}</span>
             ) : (
               <span className={styles.currentPrice}>${parseFloat(product.price || 0).toFixed(2)}</span>
             )

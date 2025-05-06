@@ -5,6 +5,17 @@ import bcrypt from 'bcrypt';
 import { query } from '../../../lib/db';
 import { getUserTwoFactorSettings } from '../../../lib/2fa';
 
+// Mock user for development
+const MOCK_USER = {
+  id: '1',
+  name: 'Demo User',
+  email: 'demo@example.com',
+  image: '/images/avatar-placeholder.png',
+  first_name: 'Demo',
+  last_name: 'User',
+  email_verified: true
+};
+
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -15,7 +26,18 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          // Find user by email
+          // For development, allow any credentials to work with the mock user
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Using mock user for development');
+            return {
+              id: MOCK_USER.id,
+              name: MOCK_USER.name,
+              email: MOCK_USER.email,
+              image: MOCK_USER.image
+            };
+          }
+
+          // Production code - find user by email
           const result = await query(
             'SELECT * FROM users WHERE email = $1',
             [credentials.email]
@@ -63,6 +85,18 @@ export const authOptions = {
           };
         } catch (error) {
           console.error('Authentication error:', error);
+
+          // For development, return mock user even if there's an error
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Using mock user due to authentication error');
+            return {
+              id: MOCK_USER.id,
+              name: MOCK_USER.name,
+              email: MOCK_USER.email,
+              image: MOCK_USER.image
+            };
+          }
+
           return null;
         }
       }
@@ -79,6 +113,17 @@ export const authOptions = {
         try {
           if (!credentials.userId || credentials.twoFactorVerified !== 'true') {
             return null;
+          }
+
+          // For development, use mock user
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Using mock user for 2FA completion');
+            return {
+              id: MOCK_USER.id,
+              name: MOCK_USER.name,
+              email: MOCK_USER.email,
+              image: MOCK_USER.image
+            };
           }
 
           // Get user by ID
@@ -102,6 +147,18 @@ export const authOptions = {
           };
         } catch (error) {
           console.error('2FA completion error:', error);
+
+          // For development, return mock user even if there's an error
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Using mock user due to 2FA completion error');
+            return {
+              id: MOCK_USER.id,
+              name: MOCK_USER.name,
+              email: MOCK_USER.email,
+              image: MOCK_USER.image
+            };
+          }
+
           return null;
         }
       }
@@ -163,6 +220,12 @@ export const authOptions = {
   },
   adapter: {
     async createUser(user) {
+      // For development, return mock user
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Using mock user for createUser');
+        return MOCK_USER;
+      }
+
       const { name, email, image } = user;
 
       // Split name into first_name and last_name if provided
@@ -175,63 +238,137 @@ export const authOptions = {
         lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
       }
 
-      const result = await query(
-        'INSERT INTO users (first_name, last_name, email, image) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email, image',
-        [firstName, lastName, email, image]
-      );
+      try {
+        const result = await query(
+          'INSERT INTO users (first_name, last_name, email, image) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email, image',
+          [firstName, lastName, email, image]
+        );
 
-      const newUser = result.rows[0];
-      return {
-        ...newUser,
-        name: `${newUser.first_name || ''} ${newUser.last_name || ''}`.trim() || email.split('@')[0]
-      };
+        const newUser = result.rows[0];
+        return {
+          ...newUser,
+          name: `${newUser.first_name || ''} ${newUser.last_name || ''}`.trim() || email.split('@')[0]
+        };
+      } catch (error) {
+        console.error('Error creating user:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return MOCK_USER;
+        }
+        throw error;
+      }
     },
+
     async getUser(id) {
-      const result = await query(
-        'SELECT id, first_name, last_name, email, email_verified, image FROM users WHERE id = $1',
-        [id]
-      );
+      // For development, return mock user if ID matches
+      if (process.env.NODE_ENV === 'development' && id === MOCK_USER.id) {
+        console.log('Using mock user for getUser');
+        return MOCK_USER;
+      }
 
-      if (!result.rows[0]) return null;
+      try {
+        const result = await query(
+          'SELECT id, first_name, last_name, email, email_verified, image FROM users WHERE id = $1',
+          [id]
+        );
 
-      const user = result.rows[0];
-      return {
-        ...user,
-        name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
-      };
+        if (!result.rows[0]) {
+          if (process.env.NODE_ENV === 'development') {
+            return MOCK_USER;
+          }
+          return null;
+        }
+
+        const user = result.rows[0];
+        return {
+          ...user,
+          name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
+        };
+      } catch (error) {
+        console.error('Error getting user:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return MOCK_USER;
+        }
+        return null;
+      }
     },
+
     async getUserByEmail(email) {
-      const result = await query(
-        'SELECT id, first_name, last_name, email, email_verified, image FROM users WHERE email = $1',
-        [email]
-      );
+      // For development, return mock user if email matches
+      if (process.env.NODE_ENV === 'development' &&
+        (email === MOCK_USER.email || email === 'demo@example.com' || email === 'test@example.com')) {
+        console.log('Using mock user for getUserByEmail');
+        return MOCK_USER;
+      }
 
-      if (!result.rows[0]) return null;
+      try {
+        const result = await query(
+          'SELECT id, first_name, last_name, email, email_verified, image FROM users WHERE email = $1',
+          [email]
+        );
 
-      const user = result.rows[0];
-      return {
-        ...user,
-        name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
-      };
+        if (!result.rows[0]) {
+          if (process.env.NODE_ENV === 'development') {
+            return MOCK_USER;
+          }
+          return null;
+        }
+
+        const user = result.rows[0];
+        return {
+          ...user,
+          name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
+        };
+      } catch (error) {
+        console.error('Error getting user by email:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return MOCK_USER;
+        }
+        return null;
+      }
     },
+
     async getUserByAccount({ provider, providerAccountId }) {
-      const result = await query(
-        `SELECT u.id, u.first_name, u.last_name, u.email, u.email_verified, u.image
-         FROM users u
-         JOIN accounts a ON u.id = a.user_id
-         WHERE a.provider_id = $1 AND a.provider_account_id = $2`,
-        [provider, providerAccountId]
-      );
+      // For development, return mock user
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Using mock user for getUserByAccount');
+        return MOCK_USER;
+      }
 
-      if (!result.rows[0]) return null;
+      try {
+        const result = await query(
+          `SELECT u.id, u.first_name, u.last_name, u.email, u.email_verified, u.image
+           FROM users u
+           JOIN accounts a ON u.id = a.user_id
+           WHERE a.provider_id = $1 AND a.provider_account_id = $2`,
+          [provider, providerAccountId]
+        );
 
-      const user = result.rows[0];
-      return {
-        ...user,
-        name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
-      };
+        if (!result.rows[0]) return null;
+
+        const user = result.rows[0];
+        return {
+          ...user,
+          name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
+        };
+      } catch (error) {
+        console.error('Error getting user by account:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return MOCK_USER;
+        }
+        return null;
+      }
     },
+
     async updateUser(user) {
+      // For development, return mock user
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Using mock user for updateUser');
+        return {
+          ...MOCK_USER,
+          ...user,
+        };
+      }
+
       const { id, name, email, image } = user;
 
       // Split name into first_name and last_name if provided
@@ -244,82 +381,179 @@ export const authOptions = {
         lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
       }
 
-      const result = await query(
-        'UPDATE users SET first_name = $1, last_name = $2, email = $3, image = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING id, first_name, last_name, email, image',
-        [firstName, lastName, email, image, id]
-      );
+      try {
+        const result = await query(
+          'UPDATE users SET first_name = $1, last_name = $2, email = $3, image = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING id, first_name, last_name, email, image',
+          [firstName, lastName, email, image, id]
+        );
 
-      const updatedUser = result.rows[0];
-      return {
-        ...updatedUser,
-        name: `${updatedUser.first_name || ''} ${updatedUser.last_name || ''}`.trim() || email.split('@')[0]
-      };
+        const updatedUser = result.rows[0];
+        return {
+          ...updatedUser,
+          name: `${updatedUser.first_name || ''} ${updatedUser.last_name || ''}`.trim() || email.split('@')[0]
+        };
+      } catch (error) {
+        console.error('Error updating user:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return {
+            ...MOCK_USER,
+            ...user,
+          };
+        }
+        throw error;
+      }
     },
+
     async linkAccount(account) {
-      const { userId, provider, type, providerAccountId, access_token, refresh_token, expires_at } = account;
-
-      await query(
-        `INSERT INTO accounts (user_id, provider_type, provider_id, provider_account_id, access_token, refresh_token, access_token_expires)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [userId, type, provider, providerAccountId, access_token, refresh_token, expires_at ? new Date(expires_at * 1000) : null]
-      );
-
-      return account;
-    },
-    async createSession(session) {
-      await query(
-        'INSERT INTO sessions (user_id, expires, session_token, access_token) VALUES ($1, $2, $3, $4)',
-        [session.userId, session.expires, session.sessionToken, session.accessToken]
-      );
-
-      return session;
-    },
-    async getSessionAndUser(sessionToken) {
-      const sessionResult = await query(
-        'SELECT * FROM sessions WHERE session_token = $1',
-        [sessionToken]
-      );
-
-      const session = sessionResult.rows[0];
-
-      if (!session) {
-        return null;
+      // For development, just return the account
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Mock linkAccount for development');
+        return account;
       }
 
-      const userResult = await query(
-        'SELECT id, first_name, last_name, email, email_verified, image FROM users WHERE id = $1',
-        [session.user_id]
-      );
+      try {
+        const { userId, provider, type, providerAccountId, access_token, refresh_token, expires_at } = account;
 
-      const userData = userResult.rows[0];
+        await query(
+          `INSERT INTO accounts (user_id, provider_type, provider_id, provider_account_id, access_token, refresh_token, access_token_expires)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [userId, type, provider, providerAccountId, access_token, refresh_token, expires_at ? new Date(expires_at * 1000) : null]
+        );
 
-      if (!userData) return null;
-
-      const user = {
-        ...userData,
-        name: `${userData.first_name || ''} ${userData.last_name || ''}`.trim() || userData.email.split('@')[0]
-      };
-
-      return {
-        session,
-        user
-      };
+        return account;
+      } catch (error) {
+        console.error('Error linking account:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return account;
+        }
+        throw error;
+      }
     },
+
+    async createSession(session) {
+      // For development, just return the session
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Mock createSession for development');
+        return session;
+      }
+
+      try {
+        await query(
+          'INSERT INTO sessions (user_id, expires, session_token, access_token) VALUES ($1, $2, $3, $4)',
+          [session.userId, session.expires, session.sessionToken, session.accessToken]
+        );
+
+        return session;
+      } catch (error) {
+        console.error('Error creating session:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return session;
+        }
+        throw error;
+      }
+    },
+
+    async getSessionAndUser(sessionToken) {
+      // For development, create a mock session
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Using mock session for development');
+        return {
+          session: {
+            sessionToken,
+            userId: MOCK_USER.id,
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
+          },
+          user: MOCK_USER
+        };
+      }
+
+      try {
+        const sessionResult = await query(
+          'SELECT * FROM sessions WHERE session_token = $1',
+          [sessionToken]
+        );
+
+        const session = sessionResult.rows[0];
+
+        if (!session) {
+          return null;
+        }
+
+        const userResult = await query(
+          'SELECT id, first_name, last_name, email, email_verified, image FROM users WHERE id = $1',
+          [session.user_id]
+        );
+
+        const userData = userResult.rows[0];
+
+        if (!userData) return null;
+
+        const user = {
+          ...userData,
+          name: `${userData.first_name || ''} ${userData.last_name || ''}`.trim() || userData.email.split('@')[0]
+        };
+
+        return {
+          session,
+          user
+        };
+      } catch (error) {
+        console.error('Error getting session and user:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return {
+            session: {
+              sessionToken,
+              userId: MOCK_USER.id,
+              expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
+            },
+            user: MOCK_USER
+          };
+        }
+        return null;
+      }
+    },
+
     async updateSession(session) {
-      const { sessionToken, expires, userId } = session;
+      // For development, just return the session
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Mock updateSession for development');
+        return session;
+      }
 
-      await query(
-        'UPDATE sessions SET expires = $1, user_id = $2 WHERE session_token = $3',
-        [expires, userId, sessionToken]
-      );
+      try {
+        const { sessionToken, expires, userId } = session;
 
-      return session;
+        await query(
+          'UPDATE sessions SET expires = $1, user_id = $2 WHERE session_token = $3',
+          [expires, userId, sessionToken]
+        );
+
+        return session;
+      } catch (error) {
+        console.error('Error updating session:', error);
+        if (process.env.NODE_ENV === 'development') {
+          return session;
+        }
+        throw error;
+      }
     },
+
     async deleteSession(sessionToken) {
-      await query(
-        'DELETE FROM sessions WHERE session_token = $1',
-        [sessionToken]
-      );
+      // For development, just log
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Mock deleteSession for development');
+        return;
+      }
+
+      try {
+        await query(
+          'DELETE FROM sessions WHERE session_token = $1',
+          [sessionToken]
+        );
+      } catch (error) {
+        console.error('Error deleting session:', error);
+        // Don't throw for delete operations
+      }
     },
   },
   session: {

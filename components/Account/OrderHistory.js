@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from '../../styles/Account.module.css';
@@ -12,10 +14,10 @@ const OrderHistory = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        
+
         // Simulate API call with timeout
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         // Mock order data
         const mockOrders = [
           {
@@ -85,7 +87,7 @@ const OrderHistory = () => {
             ]
           }
         ];
-        
+
         setOrders(mockOrders);
       } catch (err) {
         console.error('Error fetching orders:', err);
@@ -94,7 +96,7 @@ const OrderHistory = () => {
         setLoading(false);
       }
     };
-    
+
     fetchOrders();
   }, []);
 
@@ -167,7 +169,7 @@ const OrderHistory = () => {
     <div>
       <h2>Order History</h2>
       <p>View and track your orders</p>
-      
+
       <div className={styles.ordersList}>
         {orders.map(order => (
           <div key={order.id} className={styles.orderCard}>
@@ -176,21 +178,21 @@ const OrderHistory = () => {
                 <span className={styles.orderNumber}>{order.id}</span>
                 <div className={styles.orderDate}>{formatDate(order.date)}</div>
               </div>
-              
+
               <div className={`${styles.orderStatus} ${getStatusClass(order.status)}`}>
                 {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
               </div>
             </div>
-            
+
             <div className={styles.orderItems}>
               {order.items.map(item => (
                 <div key={item.id} className={styles.orderItem}>
-                  <img 
-                    src={item.image || '/images/placeholder.svg'} 
+                  <img
+                    src={item.image || '/images/placeholder.svg'}
                     alt={item.name}
                     className={styles.orderItemImage}
                   />
-                  
+
                   <div className={styles.orderItemDetails}>
                     <div className={styles.orderItemName}>{item.name}</div>
                     <div className={styles.orderItemPrice}>${item.price.toFixed(2)}</div>
@@ -199,21 +201,21 @@ const OrderHistory = () => {
                 </div>
               ))}
             </div>
-            
+
             <div className={styles.orderFooter}>
               <div className={styles.orderTotal}>
                 Total: ${order.total.toFixed(2)}
               </div>
-              
+
               <div className={styles.orderActions}>
-                <button className={`${styles.orderButton} ${styles.viewOrderButton}`}>
+                <Link href={`/orders/${order.id}`} className={`${styles.orderButton} ${styles.viewOrderButton}`}>
                   View Order Details
-                </button>
-                
+                </Link>
+
                 {(order.status === 'shipped' || order.status === 'processing') && (
-                  <button className={`${styles.orderButton} ${styles.trackOrderButton}`}>
+                  <Link href={`/orders/track/${order.id}`} className={`${styles.orderButton} ${styles.trackOrderButton}`}>
                     Track Order
-                  </button>
+                  </Link>
                 )}
               </div>
             </div>

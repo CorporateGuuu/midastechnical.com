@@ -1,8 +1,8 @@
+import React from 'react';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 
-export default function TermsConditions() {
+function TermsConditions() {
   return (
     <>
       <Head>
@@ -10,9 +10,8 @@ export default function TermsConditions() {
         <meta name="description" content="Read the terms and conditions governing the use of Midas Technical Solutions website and services." />
       </Head>
       
-      <Header />
-      
-      <main>
+      <Layout title="Terms & Conditions - Midas Technical Solutions" description="Read the terms and conditions governing the use of Midas Technical Solutions website and services.">
+
         <div className="container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Terms & Conditions</h1>
           <p style={{ marginBottom: '1.5rem', lineHeight: '1.6' }}>
@@ -167,9 +166,10 @@ export default function TermsConditions() {
             </p>
           </section>
         </div>
-      </main>
       
-      <Footer />
+</Layout>
     </>
   );
 }
+
+export default React.memo(TermsConditions);

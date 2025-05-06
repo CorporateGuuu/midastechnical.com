@@ -28,7 +28,7 @@ async function initialize() {
     const config = configResult.rows[0];
     apiConfig = JSON.parse(config.settings);
     
-    console.log('Facebook connector initialized successfully');
+    // // // console.log('Facebook connector initialized successfully');
     return true;
   } catch (error) {
     console.error('Error initializing Facebook connector:', error);
@@ -214,7 +214,7 @@ async function refreshAccessTokenIfNeeded() {
     const tokenExpiresAt = apiConfig.tokenExpiresAt || 0;
     
     if (now >= tokenExpiresAt - 300000) { // Refresh if less than 5 minutes left
-      console.log('Facebook access token expired or about to expire, refreshing...');
+      // // // console.log('Facebook access token expired or about to expire, refreshing...');
       
       // Refresh token
       const response = await axios.get(
@@ -237,7 +237,7 @@ async function refreshAccessTokenIfNeeded() {
       // Update in database
       await updateConfigInDatabase();
       
-      console.log('Facebook access token refreshed successfully');
+      // // // console.log('Facebook access token refreshed successfully');
     }
   } catch (error) {
     console.error('Error refreshing Facebook access token:', error);

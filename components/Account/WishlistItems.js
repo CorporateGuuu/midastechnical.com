@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SocialShare from '../SocialShare/SocialShare';

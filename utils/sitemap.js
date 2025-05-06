@@ -72,7 +72,7 @@ async function generateSitemap(baseUrl) {
     const sitemapPath = path.join(__dirname, '../public/sitemap.xml');
     fs.writeFileSync(sitemapPath, xml);
     
-    console.log(`Sitemap generated at ${sitemapPath}`);
+    // // // console.log(`Sitemap generated at ${sitemapPath}`);
     return true;
   } catch (error) {
     console.error('Error generating sitemap:', error);

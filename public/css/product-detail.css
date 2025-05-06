@@ -2,6 +2,7 @@
 
 .product-detail-container {
   margin-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-2xl);
 }
 
 .breadcrumbs {
@@ -214,7 +215,7 @@
   .main-image {
     height: 400px;
   }
-  
+
   .specs-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -224,15 +225,15 @@
   .product-details {
     flex-direction: row;
   }
-  
+
   .product-gallery {
     width: 50%;
   }
-  
+
   .product-info {
     width: 50%;
   }
-  
+
   .main-image {
     height: 450px;
   }
@@ -242,15 +243,15 @@
   .product-gallery {
     width: 60%;
   }
-  
+
   .product-info {
     width: 40%;
   }
-  
+
   .main-image {
     height: 500px;
   }
-  
+
   .specs-grid {
     grid-template-columns: repeat(2, 1fr);
   }

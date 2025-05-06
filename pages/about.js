@@ -1,8 +1,8 @@
+import React from 'react';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 
-export default function AboutUs() {
+function AboutUs() {
   return (
     <>
       <Head>
@@ -10,9 +10,8 @@ export default function AboutUs() {
         <meta name="description" content="Learn about Midas Technical Solutions, your trusted partner for professional repair parts and tools." />
       </Head>
       
-      <Header />
-      
-      <main>
+      <Layout title="About Us - Midas Technical Solutions" description="Learn about Midas Technical Solutions, your trusted partner for professional repair parts and tools.">
+
         <div className="container" style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>About Midas Technical Solutions</h1>
           
@@ -65,9 +64,10 @@ export default function AboutUs() {
             </p>
           </section>
         </div>
-      </main>
       
-      <Footer />
+</Layout>
     </>
   );
 }
+
+export default React.memo(AboutUs);

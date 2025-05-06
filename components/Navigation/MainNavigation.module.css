@@ -3,8 +3,9 @@
   top: 0;
   z-index: 100;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .scrolled {
@@ -17,13 +18,13 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.5rem;
 }
 
 .navLeft {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .navLogo {
@@ -33,32 +34,34 @@
 }
 
 .logoText {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #0066cc;
+  color: #0052a3;
+  /* Slightly darker blue for better contrast */
 }
 
 .navLinks {
   display: flex;
-  gap: 1.5rem;
+  gap: 2.5rem;
 }
 
 .navLink {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   color: #333;
   text-decoration: none;
   padding: 0.5rem 0;
   position: relative;
   transition: color 0.3s ease;
+  letter-spacing: 0.02em;
 }
 
 .navLink:hover {
-  color: #0066cc;
+  color: #0052a3;
 }
 
 .navLink.active {
-  color: #0066cc;
+  color: #0052a3;
 }
 
 .navLink.active::after {
@@ -68,7 +71,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #0066cc;
+  background-color: #0052a3;
 }
 
 .navRight {
@@ -80,16 +83,18 @@
 .searchBar {
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  padding: 0.5rem;
-  width: 300px;
+  background-color: #f7f9fc;
+  border-radius: 20px;
+  padding: 0.6rem 1rem;
+  width: 320px;
   transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
 }
 
 .searchBar:focus-within {
   background-color: #fff;
-  box-shadow: 0 0 0 2px #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 82, 163, 0.3);
+  border-color: #0052a3;
 }
 
 .searchInput {
@@ -97,8 +102,14 @@
   border: none;
   background: none;
   outline: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #333;
+  padding-right: 0.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.searchInput::placeholder {
+  color: #6b7280;
 }
 
 .searchButton {
@@ -107,13 +118,14 @@
   justify-content: center;
   background: none;
   border: none;
-  color: #666;
+  color: #0052a3;
   cursor: pointer;
   transition: color 0.3s ease;
+  padding: 0.25rem;
 }
 
 .searchButton:hover {
-  color: #0066cc;
+  color: #003d7a;
 }
 
 .headerWhatsApp {
@@ -137,7 +149,7 @@
 
 .navActions {
   display: flex;
-  gap: 1rem;
+  gap: 1.75rem;
 }
 
 .navAction {
@@ -147,14 +159,15 @@
   text-decoration: none;
   color: #333;
   transition: color 0.3s ease;
+  padding: 0.25rem;
 }
 
 .navAction:hover {
-  color: #0066cc;
+  color: #0052a3;
 }
 
 .navAction.active {
-  color: #0066cc;
+  color: #0052a3;
 }
 
 .navActionText {

@@ -1,14 +1,15 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import AdminLayout from '../../../../components/Admin/AdminLayout';
-import { 
-  Box, 
-  Button, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
+import AdminLayout from '../../../../components/AdminLayout';
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Grid,
+  Card,
   CardContent,
   Chip,
   Tabs,
@@ -36,7 +37,7 @@ import {
   TableRow,
   TablePagination
 } from '@mui/material';
-import { 
+import {
   MoreVert as MoreVertIcon,
   PlayArrow as PlayIcon,
   Pause as PauseIcon,
@@ -78,7 +79,7 @@ export default function CampaignDetails() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  
+
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
@@ -102,7 +103,7 @@ export default function CampaignDetails() {
   const [recipientsPage, setRecipientsPage] = useState(0);
   const [recipientsRowsPerPage, setRecipientsRowsPerPage] = useState(10);
   const [recipientsTotalCount, setRecipientsTotalCount] = useState(0);
-  
+
   // Fetch campaign on load
   useEffect(() => {
     if (status === 'authenticated' && id) {
@@ -110,25 +111,25 @@ export default function CampaignDetails() {
       fetchRecipients();
     }
   }, [status, id]);
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/signin?callbackUrl=/admin/outreach');
     }
   }, [status, router]);
-  
+
   // Fetch campaign from API
   const fetchCampaign = async () => {
     try {
       setLoading(true);
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch campaign');
       }
-      
+
       const data = await response.json();
       setCampaign(data);
     } catch (error) {
@@ -138,20 +139,20 @@ export default function CampaignDetails() {
       setLoading(false);
     }
   };
-  
+
   // Fetch campaign recipients
   const fetchRecipients = async () => {
     try {
       const params = new URLSearchParams();
       params.append('page', recipientsPage + 1);
       params.append('limit', recipientsRowsPerPage);
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}/recipients?${params.toString()}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch recipients');
       }
-      
+
       const data = await response.json();
       setRecipients(data.recipients);
       setRecipientsTotalCount(data.pagination.totalCount);
@@ -160,33 +161,33 @@ export default function CampaignDetails() {
       // TODO: Show error notification
     }
   };
-  
+
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
-  
+
   // Handle menu open
   const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
-  
+
   // Handle menu close
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
   };
-  
+
   // Handle schedule dialog open
   const handleOpenScheduleDialog = () => {
     handleMenuClose();
     setOpenScheduleDialog(true);
   };
-  
+
   // Handle schedule dialog close
   const handleCloseScheduleDialog = () => {
     setOpenScheduleDialog(false);
   };
-  
+
   // Handle message dialog open
   const handleOpenMessageDialog = (channel = '') => {
     setMessageData({
@@ -196,23 +197,23 @@ export default function CampaignDetails() {
     });
     setOpenMessageDialog(true);
   };
-  
+
   // Handle message dialog close
   const handleCloseMessageDialog = () => {
     setOpenMessageDialog(false);
   };
-  
+
   // Handle delete dialog open
   const handleOpenDeleteDialog = () => {
     handleMenuClose();
     setOpenDeleteDialog(true);
   };
-  
+
   // Handle delete dialog close
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  
+
   // Handle schedule options change
   const handleScheduleOptionsChange = (event) => {
     const { name, value } = event.target;
@@ -221,7 +222,7 @@ export default function CampaignDetails() {
       [name]: value
     }));
   };
-  
+
   // Handle message data change
   const handleMessageDataChange = (event) => {
     const { name, value } = event.target;
@@ -230,7 +231,7 @@ export default function CampaignDetails() {
       [name]: value
     }));
   };
-  
+
   // Handle schedule campaign
   const handleScheduleCampaign = async () => {
     try {
@@ -244,27 +245,27 @@ export default function CampaignDetails() {
           scheduleOptions
         })
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to schedule campaign');
       }
-      
+
       // Close dialog and refresh campaign
       handleCloseScheduleDialog();
       fetchCampaign();
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error scheduling campaign:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle execute campaign
   const handleExecuteCampaign = async () => {
     try {
       handleMenuClose();
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}`, {
         method: 'POST',
         headers: {
@@ -274,26 +275,26 @@ export default function CampaignDetails() {
           action: 'execute'
         })
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to execute campaign');
       }
-      
+
       // Refresh campaign
       fetchCampaign();
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error executing campaign:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle pause campaign
   const handlePauseCampaign = async () => {
     try {
       handleMenuClose();
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}`, {
         method: 'POST',
         headers: {
@@ -303,26 +304,26 @@ export default function CampaignDetails() {
           action: 'pause'
         })
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to pause campaign');
       }
-      
+
       // Refresh campaign
       fetchCampaign();
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error pausing campaign:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle resume campaign
   const handleResumeCampaign = async () => {
     try {
       handleMenuClose();
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}`, {
         method: 'POST',
         headers: {
@@ -332,26 +333,26 @@ export default function CampaignDetails() {
           action: 'resume'
         })
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to resume campaign');
       }
-      
+
       // Refresh campaign
       fetchCampaign();
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error resuming campaign:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle stop campaign
   const handleStopCampaign = async () => {
     try {
       handleMenuClose();
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}`, {
         method: 'POST',
         headers: {
@@ -361,43 +362,43 @@ export default function CampaignDetails() {
           action: 'stop'
         })
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to stop campaign');
       }
-      
+
       // Refresh campaign
       fetchCampaign();
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error stopping campaign:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle delete campaign
   const handleDeleteCampaign = async () => {
     try {
       const response = await fetch(`/api/outreach/campaigns/${id}`, {
         method: 'DELETE'
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to delete campaign');
       }
-      
+
       // Close dialog and navigate back to campaigns list
       handleCloseDeleteDialog();
       router.push('/admin/outreach');
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error deleting campaign:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle create message
   const handleCreateMessage = async () => {
     try {
@@ -406,7 +407,7 @@ export default function CampaignDetails() {
         // TODO: Show validation error
         return;
       }
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}/messages`, {
         method: 'POST',
         headers: {
@@ -414,40 +415,40 @@ export default function CampaignDetails() {
         },
         body: JSON.stringify(messageData)
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to create message');
       }
-      
+
       // Close dialog and refresh campaign
       handleCloseMessageDialog();
       fetchCampaign();
-      
+
       // TODO: Show success notification
     } catch (error) {
       console.error('Error creating message:', error);
       // TODO: Show error notification
     }
   };
-  
+
   // Handle recipients page change
   const handleRecipientsPageChange = (event, newPage) => {
     setRecipientsPage(newPage);
   };
-  
+
   // Handle recipients rows per page change
   const handleRecipientsRowsPerPageChange = (event) => {
     setRecipientsRowsPerPage(parseInt(event.target.value, 10));
     setRecipientsPage(0);
   };
-  
+
   // Effect to fetch recipients when page or rows per page changes
   useEffect(() => {
     if (id) {
       fetchRecipients();
     }
   }, [id, recipientsPage, recipientsRowsPerPage]);
-  
+
   // Available channels
   const availableChannels = [
     { value: 'email', label: 'Email' },
@@ -457,25 +458,25 @@ export default function CampaignDetails() {
     { value: 'instagram', label: 'Instagram' },
     { value: 'telegram', label: 'Telegram' }
   ];
-  
+
   // Get channels that don't have a message yet
   const getAvailableChannelsForNewMessage = () => {
     if (!campaign || !campaign.messages) return availableChannels;
-    
+
     const usedChannels = campaign.messages.map(message => message.channel);
     return availableChannels.filter(channel => !usedChannels.includes(channel.value));
   };
-  
+
   // Calculate progress percentage
   const calculateProgress = () => {
     if (!campaign || !campaign.recipientStats) return 0;
-    
+
     const { total, sent, failed } = campaign.recipientStats;
     if (total === 0) return 0;
-    
+
     return Math.round(((sent + failed) / total) * 100);
   };
-  
+
   return (
     <AdminLayout title={campaign ? `Campaign: ${campaign.name}` : 'Campaign Details'}>
       <Container maxWidth="xl">
@@ -502,9 +503,9 @@ export default function CampaignDetails() {
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Chip 
-                    label={campaign.status} 
-                    color={statusColors[campaign.status] || 'default'} 
+                  <Chip
+                    label={campaign.status}
+                    color={statusColors[campaign.status] || 'default'}
                   />
                 </Grid>
                 <Grid item>
@@ -553,13 +554,13 @@ export default function CampaignDetails() {
                   </Menu>
                 </Grid>
               </Grid>
-              
+
               {campaign.description && (
                 <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
                   {campaign.description}
                 </Typography>
               )}
-              
+
               <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
                 {campaign.channels && JSON.parse(campaign.channels).map(channel => (
                   <Chip
@@ -571,7 +572,7 @@ export default function CampaignDetails() {
                 ))}
               </Box>
             </Box>
-            
+
             <Grid container spacing={3} sx={{ mb: 4 }}>
               <Grid item xs={12} md={3}>
                 <Card>
@@ -622,20 +623,20 @@ export default function CampaignDetails() {
                 </Card>
               </Grid>
             </Grid>
-            
+
             {(campaign.status === 'in_progress' || campaign.status === 'paused') && (
               <Box sx={{ mb: 4 }}>
                 <Typography variant="body2" gutterBottom>
                   Progress: {calculateProgress()}%
                 </Typography>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={calculateProgress()} 
+                <LinearProgress
+                  variant="determinate"
+                  value={calculateProgress()}
                   sx={{ height: 10, borderRadius: 5 }}
                 />
               </Box>
             )}
-            
+
             <Box sx={{ mb: 4 }}>
               <Tabs value={activeTab} onChange={handleTabChange}>
                 <Tab label="Messages" />
@@ -643,7 +644,7 @@ export default function CampaignDetails() {
                 <Tab label="Analytics" />
               </Tabs>
               <Divider />
-              
+
               {/* Messages Tab */}
               {activeTab === 0 && (
                 <Box sx={{ mt: 3 }}>
@@ -658,7 +659,7 @@ export default function CampaignDetails() {
                       Add Message
                     </Button>
                   </Box>
-                  
+
                   {campaign.messages && campaign.messages.length === 0 ? (
                     <Alert severity="info">
                       No messages have been created for this campaign yet. Add messages for each channel you want to use.
@@ -675,16 +676,16 @@ export default function CampaignDetails() {
                                   {message.channel.charAt(0).toUpperCase() + message.channel.slice(1)}
                                 </Typography>
                               </Box>
-                              
+
                               {message.channel === 'email' && (
                                 <Typography variant="subtitle1" gutterBottom>
                                   Subject: {message.subject}
                                 </Typography>
                               )}
-                              
+
                               <Typography variant="body2" color="text.secondary">
-                                {message.template.length > 200 
-                                  ? message.template.substring(0, 200) + '...' 
+                                {message.template.length > 200
+                                  ? message.template.substring(0, 200) + '...'
                                   : message.template}
                               </Typography>
                             </CardContent>
@@ -695,7 +696,7 @@ export default function CampaignDetails() {
                   )}
                 </Box>
               )}
-              
+
               {/* Recipients Tab */}
               {activeTab === 1 && (
                 <Box sx={{ mt: 3 }}>
@@ -709,7 +710,7 @@ export default function CampaignDetails() {
                       Add Recipients
                     </Button>
                   </Box>
-                  
+
                   <TableContainer component={Paper}>
                     <Table>
                       <TableHead>
@@ -739,12 +740,12 @@ export default function CampaignDetails() {
                                 {recipient.platform ? `${recipient.platform} (${recipient.platform_id})` : 'N/A'}
                               </TableCell>
                               <TableCell>
-                                <Chip 
-                                  label={recipient.status} 
+                                <Chip
+                                  label={recipient.status}
                                   color={
                                     recipient.status === 'sent' ? 'success' :
-                                    recipient.status === 'failed' ? 'error' :
-                                    'default'
+                                      recipient.status === 'failed' ? 'error' :
+                                        'default'
                                   }
                                   size="small"
                                 />
@@ -769,25 +770,25 @@ export default function CampaignDetails() {
                   </TableContainer>
                 </Box>
               )}
-              
+
               {/* Analytics Tab */}
               {activeTab === 2 && (
                 <Box sx={{ mt: 3 }}>
                   <Typography variant="h6" gutterBottom>
                     Campaign Analytics
                   </Typography>
-                  
+
                   <Alert severity="info" sx={{ mb: 2 }}>
                     Detailed analytics will be available once the campaign has started sending messages.
                   </Alert>
-                  
+
                   {/* Analytics content will go here */}
                 </Box>
               )}
             </Box>
           </>
         )}
-        
+
         {/* Schedule Dialog */}
         <Dialog open={openScheduleDialog} onClose={handleCloseScheduleDialog} maxWidth="sm" fullWidth>
           <DialogTitle>Schedule Campaign</DialogTitle>
@@ -809,7 +810,7 @@ export default function CampaignDetails() {
                   <MenuItem value="monthly">Monthly</MenuItem>
                 </Select>
               </FormControl>
-              
+
               <TextField
                 fullWidth
                 label="Start Date"
@@ -820,7 +821,7 @@ export default function CampaignDetails() {
                 margin="normal"
                 InputLabelProps={{ shrink: true }}
               />
-              
+
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -847,7 +848,7 @@ export default function CampaignDetails() {
                   />
                 </Grid>
               </Grid>
-              
+
               <TextField
                 fullWidth
                 label="Batch Size"
@@ -868,7 +869,7 @@ export default function CampaignDetails() {
             </Button>
           </DialogActions>
         </Dialog>
-        
+
         {/* Message Dialog */}
         <Dialog open={openMessageDialog} onClose={handleCloseMessageDialog} maxWidth="md" fullWidth>
           <DialogTitle>Add Campaign Message</DialogTitle>
@@ -890,7 +891,7 @@ export default function CampaignDetails() {
                   ))}
                 </Select>
               </FormControl>
-              
+
               {messageData.channel === 'email' && (
                 <TextField
                   fullWidth
@@ -902,7 +903,7 @@ export default function CampaignDetails() {
                   required
                 />
               )}
-              
+
               <TextField
                 fullWidth
                 label="Message Template"
@@ -919,9 +920,9 @@ export default function CampaignDetails() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseMessageDialog}>Cancel</Button>
-            <Button 
-              onClick={handleCreateMessage} 
-              variant="contained" 
+            <Button
+              onClick={handleCreateMessage}
+              variant="contained"
               color="primary"
               disabled={!messageData.channel || !messageData.template || (messageData.channel === 'email' && !messageData.subject)}
             >
@@ -929,7 +930,7 @@ export default function CampaignDetails() {
             </Button>
           </DialogActions>
         </Dialog>
-        
+
         {/* Delete Dialog */}
         <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
           <DialogTitle>Delete Campaign</DialogTitle>

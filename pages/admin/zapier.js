@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AdminLayout from '../../components/AdminLayout';
@@ -16,36 +17,36 @@ const ZapierAdminPage = () => {
     { id: 'support_request', name: 'Support Request', url: '', enabled: false, lastTriggered: null }
   ]);
   const [automations, setAutomations] = useState([
-    { 
-      id: 'auto-1', 
-      name: 'Order Confirmation Email', 
+    {
+      id: 'auto-1',
+      name: 'Order Confirmation Email',
       description: 'Send an email when a new order is placed',
       trigger: 'New Order',
       action: 'Send Email',
       enabled: true,
       lastRun: '2023-05-15 14:32:45'
     },
-    { 
-      id: 'auto-2', 
-      name: 'Low Stock Notification', 
+    {
+      id: 'auto-2',
+      name: 'Low Stock Notification',
       description: 'Notify team when product stock is low',
       trigger: 'Low Inventory Alert',
       action: 'Send Slack Message',
       enabled: true,
       lastRun: '2023-05-14 09:15:22'
     },
-    { 
-      id: 'auto-3', 
-      name: 'Welcome Email Sequence', 
+    {
+      id: 'auto-3',
+      name: 'Welcome Email Sequence',
       description: 'Send welcome emails to new customers',
       trigger: 'New Customer',
       action: 'Add to Email Sequence',
       enabled: false,
       lastRun: null
     },
-    { 
-      id: 'auto-4', 
-      name: 'Abandoned Cart Recovery', 
+    {
+      id: 'auto-4',
+      name: 'Abandoned Cart Recovery',
       description: 'Send reminder email for abandoned carts',
       trigger: 'Abandoned Cart',
       action: 'Send Email',
@@ -54,30 +55,30 @@ const ZapierAdminPage = () => {
     }
   ]);
   const [logs, setLogs] = useState([
-    { 
-      id: 'log-1', 
-      event: 'New Order', 
+    {
+      id: 'log-1',
+      event: 'New Order',
       status: 'success',
       message: 'Order #ORD-5289 processed successfully',
       timestamp: '2023-05-15 14:32:45'
     },
-    { 
-      id: 'log-2', 
-      event: 'Low Inventory Alert', 
+    {
+      id: 'log-2',
+      event: 'Low Inventory Alert',
       status: 'success',
       message: 'Low stock alert for "iPhone 13 Pro Screen" sent to Slack',
       timestamp: '2023-05-14 09:15:22'
     },
-    { 
-      id: 'log-3', 
-      event: 'Abandoned Cart', 
+    {
+      id: 'log-3',
+      event: 'Abandoned Cart',
       status: 'success',
       message: 'Reminder email sent for cart #CART-1234',
       timestamp: '2023-05-15 10:45:18'
     },
-    { 
-      id: 'log-4', 
-      event: 'Product Review', 
+    {
+      id: 'log-4',
+      event: 'Product Review',
       status: 'error',
       message: 'Failed to process review: Webhook returned 404',
       timestamp: '2023-05-13 16:22:10'
@@ -88,11 +89,11 @@ const ZapierAdminPage = () => {
   useEffect(() => {
     const checkZapierConfig = async () => {
       // In a real app, you would check if the Zapier webhooks are configured
-      const hasZapierConfig = process.env.ZAPIER_WEBHOOK_NEW_ORDER && 
-                             process.env.ZAPIER_WEBHOOK_LOW_INVENTORY;
-      
+      const hasZapierConfig = process.env.ZAPIER_WEBHOOK_NEW_ORDER &&
+        process.env.ZAPIER_WEBHOOK_LOW_INVENTORY;
+
       setZapierStatus(hasZapierConfig ? 'configured' : 'not_configured');
-      
+
       // If configured, update webhook URLs
       if (hasZapierConfig) {
         setWebhooks(prev => prev.map(webhook => ({
@@ -102,12 +103,12 @@ const ZapierAdminPage = () => {
         })));
       }
     };
-    
+
     checkZapierConfig();
   }, []);
 
   const handleWebhookChange = (id, field, value) => {
-    setWebhooks(prev => prev.map(webhook => 
+    setWebhooks(prev => prev.map(webhook =>
       webhook.id === id ? { ...webhook, [field]: value } : webhook
     ));
   };
@@ -115,17 +116,17 @@ const ZapierAdminPage = () => {
   const handleSaveWebhooks = async () => {
     setLoading(true);
     setError('');
-    
+
     try {
       // In a real app, this would save the webhooks to your backend
       // For demo purposes, we'll simulate a successful save
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Update status
       setZapierStatus('configured');
-      
+
       alert('Zapier webhooks saved successfully!');
     } catch (err) {
       console.error('Error saving Zapier webhooks:', err);
@@ -137,26 +138,26 @@ const ZapierAdminPage = () => {
 
   const handleTestWebhook = async (webhookId) => {
     const webhook = webhooks.find(w => w.id === webhookId);
-    
+
     if (!webhook || !webhook.url) {
       alert('Please enter a webhook URL first');
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       // In a real app, this would send a test payload to the webhook
       // For demo purposes, we'll simulate a successful test
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Update last triggered time
-      setWebhooks(prev => prev.map(w => 
+      setWebhooks(prev => prev.map(w =>
         w.id === webhookId ? { ...w, lastTriggered: new Date().toISOString() } : w
       ));
-      
+
       // Add a log entry
       const newLog = {
         id: `log-${Date.now()}`,
@@ -165,13 +166,13 @@ const ZapierAdminPage = () => {
         message: `Test payload sent to ${webhook.name} webhook`,
         timestamp: new Date().toLocaleString()
       };
-      
+
       setLogs(prev => [newLog, ...prev]);
-      
+
       alert(`Test payload sent to ${webhook.name} webhook successfully!`);
     } catch (err) {
       console.error('Error testing webhook:', err);
-      
+
       // Add an error log entry
       const errorLog = {
         id: `log-${Date.now()}`,
@@ -180,9 +181,9 @@ const ZapierAdminPage = () => {
         message: `Failed to send test payload: ${err.message}`,
         timestamp: new Date().toLocaleString()
       };
-      
+
       setLogs(prev => [errorLog, ...prev]);
-      
+
       alert(`Failed to test webhook: ${err.message}`);
     } finally {
       setLoading(false);
@@ -190,15 +191,15 @@ const ZapierAdminPage = () => {
   };
 
   const handleToggleAutomation = (id) => {
-    setAutomations(prev => prev.map(automation => 
+    setAutomations(prev => prev.map(automation =>
       automation.id === id ? { ...automation, enabled: !automation.enabled } : automation
     ));
   };
 
   const renderWebhooksTab = () => (
-    <div style={{ 
-      backgroundColor: 'white', 
-      padding: '20px', 
+    <div style={{
+      backgroundColor: 'white',
+      padding: '20px',
       borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
     }}>
@@ -206,19 +207,19 @@ const ZapierAdminPage = () => {
       <p style={{ marginBottom: '20px' }}>
         Configure webhook URLs for different events to trigger Zapier automations.
       </p>
-      
+
       {error && (
-        <div style={{ 
-          backgroundColor: '#f8d7da', 
-          color: '#721c24', 
-          padding: '10px', 
+        <div style={{
+          backgroundColor: '#f8d7da',
+          color: '#721c24',
+          padding: '10px',
           borderRadius: '4px',
           marginBottom: '20px'
         }}>
           {error}
         </div>
       )}
-      
+
       <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
         <thead>
           <tr>
@@ -241,9 +242,9 @@ const ZapierAdminPage = () => {
                   value={webhook.url}
                   onChange={(e) => handleWebhookChange(webhook.id, 'url', e.target.value)}
                   placeholder="https://hooks.zapier.com/hooks/catch/..."
-                  style={{ 
-                    width: '100%', 
-                    padding: '8px', 
+                  style={{
+                    width: '100%',
+                    padding: '8px',
                     border: '1px solid #ddd',
                     borderRadius: '4px'
                   }}
@@ -254,8 +255,8 @@ const ZapierAdminPage = () => {
                   type="checkbox"
                   checked={webhook.enabled}
                   onChange={(e) => handleWebhookChange(webhook.id, 'enabled', e.target.checked)}
-                  style={{ 
-                    width: '18px', 
+                  style={{
+                    width: '18px',
                     height: '18px'
                   }}
                 />
@@ -283,7 +284,7 @@ const ZapierAdminPage = () => {
           ))}
         </tbody>
       </table>
-      
+
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button
           onClick={handleSaveWebhooks}
@@ -305,9 +306,9 @@ const ZapierAdminPage = () => {
   );
 
   const renderAutomationsTab = () => (
-    <div style={{ 
-      backgroundColor: 'white', 
-      padding: '20px', 
+    <div style={{
+      backgroundColor: 'white',
+      padding: '20px',
       borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
     }}>
@@ -315,7 +316,7 @@ const ZapierAdminPage = () => {
       <p style={{ marginBottom: '20px' }}>
         Manage your Zapier automations that are connected to your store.
       </p>
-      
+
       <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
         <thead>
           <tr>
@@ -347,8 +348,8 @@ const ZapierAdminPage = () => {
                     onChange={() => handleToggleAutomation(automation.id)}
                     style={{ opacity: 0, width: 0, height: 0 }}
                   />
-                  <span 
-                    style={{ 
+                  <span
+                    style={{
                       position: 'absolute',
                       cursor: 'pointer',
                       top: 0,
@@ -360,7 +361,7 @@ const ZapierAdminPage = () => {
                       borderRadius: '34px'
                     }}
                   >
-                    <span 
+                    <span
                       style={{
                         position: 'absolute',
                         content: '""',
@@ -383,12 +384,12 @@ const ZapierAdminPage = () => {
           ))}
         </tbody>
       </table>
-      
+
       <div style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
         <p style={{ marginBottom: '15px' }}>Need to create a new automation?</p>
-        <a 
-          href="https://zapier.com/app/editor/" 
-          target="_blank" 
+        <a
+          href="https://zapier.com/app/editor/"
+          target="_blank"
           rel="noopener noreferrer"
           style={{
             backgroundColor: '#0066cc',
@@ -407,9 +408,9 @@ const ZapierAdminPage = () => {
   );
 
   const renderLogsTab = () => (
-    <div style={{ 
-      backgroundColor: 'white', 
-      padding: '20px', 
+    <div style={{
+      backgroundColor: 'white',
+      padding: '20px',
       borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
     }}>
@@ -417,7 +418,7 @@ const ZapierAdminPage = () => {
       <p style={{ marginBottom: '20px' }}>
         View recent activity and events triggered by your Zapier integrations.
       </p>
-      
+
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -440,10 +441,10 @@ const ZapierAdminPage = () => {
                 {log.message}
               </td>
               <td style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'center' }}>
-                <span style={{ 
-                  backgroundColor: log.status === 'success' ? '#d4edda' : '#f8d7da', 
-                  color: log.status === 'success' ? '#155724' : '#721c24', 
-                  padding: '3px 8px', 
+                <span style={{
+                  backgroundColor: log.status === 'success' ? '#d4edda' : '#f8d7da',
+                  color: log.status === 'success' ? '#155724' : '#721c24',
+                  padding: '3px 8px',
                   borderRadius: '4px',
                   fontSize: '0.85rem'
                 }}>
@@ -469,7 +470,7 @@ const ZapierAdminPage = () => {
         <p style={{ marginBottom: '30px' }}>
           Connect your store to Zapier to automate workflows and integrate with other apps.
         </p>
-        
+
         {zapierStatus === 'not_configured' ? (
           renderWebhooksTab()
         ) : (
@@ -520,7 +521,7 @@ const ZapierAdminPage = () => {
                 </button>
               </div>
             </div>
-            
+
             {activeTab === 'webhooks' && renderWebhooksTab()}
             {activeTab === 'automations' && renderAutomationsTab()}
             {activeTab === 'logs' && renderLogsTab()}

@@ -173,7 +173,7 @@ const sendSearchAnalytics = async (searchData) => {
   try {
     // In a production environment, you would send this data to your analytics endpoint
     // For now, we'll just log it
-    console.log('Search analytics:', searchData);
+    // // // console.log('Search analytics:', searchData);
     
     // Example of how to send to a server endpoint:
     /*
@@ -199,7 +199,7 @@ const sendSearchClickAnalytics = async (clickData) => {
   try {
     // In a production environment, you would send this data to your analytics endpoint
     // For now, we'll just log it
-    console.log('Search click analytics:', clickData);
+    // // // console.log('Search click analytics:', clickData);
     
     // Example of how to send to a server endpoint:
     /*

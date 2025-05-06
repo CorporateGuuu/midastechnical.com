@@ -21,7 +21,7 @@ const METADATA_PATH = path.join(DATA_DIR, 'metadata.json');
 // Log with timestamp
 function logMessage(message) {
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${message}`);
+  // // // console.log(`[${timestamp}] ${message}`);
 }
 
 // Check if file exists

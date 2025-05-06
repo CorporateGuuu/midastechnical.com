@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
 import ContactForm from '../ContactForm/ContactForm';
@@ -8,6 +8,28 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [currency, setCurrency] = useState('USD');
+
+  // Available languages
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'es', name: 'Español' },
+    { code: 'fr', name: 'Français' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'zh', name: '中文' },
+    { code: 'ar', name: 'العربية' },
+  ];
+
+  // Available currencies
+  const currencies = [
+    { code: 'USD', symbol: '$', name: 'US Dollar' },
+    { code: 'EUR', symbol: '€', name: 'Euro' },
+    { code: 'GBP', symbol: '£', name: 'British Pound' },
+    { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
+    { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+    { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,6 +51,40 @@ const Footer = () => {
   const closeContactForm = () => {
     setIsContactFormOpen(false);
   };
+
+  // Handle language change
+  const handleLanguageChange = (e) => {
+    const newLanguage = e.target.value;
+    setLanguage(newLanguage);
+
+    // In a real app, this would update the app's language context
+    // For now, just store in localStorage
+    localStorage.setItem('preferredLanguage', newLanguage);
+  };
+
+  // Handle currency change
+  const handleCurrencyChange = (e) => {
+    const newCurrency = e.target.value;
+    setCurrency(newCurrency);
+
+    // In a real app, this would update the app's currency context
+    // For now, just store in localStorage
+    localStorage.setItem('preferredCurrency', newCurrency);
+  };
+
+  // Load saved preferences on component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    const savedCurrency = localStorage.getItem('preferredCurrency');
+
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+    }
+
+    if (savedCurrency) {
+      setCurrency(savedCurrency);
+    }
+  }, []);
 
   return (
     <footer className={styles.footer}>
@@ -63,11 +119,6 @@ const Footer = () => {
               </form>
             )}
             <div className={styles.socialLinks}>
-              <a href="https://facebook.com/mdtstech" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z" />
-                </svg>
-              </a>
               <a href="https://www.instagram.com/mdtstech.store/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
@@ -90,43 +141,6 @@ const Footer = () => {
               </a>
             </div>
           </div>
-
-          <div>
-            <h3 className={styles.title}>Our Services</h3>
-            <div className={styles.services}>
-              <div className={styles.service}>
-                <div className={styles.serviceIcon}>🚚</div>
-                <div className={styles.serviceName}>Fast Shipping</div>
-                <div className={styles.serviceDescription}>
-                  Free shipping on orders over $1000
-                </div>
-              </div>
-
-              <div className={styles.service}>
-                <div className={styles.serviceIcon}>🔧</div>
-                <div className={styles.serviceName}>Repair Guides</div>
-                <div className={styles.serviceDescription}>
-                  Step-by-step tutorials
-                </div>
-              </div>
-
-              <div className={styles.service}>
-                <div className={styles.serviceIcon}>💬</div>
-                <div className={styles.serviceName}>Support</div>
-                <div className={styles.serviceDescription}>
-                  24/7 customer service
-                </div>
-              </div>
-
-              <div className={styles.service}>
-                <div className={styles.serviceIcon}>🔄</div>
-                <div className={styles.serviceName}>Returns</div>
-                <div className={styles.serviceDescription}>
-                  30-day money back
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className={styles.middle}>
@@ -145,22 +159,10 @@ const Footer = () => {
             <h3>Information</h3>
             <ul className={styles.links}>
               <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/contact">Contact Us</Link></li>
-              <li><Link href="/blog">Repair Guides</Link></li>
-              <li><Link href="/lcd-buyback">LCD Buyback Program</Link></li>
-              <li><Link href="/wholesale">Wholesale Program</Link></li>
-              <li><Link href="/careers">Careers</Link></li>
-            </ul>
-          </div>
-
-          <div className={styles.column}>
-            <h3>Customer Service</h3>
-            <ul className={styles.links}>
-              <li><Link href="/faq">FAQ</Link></li>
-              <li><Link href="/shipping">Shipping Policy</Link></li>
-              <li><Link href="/returns">Returns & Warranty</Link></li>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
-              <li><Link href="/terms">Terms & Conditions</Link></li>
+              <li><Link href="/lcd-buyback">LCD Buyback</Link></li>
+              <li><Link href="/trade-off">Trade-Off</Link></li>
+              <li><Link href="/finance">Financing</Link></li>
+              <li><Link href="/gapp">Apple Parts Program</Link></li>
             </ul>
           </div>
 
@@ -182,65 +184,30 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
-          <div className={styles.column}>
-            <h3>Certifications</h3>
-            <div className={styles.certificateSection}>
-              <ul className={styles.certificateList}>
-                <li>
-                  <img width="36" height="45" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/r2-v3.svg" alt="R2 Certificate" />
-                </li>
-                <li>
-                  <img width="34" height="48" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/cerificate-001.svg" alt="NSAI - Health & Safety" />
-                </li>
-                <li>
-                  <img width="33" height="48" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/cerificate-002.svg" alt="NSAI - Quality" />
-                </li>
-                <li>
-                  <img width="34" height="48" src="https://msimagevideo.s3.amazonaws.com/mobilesentrix/certificate/cerificate-003.svg" alt="NSAI - Environment" />
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
+
+
 
         <div className={styles.bottom}>
           <div className={styles.copyright}>
             © {new Date().getFullYear()} Midas Technical Solutions. All rights reserved.
-            <p className={styles.trademarkText}>
-              All trademarks are properties of their respective holders. Midas Technical Solutions does not own or make claim to those trademarks used on this website in which it is not the holder.
-            </p>
           </div>
 
-          <div className={styles.paymentMethods}>
-            <span className={styles.paymentIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                <line x1="1" y1="10" x2="23" y2="10"></line>
-              </svg>
-            </span>
-            <span className={styles.paymentIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 8l1.5-2.9A2 2 0 0 1 5.24 4h13.52a2 2 0 0 1 1.74 1.1L22 8"></path>
-                <path d="M4 8v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path>
-                <path d="M8 8v1"></path>
-                <path d="M16 8v1"></path>
-              </svg>
-            </span>
-            <span className={styles.paymentIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-              </svg>
-            </span>
-            <span className={styles.paymentIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="M2 17l10 5 10-5"></path>
-                <path d="M2 12l10 5 10-5"></path>
-              </svg>
-            </span>
+          <div className={styles.acceptedPayments}>
+            <div className={styles.paymentMethods}>
+              <div className={styles.paymentMethod}>
+                <img src="/images/payments/visa.svg" alt="Visa" />
+              </div>
+              <div className={styles.paymentMethod}>
+                <img src="/images/payments/mastercard.svg" alt="Mastercard" />
+              </div>
+              <div className={styles.paymentMethod}>
+                <img src="/images/payments/amex.svg" alt="American Express" />
+              </div>
+              <div className={styles.paymentMethod}>
+                <img src="/images/payments/paypal.svg" alt="PayPal" />
+              </div>
+            </div>
           </div>
         </div>
       </div>

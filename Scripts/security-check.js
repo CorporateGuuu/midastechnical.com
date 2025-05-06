@@ -145,7 +145,7 @@ function scanDirectory(dir, fileExtensions = ['.js', '.jsx', '.ts', '.tsx']) {
 
 // Function to check for outdated dependencies
 function checkDependencies() {
-  console.log(`${colors.blue}Checking for outdated dependencies...${colors.reset}`);
+  // // // console.log(`${colors.blue}Checking for outdated dependencies...${colors.reset}`);
   
   try {
     const output = execSync('npm audit --json', { encoding: 'utf8' });
@@ -154,15 +154,15 @@ function checkDependencies() {
     if (auditResult.vulnerabilities) {
       const { low, moderate, high, critical } = auditResult.vulnerabilities;
       
-      console.log(`${colors.yellow}Vulnerability summary:${colors.reset}`);
-      console.log(`${colors.green}Low: ${low || 0}${colors.reset}`);
-      console.log(`${colors.yellow}Moderate: ${moderate || 0}${colors.reset}`);
-      console.log(`${colors.red}High: ${high || 0}${colors.reset}`);
-      console.log(`${colors.magenta}Critical: ${critical || 0}${colors.reset}`);
+      // // // console.log(`${colors.yellow}Vulnerability summary:${colors.reset}`);
+      // // // console.log(`${colors.green}Low: ${low || 0}${colors.reset}`);
+      // // // console.log(`${colors.yellow}Moderate: ${moderate || 0}${colors.reset}`);
+      // // // console.log(`${colors.red}High: ${high || 0}${colors.reset}`);
+      // // // console.log(`${colors.magenta}Critical: ${critical || 0}${colors.reset}`);
       
       if (high || critical) {
-        console.log(`\n${colors.red}WARNING: Your project has high or critical vulnerabilities!${colors.reset}`);
-        console.log(`Run ${colors.cyan}npm audit fix${colors.reset} to fix them.`);
+        // // // console.log(`\n${colors.red}WARNING: Your project has high or critical vulnerabilities!${colors.reset}`);
+        // // // console.log(`Run ${colors.cyan}npm audit fix${colors.reset} to fix them.`);
       }
     }
   } catch (error) {
@@ -172,7 +172,7 @@ function checkDependencies() {
 
 // Main function
 function main() {
-  console.log(`${colors.blue}Starting security vulnerability scan...${colors.reset}`);
+  // // // console.log(`${colors.blue}Starting security vulnerability scan...${colors.reset}`);
   
   // Scan the project directory
   const vulnerabilities = scanDirectory('.');
@@ -187,46 +187,46 @@ function main() {
   }, {});
   
   // Print results
-  console.log(`\n${colors.blue}Scan complete. Found ${vulnerabilities.length} potential vulnerabilities.${colors.reset}`);
+  // // // console.log(`\n${colors.blue}Scan complete. Found ${vulnerabilities.length} potential vulnerabilities.${colors.reset}`);
   
   if (vulnerabilities.length > 0) {
     // Print critical vulnerabilities
     if (groupedVulnerabilities.CRITICAL) {
-      console.log(`\n${colors.magenta}CRITICAL VULNERABILITIES (${groupedVulnerabilities.CRITICAL.length}):${colors.reset}`);
+      // // // console.log(`\n${colors.magenta}CRITICAL VULNERABILITIES (${groupedVulnerabilities.CRITICAL.length}):${colors.reset}`);
       groupedVulnerabilities.CRITICAL.forEach(vuln => {
-        console.log(`${colors.red}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
-        console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
+        // // // console.log(`${colors.red}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
+        // // // console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
       });
     }
     
     // Print high vulnerabilities
     if (groupedVulnerabilities.HIGH) {
-      console.log(`\n${colors.red}HIGH VULNERABILITIES (${groupedVulnerabilities.HIGH.length}):${colors.reset}`);
+      // // // console.log(`\n${colors.red}HIGH VULNERABILITIES (${groupedVulnerabilities.HIGH.length}):${colors.reset}`);
       groupedVulnerabilities.HIGH.forEach(vuln => {
-        console.log(`${colors.red}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
-        console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
+        // // // console.log(`${colors.red}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
+        // // // console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
       });
     }
     
     // Print medium vulnerabilities
     if (groupedVulnerabilities.MEDIUM) {
-      console.log(`\n${colors.yellow}MEDIUM VULNERABILITIES (${groupedVulnerabilities.MEDIUM.length}):${colors.reset}`);
+      // // // console.log(`\n${colors.yellow}MEDIUM VULNERABILITIES (${groupedVulnerabilities.MEDIUM.length}):${colors.reset}`);
       groupedVulnerabilities.MEDIUM.forEach(vuln => {
-        console.log(`${colors.yellow}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
-        console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
+        // // // console.log(`${colors.yellow}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
+        // // // console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
       });
     }
     
     // Print low vulnerabilities
     if (groupedVulnerabilities.LOW) {
-      console.log(`\n${colors.green}LOW VULNERABILITIES (${groupedVulnerabilities.LOW.length}):${colors.reset}`);
+      // // // console.log(`\n${colors.green}LOW VULNERABILITIES (${groupedVulnerabilities.LOW.length}):${colors.reset}`);
       groupedVulnerabilities.LOW.forEach(vuln => {
-        console.log(`${colors.green}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
-        console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
+        // // // console.log(`${colors.green}[${vuln.vulnerability}]${colors.reset} in ${colors.cyan}${vuln.file}${colors.reset} (${vuln.count} occurrences)`);
+        // // // console.log(`  ${colors.yellow}Recommendation:${colors.reset} ${vuln.recommendation}`);
       });
     }
   } else {
-    console.log(`${colors.green}No vulnerabilities found in the codebase.${colors.reset}`);
+    // // // console.log(`${colors.green}No vulnerabilities found in the codebase.${colors.reset}`);
   }
   
   // Check dependencies

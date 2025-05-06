@@ -8,7 +8,7 @@ const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:post
 const dbName = 'phone_electronics_store';
 
 async function setupDatabase() {
-  console.log('Setting up the database...');
+  // // // console.log('Setting up the database...');
 
   // Connect to PostgreSQL server
   const pool = new Pool({
@@ -24,11 +24,11 @@ async function setupDatabase() {
 
     // Create database if it doesn't exist
     if (dbCheckResult.rowCount === 0) {
-      console.log(`Creating database: ${dbName}`);
+      // // // console.log(`Creating database: ${dbName}`);
       await pool.query(`CREATE DATABASE ${dbName}`);
-      console.log(`Database ${dbName} created successfully`);
+      // // // console.log(`Database ${dbName} created successfully`);
     } else {
-      console.log(`Database ${dbName} already exists`);
+      // // // console.log(`Database ${dbName} already exists`);
     }
 
     // Close connection to postgres database
@@ -44,14 +44,14 @@ async function setupDatabase() {
     const schemaSql = fs.readFileSync(schemaPath, 'utf8');
 
     // Execute schema SQL
-    console.log('Creating database schema...');
+    // // // console.log('Creating database schema...');
     await dbPool.query(schemaSql);
-    console.log('Database schema created successfully');
+    // // // console.log('Database schema created successfully');
 
     // Close connection
     await dbPool.end();
 
-    console.log('Database setup completed successfully');
+    // // // console.log('Database setup completed successfully');
   } catch (error) {
     console.error('Error setting up database:', error);
     process.exit(1);
@@ -60,7 +60,7 @@ async function setupDatabase() {
 
 // Function to import CSV data into the database
 async function importCsvData(csvFilePath, tableName, columnMapping) {
-  console.log(`Importing data from ${csvFilePath} into ${tableName}...`);
+  // // // console.log(`Importing data from ${csvFilePath} into ${tableName}...`);
 
   // Connect to the database
   const dbPool = new Pool({
@@ -134,7 +134,7 @@ async function importCsvData(csvFilePath, tableName, columnMapping) {
 
       // Commit transaction
       await client.query('COMMIT');
-      console.log(`Imported ${lineCount - 1} records into ${tableName}`);
+      // // // console.log(`Imported ${lineCount - 1} records into ${tableName}`);
     } catch (error) {
       await client.query('ROLLBACK');
       throw error;

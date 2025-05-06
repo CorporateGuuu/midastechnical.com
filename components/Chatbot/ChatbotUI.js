@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './Chatbot.module.css';
@@ -189,7 +190,7 @@ const ChatbotUI = () => {
     // Replace URLs with clickable links
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const withLinks = content.replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="${styles.messageLink}">${url}</a>`;
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="${styles.messageLink}">${url}</Link>`;
     });
 
     // Format lists

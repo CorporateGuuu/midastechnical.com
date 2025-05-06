@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
@@ -12,7 +13,7 @@ const EnhancedFooter = () => {
     // For now, just show the confirmation message
     setSubscribed(true);
     setEmail('');
-    
+
     // Reset the subscription message after 5 seconds
     setTimeout(() => {
       setSubscribed(false);
@@ -60,7 +61,7 @@ const EnhancedFooter = () => {
                 <div className={styles.serviceIcon}>🚚</div>
                 <div className={styles.serviceName}>Fast Shipping</div>
                 <div className={styles.serviceDescription}>
-                  Free shipping on orders over $500
+                  Free shipping on orders over $1000
                 </div>
               </div>
 

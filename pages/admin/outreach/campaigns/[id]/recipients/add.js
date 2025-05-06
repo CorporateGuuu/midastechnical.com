@@ -1,14 +1,15 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import AdminLayout from '../../../../../../components/Admin/AdminLayout';
-import { 
-  Box, 
-  Button, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
+import AdminLayout from '../../../../../../components/AdminLayout';
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Grid,
+  Card,
   CardContent,
   TextField,
   Tabs,
@@ -26,7 +27,7 @@ import {
   CircularProgress,
   Snackbar
 } from '@mui/material';
-import { 
+import {
   ArrowBack as ArrowBackIcon,
   Upload as UploadIcon,
   Add as AddIcon,
@@ -37,7 +38,7 @@ export default function AddRecipients() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  
+
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
@@ -60,32 +61,32 @@ export default function AddRecipients() {
     message: '',
     severity: 'info'
   });
-  
+
   // Fetch campaign on load
   useEffect(() => {
     if (status === 'authenticated' && id) {
       fetchCampaign();
     }
   }, [status, id]);
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/signin?callbackUrl=/admin/outreach');
     }
   }, [status, router]);
-  
+
   // Fetch campaign from API
   const fetchCampaign = async () => {
     try {
       setLoading(true);
-      
+
       const response = await fetch(`/api/outreach/campaigns/${id}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch campaign');
       }
-      
+
       const data = await response.json();
       setCampaign(data);
     } catch (error) {
@@ -95,12 +96,12 @@ export default function AddRecipients() {
       setLoading(false);
     }
   };
-  
+
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
-  
+
   // Handle manual recipient change
   const handleManualRecipientChange = (index, field, value) => {
     const updatedRecipients = [...manualRecipients];
@@ -110,7 +111,7 @@ export default function AddRecipients() {
     };
     setManualRecipients(updatedRecipients);
   };
-  
+
   // Handle add manual recipient
   const handleAddManualRecipient = () => {
     setManualRecipients([
@@ -118,7 +119,7 @@ export default function AddRecipients() {
       { name: '', email: '', phone: '', platform: '', platformId: '' }
     ]);
   };
-  
+
   // Handle remove manual recipient
   const handleRemoveManualRecipient = (index) => {
     if (manualRecipients.length === 1) {
@@ -128,33 +129,33 @@ export default function AddRecipients() {
       ]);
       return;
     }
-    
+
     const updatedRecipients = manualRecipients.filter((_, i) => i !== index);
     setManualRecipients(updatedRecipients);
   };
-  
+
   // Handle CSV file upload
   const handleCsvUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     setCsvFile(file);
-    
+
     // Parse CSV for preview
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target.result;
       const lines = content.split('\\n');
-      
+
       if (lines.length < 2) {
         showSnackbar('CSV file must contain at least a header row and one data row', 'error');
         return;
       }
-      
+
       // Parse headers
       const headers = lines[0].split(',').map(header => header.trim());
       setCsvHeaders(headers);
-      
+
       // Set default mappings if headers match expected fields
       const defaultMapping = {};
       headers.forEach(header => {
@@ -166,28 +167,28 @@ export default function AddRecipients() {
         if (lowerHeader.includes('platform_id') || lowerHeader.includes('platformid')) defaultMapping.platformId = header;
       });
       setCsvMapping(defaultMapping);
-      
+
       // Parse preview data (up to 5 rows)
       const previewData = [];
       for (let i = 1; i < Math.min(lines.length, 6); i++) {
         if (lines[i].trim() === '') continue;
-        
+
         const values = lines[i].split(',').map(value => value.trim());
         const row = {};
-        
+
         headers.forEach((header, index) => {
           row[header] = values[index] || '';
         });
-        
+
         previewData.push(row);
       }
-      
+
       setCsvPreview(previewData);
     };
-    
+
     reader.readAsText(file);
   };
-  
+
   // Handle CSV mapping change
   const handleCsvMappingChange = (field, value) => {
     setCsvMapping({
@@ -195,22 +196,22 @@ export default function AddRecipients() {
       [field]: value
     });
   };
-  
+
   // Handle submit manual recipients
   const handleSubmitManualRecipients = async () => {
     try {
       // Validate recipients
-      const validRecipients = manualRecipients.filter(recipient => 
+      const validRecipients = manualRecipients.filter(recipient =>
         recipient.name || recipient.email || recipient.phone || (recipient.platform && recipient.platformId)
       );
-      
+
       if (validRecipients.length === 0) {
         showSnackbar('Please add at least one recipient with valid information', 'error');
         return;
       }
-      
+
       setSubmitting(true);
-      
+
       // Submit recipients
       const response = await fetch(`/api/outreach/campaigns/${id}/recipients`, {
         method: 'POST',
@@ -221,18 +222,18 @@ export default function AddRecipients() {
           recipients: validRecipients
         })
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to add recipients');
       }
-      
+
       showSnackbar(`Successfully added ${validRecipients.length} recipients`, 'success');
-      
+
       // Clear form
       setManualRecipients([
         { name: '', email: '', phone: '', platform: '', platformId: '' }
       ]);
-      
+
       // Navigate back to campaign
       setTimeout(() => {
         router.push(`/admin/outreach/campaigns/${id}`);
@@ -244,7 +245,7 @@ export default function AddRecipients() {
       setSubmitting(false);
     }
   };
-  
+
   // Handle submit CSV recipients
   const handleSubmitCsvRecipients = async () => {
     try {
@@ -252,31 +253,31 @@ export default function AddRecipients() {
         showSnackbar('Please upload a CSV file', 'error');
         return;
       }
-      
+
       // Validate mapping
-      if (!csvMapping.name && !csvMapping.email && !csvMapping.phone && 
-          !(csvMapping.platform && csvMapping.platformId)) {
+      if (!csvMapping.name && !csvMapping.email && !csvMapping.phone &&
+        !(csvMapping.platform && csvMapping.platformId)) {
         showSnackbar('Please map at least one identification field (name, email, phone, or platform with platformId)', 'error');
         return;
       }
-      
+
       setSubmitting(true);
-      
+
       // Parse entire CSV file
       const reader = new FileReader();
       reader.onload = async (e) => {
         try {
           const content = e.target.result;
           const lines = content.split('\\n');
-          
+
           // Parse headers
           const headers = lines[0].split(',').map(header => header.trim());
-          
+
           // Parse all data rows
           const recipients = [];
           for (let i = 1; i < lines.length; i++) {
             if (lines[i].trim() === '') continue;
-            
+
             const values = lines[i].split(',').map(value => value.trim());
             const recipient = {
               name: '',
@@ -285,7 +286,7 @@ export default function AddRecipients() {
               platform: '',
               platformId: ''
             };
-            
+
             // Map values based on mapping
             Object.keys(csvMapping).forEach(field => {
               if (csvMapping[field]) {
@@ -295,20 +296,20 @@ export default function AddRecipients() {
                 }
               }
             });
-            
+
             // Only add if at least one identification field is present
-            if (recipient.name || recipient.email || recipient.phone || 
-                (recipient.platform && recipient.platformId)) {
+            if (recipient.name || recipient.email || recipient.phone ||
+              (recipient.platform && recipient.platformId)) {
               recipients.push(recipient);
             }
           }
-          
+
           if (recipients.length === 0) {
             showSnackbar('No valid recipients found in CSV file', 'error');
             setSubmitting(false);
             return;
           }
-          
+
           // Submit recipients
           const response = await fetch(`/api/outreach/campaigns/${id}/recipients`, {
             method: 'POST',
@@ -319,13 +320,13 @@ export default function AddRecipients() {
               recipients
             })
           });
-          
+
           if (!response.ok) {
             throw new Error('Failed to add recipients');
           }
-          
+
           showSnackbar(`Successfully added ${recipients.length} recipients from CSV`, 'success');
-          
+
           // Clear form
           setCsvFile(null);
           setCsvPreview([]);
@@ -337,11 +338,11 @@ export default function AddRecipients() {
             platform: '',
             platformId: ''
           });
-          
+
           // Reset file input
           const fileInput = document.getElementById('csv-file-input');
           if (fileInput) fileInput.value = '';
-          
+
           // Navigate back to campaign
           setTimeout(() => {
             router.push(`/admin/outreach/campaigns/${id}`);
@@ -352,7 +353,7 @@ export default function AddRecipients() {
           setSubmitting(false);
         }
       };
-      
+
       reader.readAsText(csvFile);
     } catch (error) {
       console.error('Error adding recipients from CSV:', error);
@@ -360,7 +361,7 @@ export default function AddRecipients() {
       setSubmitting(false);
     }
   };
-  
+
   // Show snackbar
   const showSnackbar = (message, severity = 'info') => {
     setSnackbar({
@@ -369,7 +370,7 @@ export default function AddRecipients() {
       severity
     });
   };
-  
+
   // Handle close snackbar
   const handleCloseSnackbar = () => {
     setSnackbar({
@@ -377,7 +378,7 @@ export default function AddRecipients() {
       open: false
     });
   };
-  
+
   return (
     <AdminLayout title={campaign ? `Add Recipients: ${campaign.name}` : 'Add Recipients'}>
       <Container maxWidth="xl">
@@ -408,21 +409,21 @@ export default function AddRecipients() {
                 </Grid>
               </Grid>
             </Box>
-            
+
             <Box sx={{ mb: 4 }}>
               <Tabs value={activeTab} onChange={handleTabChange}>
                 <Tab label="Manual Entry" />
                 <Tab label="CSV Upload" />
               </Tabs>
               <Divider />
-              
+
               {/* Manual Entry Tab */}
               {activeTab === 0 && (
                 <Box sx={{ mt: 3 }}>
                   <Alert severity="info" sx={{ mb: 3 }}>
                     Add recipients manually by filling in their details. At least one of name, email, phone, or platform with platform ID is required.
                   </Alert>
-                  
+
                   <Paper sx={{ p: 3, mb: 3 }}>
                     {manualRecipients.map((recipient, index) => (
                       <Grid container spacing={2} key={index} sx={{ mb: index < manualRecipients.length - 1 ? 3 : 0 }}>
@@ -469,15 +470,15 @@ export default function AddRecipients() {
                           />
                         </Grid>
                         <Grid item xs={12} sm={6} md={1} sx={{ display: 'flex', alignItems: 'center' }}>
-                          <IconButton 
-                            color="error" 
+                          <IconButton
+                            color="error"
                             onClick={() => handleRemoveManualRecipient(index)}
                             aria-label="Remove recipient"
                           >
                             <DeleteIcon />
                           </IconButton>
                         </Grid>
-                        
+
                         {index < manualRecipients.length - 1 && (
                           <Grid item xs={12}>
                             <Divider />
@@ -486,7 +487,7 @@ export default function AddRecipients() {
                       </Grid>
                     ))}
                   </Paper>
-                  
+
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
                     <Button
                       variant="outlined"
@@ -495,7 +496,7 @@ export default function AddRecipients() {
                     >
                       Add Another Recipient
                     </Button>
-                    
+
                     <Button
                       variant="contained"
                       color="primary"
@@ -507,14 +508,14 @@ export default function AddRecipients() {
                   </Box>
                 </Box>
               )}
-              
+
               {/* CSV Upload Tab */}
               {activeTab === 1 && (
                 <Box sx={{ mt: 3 }}>
                   <Alert severity="info" sx={{ mb: 3 }}>
                     Upload a CSV file with recipient information. The first row should contain headers.
                   </Alert>
-                  
+
                   <Paper sx={{ p: 3, mb: 3 }}>
                     <Box sx={{ mb: 3 }}>
                       <Button
@@ -537,13 +538,13 @@ export default function AddRecipients() {
                         </Typography>
                       )}
                     </Box>
-                    
+
                     {csvHeaders.length > 0 && (
                       <>
                         <Typography variant="h6" gutterBottom>
                           Map CSV Columns
                         </Typography>
-                        
+
                         <Grid container spacing={2} sx={{ mb: 3 }}>
                           <Grid item xs={12} sm={6} md={4}>
                             <TextField
@@ -631,11 +632,11 @@ export default function AddRecipients() {
                             </TextField>
                           </Grid>
                         </Grid>
-                        
+
                         <Typography variant="h6" gutterBottom>
                           Preview
                         </Typography>
-                        
+
                         <TableContainer component={Paper} sx={{ mb: 3 }}>
                           <Table size="small">
                             <TableHead>
@@ -656,7 +657,7 @@ export default function AddRecipients() {
                             </TableBody>
                           </Table>
                         </TableContainer>
-                        
+
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                           <Button
                             variant="contained"
@@ -675,7 +676,7 @@ export default function AddRecipients() {
             </Box>
           </>
         )}
-        
+
         <Snackbar
           open={snackbar.open}
           autoHideDuration={6000}

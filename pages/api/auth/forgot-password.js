@@ -47,8 +47,8 @@ export default async function handler(req, res) {
     
     // In a real application, you would send an email with the reset link
     // For this demo, we'll just return success
-    console.log(`Reset token for ${email}: ${resetToken}`);
-    console.log(`Reset link would be: ${process.env.NEXTAUTH_URL}/auth/reset-password?token=${resetToken}`);
+    // // // console.log(`Reset token for ${email}: ${resetToken}`);
+    // // // console.log(`Reset link would be: ${process.env.NEXTAUTH_URL}/auth/reset-password?token=${resetToken}`);
     
     return res.status(200).json({ 
       success: true, 

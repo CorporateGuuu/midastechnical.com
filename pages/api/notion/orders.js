@@ -13,9 +13,9 @@ export default async function handler(req, res) {
     const orderData = req.body;
 
     if (!orderData.orderNumber || !orderData.totalAmount || !orderData.items || !orderData.customerName || !orderData.email) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Order number, total amount, items, customer name, and email are required' 
+      return res.status(400).json({
+        success: false,
+        message: 'Order number, total amount, items, customer name, and email are required'
       });
     }
 
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     }
 
     // Also update or create the customer record
-    const customerData = {
+    const customerInfo = {
       name: orderData.customerName,
       email: orderData.email,
       phone: orderData.phone || '',
@@ -34,17 +34,17 @@ export default async function handler(req, res) {
       totalSpent: orderData.totalAmount
     };
 
-    const { data: customerData, error: customerError } = await upsertCustomer(customerData);
+    const { error: customerError } = await upsertCustomer(customerInfo);
 
     if (customerError) {
       console.error('Error updating customer in Notion:', customerError);
       // Continue with the order creation response even if customer update fails
     }
 
-    return res.status(201).json({ 
-      success: true, 
-      id: data.id, 
-      message: 'Order created successfully in Notion' 
+    return res.status(201).json({
+      success: true,
+      id: data.id,
+      message: 'Order created successfully in Notion'
     });
   }
 

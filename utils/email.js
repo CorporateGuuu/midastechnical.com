@@ -80,7 +80,7 @@ const sendOrderConfirmation = async (order, user, items) => {
       html: htmlContent
     });
     
-    console.log('Order confirmation email sent:', info.messageId);
+    // // // console.log('Order confirmation email sent:', info.messageId);
     return true;
   } catch (error) {
     console.error('Error sending order confirmation email:', error);
@@ -117,7 +117,7 @@ const sendShippingUpdate = async (order, user, trackingNumber, carrier) => {
       html: htmlContent
     });
     
-    console.log('Shipping update email sent:', info.messageId);
+    // // // console.log('Shipping update email sent:', info.messageId);
     return true;
   } catch (error) {
     console.error('Error sending shipping update email:', error);
@@ -151,7 +151,7 @@ const sendWelcomeEmail = async (user) => {
       html: htmlContent
     });
     
-    console.log('Welcome email sent:', info.messageId);
+    // // // console.log('Welcome email sent:', info.messageId);
     return true;
   } catch (error) {
     console.error('Error sending welcome email:', error);

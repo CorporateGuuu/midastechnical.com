@@ -28,7 +28,7 @@ async function initialize() {
     const config = configResult.rows[0];
     apiConfig = JSON.parse(config.settings);
     
-    console.log('Instagram connector initialized successfully');
+    // // // console.log('Instagram connector initialized successfully');
     return true;
   } catch (error) {
     console.error('Error initializing Instagram connector:', error);
@@ -261,7 +261,7 @@ async function refreshAccessTokenIfNeeded() {
     const tokenExpiresAt = apiConfig.tokenExpiresAt || 0;
     
     if (now >= tokenExpiresAt - 300000) { // Refresh if less than 5 minutes left
-      console.log('Instagram access token expired or about to expire, refreshing...');
+      // // // console.log('Instagram access token expired or about to expire, refreshing...');
       
       // Refresh token (Instagram uses Facebook's token system)
       const response = await axios.get(
@@ -284,7 +284,7 @@ async function refreshAccessTokenIfNeeded() {
       // Update in database
       await updateConfigInDatabase();
       
-      console.log('Instagram access token refreshed successfully');
+      // // // console.log('Instagram access token refreshed successfully');
     }
   } catch (error) {
     console.error('Error refreshing Instagram access token:', error);

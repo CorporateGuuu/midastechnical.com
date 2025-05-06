@@ -1,6 +1,6 @@
+import React from 'react';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 import { useState } from 'react';
 
 export default function Wholesale() {
@@ -55,9 +55,8 @@ export default function Wholesale() {
         <meta name="description" content="Join the Midas Technical Solutions Wholesale Program for exclusive pricing, bulk discounts, and dedicated support for your repair business." />
       </Head>
       
-      <Header />
-      
-      <main>
+      <Layout title="Wholesale Program - Midas Technical Solutions" description="Join the Midas Technical Solutions Wholesale Program for exclusive pricing, bulk discounts, and dedicated support for your repair business.">
+
         <div className="container" style={{ padding: '40px 20px', maxWidth: '1000px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Wholesale Program</h1>
           
@@ -290,9 +289,8 @@ export default function Wholesale() {
             )}
           </section>
         </div>
-      </main>
       
-      <Footer />
+</Layout>
     </>
   );
 }

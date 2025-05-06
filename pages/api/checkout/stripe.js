@@ -46,7 +46,7 @@ export default async function handler(req, res) {
 
     // Get cart items with product details
     const cartItemsResult = await query(`
-      SELECT ci.id, ci.quantity, p.id as product_id, p.name, p.price, 
+      SELECT ci.id, ci.quantity, p.id as product_id, p.name, p.price,
              p.discount_percentage, p.image_url, p.slug
       FROM cart_items ci
       JOIN products p ON ci.product_id = p.id
@@ -64,10 +64,10 @@ export default async function handler(req, res) {
     const lineItems = cartItemsResult.rows.map(item => {
       const price = parseFloat(item.price);
       const discountPercentage = parseFloat(item.discount_percentage || 0);
-      const discountedPrice = discountPercentage > 0 
-        ? price * (1 - discountPercentage / 100) 
+      const discountedPrice = discountPercentage > 0
+        ? price * (1 - discountPercentage / 100)
         : price;
-      
+
       return {
         price_data: {
           currency: 'usd',
@@ -82,8 +82,8 @@ export default async function handler(req, res) {
     });
 
     // Get shipping information from request body
-    const { 
-      shipping_address,
+    const {
+      // shipping_address, // Uncomment if needed in the future
       success_url = `${process.env.NEXTAUTH_URL}/checkout/success`,
       cancel_url = `${process.env.NEXTAUTH_URL}/checkout/cancel`
     } = req.body;

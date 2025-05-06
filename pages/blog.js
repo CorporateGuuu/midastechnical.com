@@ -1,6 +1,7 @@
+import React from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Layout from '../components/Layout/Layout';
 import Link from 'next/link';
 
 // Sample blog posts data
@@ -55,7 +56,7 @@ const repairGuides = [
   }
 ];
 
-export default function RepairGuides() {
+function RepairGuides() {
   return (
     <>
       <Head>
@@ -63,9 +64,8 @@ export default function RepairGuides() {
         <meta name="description" content="Step-by-step repair guides for phones, tablets, and laptops. Learn how to fix your devices with our expert tutorials." />
       </Head>
       
-      <Header />
-      
-      <main>
+      <Layout title="Repair Guides - Midas Technical Solutions" description="Step-by-step repair guides for phones, tablets, and laptops. Learn how to fix your devices with our expert tutorials.">
+
         <div className="container" style={{ padding: '40px 20px' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Repair Guides</h1>
           <p style={{ marginBottom: '2rem', maxWidth: '800px' }}>
@@ -127,9 +127,10 @@ export default function RepairGuides() {
             ))}
           </div>
         </div>
-      </main>
       
-      <Footer />
+</Layout>
     </>
   );
 }
+
+export default React.memo(RepairGuides);

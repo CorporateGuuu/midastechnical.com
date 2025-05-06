@@ -117,73 +117,73 @@ export default function Register() {
             </div>
           )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+              />
+              <small>Password must be at least 8 characters long</small>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Registering...' : 'Register'}
+            </button>
+          </form>
+
+          <div className="auth-separator">
+            <span>OR</span>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
-            />
-            <small>Password must be at least 8 characters long</small>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
+          <button
+            onClick={handleGoogleSignIn}
+            className="btn btn-google"
+            type="button"
+          >
+            Sign up with Google
           </button>
-        </form>
 
-        <div className="auth-separator">
-          <span>OR</span>
-        </div>
-
-        <button
-          onClick={handleGoogleSignIn}
-          className="btn btn-google"
-          type="button"
-        >
-          Sign up with Google
-        </button>
-
-        <p className="auth-link">
-          Already have an account? <Link href="/auth/signin">Sign In</Link>
-        </p>
+          <p className="auth-link">
+            Already have an account? <Link href="/auth/signin">Sign In</Link>
+          </p>
         </div>
       </div>
 
@@ -205,7 +205,7 @@ export default function Register() {
                 <div className={styles.footerService}>
                   <div className={styles.footerServiceIcon}>🚚</div>
                   <div className={styles.footerServiceName}>Fast Shipping</div>
-                  <div className={styles.footerServiceDescription}>Free shipping on orders over $50</div>
+                  <div className={styles.footerServiceDescription}>Free shipping on orders over $1000</div>
                 </div>
 
                 <div className={styles.footerService}>

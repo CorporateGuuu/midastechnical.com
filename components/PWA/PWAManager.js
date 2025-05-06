@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './PWAManager.module.css';
 
@@ -15,7 +16,7 @@ const PWAManager = () => {
         try {
           // Register service worker
           const registration = await navigator.serviceWorker.register('/sw.js');
-          console.log('Service Worker registered with scope:', registration.scope);
+          // // // console.log('Service Worker registered with scope:', registration.scope);
 
           // Register for periodic sync if supported
           if ('periodicSync' in registration) {
@@ -30,7 +31,7 @@ const PWAManager = () => {
                 await registration.periodicSync.register('update-content', {
                   minInterval: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
                 });
-                console.log('Periodic sync registered');
+                // // // console.log('Periodic sync registered');
               } catch (syncError) {
                 console.error('Periodic sync registration failed:', syncError);
               }
@@ -74,7 +75,7 @@ const PWAManager = () => {
     window.addEventListener('appinstalled', () => {
       setIsInstalled(true);
       setShowInstallBanner(false);
-      console.log('PWA was installed');
+      // // // console.log('PWA was installed');
     });
 
     return () => {
@@ -116,9 +117,9 @@ const PWAManager = () => {
     setInstallPrompt(null);
 
     if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the install prompt');
+      // // // console.log('User accepted the install prompt');
     } else {
-      console.log('User dismissed the install prompt');
+      // // // console.log('User dismissed the install prompt');
     }
 
     // Hide the banner
@@ -155,7 +156,7 @@ const PWAManager = () => {
             applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '')
           });
 
-          console.log('User is subscribed:', subscription);
+          // // // console.log('User is subscribed:', subscription);
 
           // Example notification
           setTimeout(() => {
