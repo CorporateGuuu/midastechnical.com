@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3002",
-    "prebuild": "rm -f requirements.txt runtime.txt && echo '# Intentionally empty' > requirements.txt",
+    "prebuild": "echo 'Skipping Python dependencies'",
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
