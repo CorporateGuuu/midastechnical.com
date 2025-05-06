@@ -18,10 +18,7 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
-  eslint: {
-    // Completely disable ESLint during builds
-    ignoreDuringBuilds: true,
-  },
+  eslint: false,
   async headers() {
     return [
       {
