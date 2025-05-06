@@ -88,7 +88,7 @@ export const authOptions = {
 
           // For development, return mock user even if there's an error
           if (process.env.NODE_ENV === 'development') {
-            console.log('Using mock user due to authentication error');
+            // Using mock user due to authentication error
             return {
               id: MOCK_USER.id,
               name: MOCK_USER.name,
@@ -117,7 +117,7 @@ export const authOptions = {
 
           // For development, use mock user
           if (process.env.NODE_ENV === 'development') {
-            console.log('Using mock user for 2FA completion');
+            // Using mock user for 2FA completion
             return {
               id: MOCK_USER.id,
               name: MOCK_USER.name,
@@ -150,7 +150,7 @@ export const authOptions = {
 
           // For development, return mock user even if there's an error
           if (process.env.NODE_ENV === 'development') {
-            console.log('Using mock user due to 2FA completion error');
+            // Using mock user due to 2FA completion error
             return {
               id: MOCK_USER.id,
               name: MOCK_USER.name,
@@ -222,7 +222,7 @@ export const authOptions = {
     async createUser(user) {
       // For development, return mock user
       if (process.env.NODE_ENV === 'development') {
-        console.log('Using mock user for createUser');
+        // Using mock user for createUser
         return MOCK_USER;
       }
 
@@ -261,7 +261,7 @@ export const authOptions = {
     async getUser(id) {
       // For development, return mock user if ID matches
       if (process.env.NODE_ENV === 'development' && id === MOCK_USER.id) {
-        console.log('Using mock user for getUser');
+        // Using mock user for getUser
         return MOCK_USER;
       }
 
@@ -296,7 +296,7 @@ export const authOptions = {
       // For development, return mock user if email matches
       if (process.env.NODE_ENV === 'development' &&
         (email === MOCK_USER.email || email === 'demo@example.com' || email === 'test@example.com')) {
-        console.log('Using mock user for getUserByEmail');
+        // Using mock user for getUserByEmail
         return MOCK_USER;
       }
 
@@ -330,7 +330,7 @@ export const authOptions = {
     async getUserByAccount({ provider, providerAccountId }) {
       // For development, return mock user
       if (process.env.NODE_ENV === 'development') {
-        console.log('Using mock user for getUserByAccount');
+        // Using mock user for getUserByAccount
         return MOCK_USER;
       }
 
@@ -362,7 +362,7 @@ export const authOptions = {
     async updateUser(user) {
       // For development, return mock user
       if (process.env.NODE_ENV === 'development') {
-        console.log('Using mock user for updateUser');
+        // Using mock user for updateUser
         return {
           ...MOCK_USER,
           ...user,
@@ -407,7 +407,7 @@ export const authOptions = {
     async linkAccount(account) {
       // For development, just return the account
       if (process.env.NODE_ENV === 'development') {
-        console.log('Mock linkAccount for development');
+        // Mock linkAccount for development
         return account;
       }
 
@@ -433,7 +433,7 @@ export const authOptions = {
     async createSession(session) {
       // For development, just return the session
       if (process.env.NODE_ENV === 'development') {
-        console.log('Mock createSession for development');
+        // Mock createSession for development
         return session;
       }
 
@@ -456,7 +456,7 @@ export const authOptions = {
     async getSessionAndUser(sessionToken) {
       // For development, create a mock session
       if (process.env.NODE_ENV === 'development') {
-        console.log('Using mock session for development');
+        // Using mock session for development
         return {
           session: {
             sessionToken,
@@ -516,7 +516,7 @@ export const authOptions = {
     async updateSession(session) {
       // For development, just return the session
       if (process.env.NODE_ENV === 'development') {
-        console.log('Mock updateSession for development');
+        // Mock updateSession for development
         return session;
       }
 
