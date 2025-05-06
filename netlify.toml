@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish = ".next"
-  ignore_requirements_txt = true
+  base = "/"
 
 [build.environment]
   NODE_VERSION = "18.17.0"
