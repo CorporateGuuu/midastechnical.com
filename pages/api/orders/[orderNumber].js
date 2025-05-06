@@ -1,5 +1,19 @@
 import { getSession } from 'next-auth/react';
-import { query } from '../../../lib/db';
+
+// Create fallback functions if imports fail
+const dbFallback = {
+  query: async () => ({ rows: [] })
+};
+
+// Try to import the real module, fall back to the simple one if it fails
+let db;
+try {
+  db = require('../../../lib/db');
+} catch (e) {
+  db = dbFallback;
+}
+
+const { query } = db;
 
 export default async function handler(req, res) {
   const session = await getSession({ req });

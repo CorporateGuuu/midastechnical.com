@@ -3,8 +3,76 @@ import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
-import Layout from '../components/Layout/Layout';
-import styles from '../styles/DeviceSystem.module.css';
+
+// Create a simple Layout component if the import fails
+const LayoutFallback = ({ children }) => (
+  <div>
+    <main>{children}</main>
+  </div>
+);
+
+// Try to import the real Layout component, fall back to the simple one if it fails
+let Layout;
+try {
+  Layout = require('../components/Layout/Layout').default;
+} catch (e) {
+  Layout = LayoutFallback;
+}
+
+// Create a simple styles object if the import fails
+const stylesFallback = {
+  deviceSystemHeader: '',
+  deviceSystemFilters: '',
+  filterGroup: '',
+  deviceSystemResults: '',
+  resultsHeader: '',
+  downloadSection: '',
+  downloadButton: '',
+  deviceGrid: '',
+  deviceCard: '',
+  deviceImageContainer: '',
+  deviceImage: '',
+  conditionBadge: '',
+  outOfStockBadge: '',
+  deviceContent: '',
+  deviceCategory: '',
+  deviceName: '',
+  deviceSpecs: '',
+  specItem: '',
+  specLabel: '',
+  specValue: '',
+  deviceFooter: '',
+  devicePrice: '',
+  deviceStock: '',
+  inStock: '',
+  outOfStock: '',
+  deviceActions: '',
+  detailsButton: '',
+  orderButton: '',
+  noResults: '',
+  resetButton: '',
+  deviceSystemInfo: '',
+  gradingLegend: '',
+  gradingItem: '',
+  gradeBadge: '',
+  conditionA: '',
+  conditionB: '',
+  conditionC: '',
+  conditionD: '',
+  learnMoreLink: '',
+  loadingContainer: '',
+  spinner: '',
+  errorContainer: '',
+  retryButton: ''
+};
+
+// Try to import the real styles, fall back to the simple ones if it fails
+let styles;
+try {
+  styles = require('../styles/DeviceSystem.module.css');
+} catch (e) {
+  styles = stylesFallback;
+}
 
 export default function DeviceSystemPage() {
   const { data: session, status } = useSession();

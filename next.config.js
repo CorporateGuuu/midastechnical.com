@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -7,6 +9,17 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  webpack: (config, { isServer }) => {
+    // Add aliases for common directories
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@components': path.resolve(__dirname, 'components'),
+      '@styles': path.resolve(__dirname, 'styles'),
+      '@lib': path.resolve(__dirname, 'lib'),
+    };
+
+    return config;
   }
 };
 
