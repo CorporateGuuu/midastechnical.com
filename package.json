@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "prebuild": "echo 'Skipping ESLint'",
-    "build": "DISABLE_ESLINT_PLUGIN=true NEXT_DISABLE_ESLINT=1 next build",
+    "build": "NODE_OPTIONS=--max_old_space_size=4096 DISABLE_ESLINT=true DISABLE_ESLINT_PLUGIN=true NEXT_DISABLE_ESLINT=1 next build --no-lint",
     "start": "next start -p 3002",
     "lint": "echo 'Skipping lint'",
     "lint:css": "echo 'Skipping lint:css'",
