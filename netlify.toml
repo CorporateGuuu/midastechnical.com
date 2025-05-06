@@ -1,11 +1,13 @@
 [build]
   command = "npm run build"
   publish = ".next"
+  ignore_requirements_txt = true
 
 [build.environment]
   NODE_VERSION = "18.17.0"
   NPM_VERSION = "9.6.7"
   NETLIFY_USE_PYTHON = "false"
+  PYTHON_VERSION = "off"
 
 # Redirects and headers are NGINX-style redirects and headers
 # For more information see https://docs.netlify.com/routing/redirects/
