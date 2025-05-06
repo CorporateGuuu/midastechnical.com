@@ -1,9 +1,2 @@
-aiohttp==3.8.5
-beautifulsoup4==4.12.2
-psycopg2-binary==2.9.7
-python-dotenv==1.0.0
-SQLAlchemy==2.0.20
-pandas==2.1.0
-lxml==4.9.3
-requests==2.31.0
-asyncio==3.4.3
+# This file intentionally left empty to prevent Netlify from installing Python dependencies
+# The actual Python dependencies are in requirements.txt.bak
