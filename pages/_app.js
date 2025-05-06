@@ -58,6 +58,9 @@ const UnifiedFooter = dynamic(
   { ssr: false }
 );
 
+// Ensure we have a fallback for Netlify
+const UnifiedFooterFallback = UnifiedFooter;
+
 // Import fix for hidden element
 const FixHiddenElement = dynamic(
   () => import('../components/FixHiddenElement'),
