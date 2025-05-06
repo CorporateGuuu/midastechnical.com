@@ -5,10 +5,7 @@
 [build.environment]
   NODE_VERSION = "18.17.0"
   NPM_VERSION = "9.6.7"
-
-# Skip installing Python dependencies during build
-[build.environment.NETLIFY_USE_PYTHON]
-  value = "false"
+  NETLIFY_USE_PYTHON = "false"
 
 # Redirects and headers are NGINX-style redirects and headers
 # For more information see https://docs.netlify.com/routing/redirects/
