@@ -278,7 +278,7 @@ const UnifiedFooter = () => {
                   href="https://www.facebook.com/mdtstech"
                   title="facebook"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   &nbsp;
                 </a>
@@ -289,7 +289,7 @@ const UnifiedFooter = () => {
                   href="https://twitter.com/mdtstech"
                   title="twitter"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   &nbsp;
                 </a>
@@ -300,7 +300,7 @@ const UnifiedFooter = () => {
                   href="https://www.linkedin.com/in/fitzgerald-amaniampong-0a2962324/"
                   title="linkedin"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   &nbsp;
                 </a>
@@ -311,7 +311,7 @@ const UnifiedFooter = () => {
                   href="https://www.instagram.com/mdtstech.store/"
                   title="instagram"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   &nbsp;
                 </a>
@@ -322,7 +322,7 @@ const UnifiedFooter = () => {
                   href="https://youtube.com/channel/mdtstech"
                   title="youtube"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                 >
                   &nbsp;
                 </a>

@@ -9,6 +9,15 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+
+// Import global CSS files
+import '../public/css/global.css';
+import '../public/css/components.css';
+import '../public/css/home.css';
+import '../public/css/animations.css';
+import '../public/css/fixes.css';
+import '../public/css/product-detail.css';
+import '../public/css/responsive.css';
 import MiniCart from '../components/MiniCart/MiniCart';
 import SearchAutocomplete from '../components/SearchAutocomplete/SearchAutocomplete';
 import MobileMenu from '../components/MobileMenu/MobileMenu';

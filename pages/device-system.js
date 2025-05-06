@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import Layout from '../components/Layout/Layout';
 import styles from '../styles/DeviceSystem.module.css';
 
@@ -9,7 +10,7 @@ export default function DeviceSystemPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { instock } = router.query;
-  
+
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ export default function DeviceSystemPage() {
     inStock: instock === '1',
     search: '',
   });
-  
+
   // Mock device data (in a real app, this would come from an API)
   const mockDevices = [
     {
@@ -160,16 +161,16 @@ export default function DeviceSystemPage() {
       }
     },
   ];
-  
+
   // Fetch devices (simulated)
   useEffect(() => {
     const fetchDevices = async () => {
       try {
         setLoading(true);
-        
+
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         // In a real app, this would be an API call
         setDevices(mockDevices);
       } catch (err) {
@@ -179,10 +180,10 @@ export default function DeviceSystemPage() {
         setLoading(false);
       }
     };
-    
+
     fetchDevices();
   }, []);
-  
+
   // Handle filter changes
   const handleFilterChange = (name, value) => {
     setFilters(prev => ({
@@ -190,49 +191,49 @@ export default function DeviceSystemPage() {
       [name]: value
     }));
   };
-  
+
   // Filter devices based on current filters
   const filteredDevices = devices.filter(device => {
     // Filter by in stock
     if (filters.inStock && device.stock <= 0) {
       return false;
     }
-    
+
     // Filter by category
     if (filters.category !== 'all' && device.category !== filters.category) {
       return false;
     }
-    
+
     // Filter by brand
     if (filters.brand !== 'all' && device.brand !== filters.brand) {
       return false;
     }
-    
+
     // Filter by condition
     if (filters.condition !== 'all' && device.condition !== filters.condition) {
       return false;
     }
-    
+
     // Filter by search term
     if (filters.search && !device.name.toLowerCase().includes(filters.search.toLowerCase())) {
       return false;
     }
-    
+
     return true;
   });
-  
+
   // Get unique categories, brands, and conditions for filter options
   const categories = ['all', ...new Set(devices.map(device => device.category))];
   const brands = ['all', ...new Set(devices.map(device => device.brand))];
   const conditions = ['all', 'A', 'B', 'C', 'D'];
-  
+
   // Redirect to login if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin?callbackUrl=/device-system');
     }
   }, [status, router]);
-  
+
   if (status === 'loading' || loading) {
     return (
       <Layout>
@@ -245,7 +246,7 @@ export default function DeviceSystemPage() {
       </Layout>
     );
   }
-  
+
   if (error) {
     return (
       <Layout>
@@ -261,14 +262,14 @@ export default function DeviceSystemPage() {
       </Layout>
     );
   }
-  
+
   return (
     <Layout>
       <Head>
         <title>Device Inventory System | MDTS - Midas Technical Solutions</title>
         <meta name="description" content="Browse our inventory of devices and parts at MDTS - Midas Technical Solutions." />
       </Head>
-      
+
       <main className="main-content">
         <div className="container">
           <div className={styles.deviceSystemHeader}>
@@ -277,7 +278,7 @@ export default function DeviceSystemPage() {
               Browse our complete inventory of devices and parts. Use the filters below to find exactly what you need.
             </p>
           </div>
-          
+
           <div className={styles.deviceSystemFilters}>
             <div className={styles.filterGroup}>
               <label htmlFor="search">Search:</label>
@@ -289,7 +290,7 @@ export default function DeviceSystemPage() {
                 onChange={(e) => handleFilterChange('search', e.target.value)}
               />
             </div>
-            
+
             <div className={styles.filterGroup}>
               <label htmlFor="category">Category:</label>
               <select
@@ -304,7 +305,7 @@ export default function DeviceSystemPage() {
                 ))}
               </select>
             </div>
-            
+
             <div className={styles.filterGroup}>
               <label htmlFor="brand">Brand:</label>
               <select
@@ -319,7 +320,7 @@ export default function DeviceSystemPage() {
                 ))}
               </select>
             </div>
-            
+
             <div className={styles.filterGroup}>
               <label htmlFor="condition">Condition:</label>
               <select
@@ -334,7 +335,7 @@ export default function DeviceSystemPage() {
                 ))}
               </select>
             </div>
-            
+
             <div className={styles.filterGroup}>
               <label className={styles.checkboxLabel}>
                 <input
@@ -346,11 +347,11 @@ export default function DeviceSystemPage() {
               </label>
             </div>
           </div>
-          
+
           <div className={styles.deviceSystemResults}>
             <div className={styles.resultsHeader}>
               <h2>Results ({filteredDevices.length} devices)</h2>
-              
+
               <div className={styles.downloadSection}>
                 <button className={styles.downloadButton}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -360,7 +361,7 @@ export default function DeviceSystemPage() {
                   </svg>
                   Download Inventory CSV
                 </button>
-                
+
                 <button className={styles.downloadButton}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -373,7 +374,7 @@ export default function DeviceSystemPage() {
                 </button>
               </div>
             </div>
-            
+
             {filteredDevices.length === 0 ? (
               <div className={styles.noResults}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -383,7 +384,7 @@ export default function DeviceSystemPage() {
                 </svg>
                 <h3>No devices found</h3>
                 <p>Try adjusting your filters or search criteria.</p>
-                <button 
+                <button
                   onClick={() => setFilters({
                     category: 'all',
                     brand: 'all',
@@ -401,8 +402,8 @@ export default function DeviceSystemPage() {
                 {filteredDevices.map(device => (
                   <div key={device.id} className={styles.deviceCard}>
                     <div className={styles.deviceImageContainer}>
-                      <img 
-                        src={device.image || '/images/placeholder.svg'} 
+                      <img
+                        src={device.image || '/images/placeholder.svg'}
                         alt={device.name}
                         className={styles.deviceImage}
                       />
@@ -415,11 +416,11 @@ export default function DeviceSystemPage() {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className={styles.deviceContent}>
                       <div className={styles.deviceCategory}>{device.category} • {device.brand}</div>
                       <h3 className={styles.deviceName}>{device.name}</h3>
-                      
+
                       <div className={styles.deviceSpecs}>
                         {Object.entries(device.specs).map(([key, value]) => (
                           <div key={key} className={styles.specItem}>
@@ -428,7 +429,7 @@ export default function DeviceSystemPage() {
                           </div>
                         ))}
                       </div>
-                      
+
                       <div className={styles.deviceFooter}>
                         <div className={styles.devicePrice}>${device.price.toFixed(2)}</div>
                         <div className={styles.deviceStock}>
@@ -439,15 +440,15 @@ export default function DeviceSystemPage() {
                           )}
                         </div>
                       </div>
-                      
+
                       <div className={styles.deviceActions}>
-                        <button 
+                        <button
                           className={styles.detailsButton}
                           onClick={() => router.push(`/devices/${device.id}`)}
                         >
                           View Details
                         </button>
-                        <button 
+                        <button
                           className={styles.orderButton}
                           disabled={device.stock <= 0}
                         >
@@ -460,7 +461,7 @@ export default function DeviceSystemPage() {
               </div>
             )}
           </div>
-          
+
           <div className={styles.deviceSystemInfo}>
             <h2>Device Grading System</h2>
             <p>
@@ -485,9 +486,9 @@ export default function DeviceSystemPage() {
                 <span>Poor condition, significant wear</span>
               </div>
             </div>
-            <a href="/device-grading" className={styles.learnMoreLink}>
+            <Link href="/device-grading" className={styles.learnMoreLink}>
               Learn more about our grading system
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -498,7 +499,7 @@ export default function DeviceSystemPage() {
 // Server-side authentication check
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  
+
   if (!session) {
     return {
       redirect: {
@@ -507,7 +508,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  
+
   return {
     props: { session },
   };
