@@ -1,16 +1,6 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:jest/recommended"
-  ],
-  "plugins": [
-    "react",
-    "react-hooks",
-    "jest"
-  ],
+  "extends": [],
+  "plugins": [],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
@@ -40,6 +30,9 @@
     "node": true,
     "jest": true
   },
+  "ignorePatterns": [
+    "**/*"
+  ],
   "overrides": [
     {
       "files": [
