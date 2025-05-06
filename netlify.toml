@@ -1,15 +1,11 @@
 [build]
-  command = "./netlify-build.sh"
+  command = "npm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18.17.0"
   NPM_VERSION = "9.6.7"
   NETLIFY_USE_PYTHON = "false"
-  NEXT_DISABLE_ESLINT = "1"
-  DISABLE_ESLINT_PLUGIN = "true"
-  DISABLE_ESLINT = "true"
-  NODE_OPTIONS = "--max_old_space_size=4096"
 
 # Redirects and headers are NGINX-style redirects and headers
 # For more information see https://docs.netlify.com/routing/redirects/

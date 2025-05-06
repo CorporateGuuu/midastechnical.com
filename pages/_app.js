@@ -19,8 +19,7 @@ import '../public/css/fixes.css';
 import '../public/css/product-detail.css';
 import '../public/css/responsive.css';
 
-// Import Google Fonts CSS
-import 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+// Google Fonts will be loaded in Head
 import MiniCart from '../components/MiniCart/MiniCart';
 import SearchAutocomplete from '../components/SearchAutocomplete/SearchAutocomplete';
 import MobileMenu from '../components/MobileMenu/MobileMenu';
@@ -207,6 +206,10 @@ function AppContent({ Component, pageProps }) {
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         />
       </Head>
 
