@@ -21,7 +21,6 @@ const nextConfig = {
   eslint: {
     // Completely disable ESLint during builds
     ignoreDuringBuilds: true,
-    dirs: [],
   },
   async headers() {
     return [
