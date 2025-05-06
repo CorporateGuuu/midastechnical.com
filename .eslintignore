@@ -1,0 +1,22 @@
+# Ignore build output
+.next/
+out/
+
+# Ignore node_modules
+node_modules/
+
+# Ignore public directory
+public/
+
+# Ignore specific files
+pages/_document.js
+pages/device-system.js
+components/UnifiedFooter/UnifiedFooter.js
+pages/api/auth/[...nextauth].js
+pages/api/orders/[orderNumber].js
+pages/api/send-email.js
+components/Admin/InventoryManagement.js
+
+# Ignore all test files
+**/*.test.js
+**/*.spec.js
