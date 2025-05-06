@@ -18,7 +18,9 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
-  eslint: false,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async headers() {
     return [
       {
