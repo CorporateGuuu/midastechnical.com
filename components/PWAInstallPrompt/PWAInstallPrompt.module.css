@@ -16,6 +16,7 @@
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -56,6 +57,7 @@
   margin: 0;
   font-size: 14px;
   color: #ffffff;
+  line-height: 1.4;
 }
 
 .promptActions {
@@ -64,20 +66,55 @@
   margin-left: 16px;
 }
 
+@media (max-width: 480px) {
+  .promptContent {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .promptIcon {
+    margin-right: 0;
+    margin-bottom: 16px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .promptText {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .promptText h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .promptText p {
+    font-size: 13px;
+  }
+
+  .promptActions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .installButton {
   background-color: #e60000;
   color: #ffffff;
   border: none;
   border-radius: 4px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .installButton:hover {
   background-color: #cc0000;
+  transform: translateY(-2px);
 }
 
 .closeButton {
@@ -85,15 +122,28 @@
   color: #d4af37;
   border: 1px solid #d4af37;
   border-radius: 4px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .closeButton:hover {
   background-color: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+
+  .installButton,
+  .closeButton {
+    padding: 12px 20px;
+    font-size: 15px;
+    flex: 1;
+    text-align: center;
+    min-width: 100px;
+  }
 }
 
 @media (min-width: 768px) {

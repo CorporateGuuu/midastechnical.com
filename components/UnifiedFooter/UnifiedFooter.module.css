@@ -379,6 +379,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+    padding: 1.5rem 1rem;
   }
 
   .shippingMethodsType {
@@ -387,7 +388,12 @@
 
   .newFooterMain {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
+    padding: 2rem 1rem;
+  }
+
+  .footerLinks2 {
+    margin-bottom: 0;
   }
 
   .footerBoxes2Mobile {
@@ -395,11 +401,22 @@
     margin-top: 1.5rem;
   }
 
+  .footerLinks2 li {
+    margin-bottom: 1rem;
+  }
+
+  .footerLinks2 li a {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    display: block;
+  }
+
   .fResponsivePart {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1.25rem;
+    margin: 1rem;
     background-color: #f8f8f8;
     /* Light gray background */
     border-left: 3px solid #e60000;
@@ -409,6 +426,7 @@
     border-top: 1px solid #d4af37;
     border-bottom: 1px solid #d4af37;
     border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   .fLeftPart,
@@ -447,13 +465,21 @@
 
   .bootomFooter {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
+    padding: 1.5rem 1rem;
   }
 
   .footerTrademark {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .footerTrademark p {
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   .hideDeskOllow {
@@ -465,21 +491,58 @@
     width: 100%;
   }
 
+  .socialMediaLinks {
+    margin-bottom: 1.5rem;
+  }
+
+  .socialMediaLinks ul {
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .facebook,
+  .twitter,
+  .linkedin,
+  .instagram,
+  .youtube {
+    width: 40px;
+    height: 40px;
+  }
+
   .paymentMethodsPart ul {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .paymentMethodsPart h4 {
+    text-align: center;
+    margin-bottom: 1rem;
   }
 
   .shippingMethodsMobile {
     display: block;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
+    padding: 0 1rem;
   }
 
   .shippingMethodsMobile h4 {
     margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1rem;
   }
 
   .shippingMethodsMobile ul {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .contactUsBtn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 0.75rem;
   }
 }

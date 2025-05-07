@@ -201,6 +201,11 @@
 
 /* Responsive Styles */
 @media (max-width: 768px) {
+  .productCard {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
   .productImageContainer {
     height: 180px;
   }
@@ -208,5 +213,44 @@
   .productActions {
     opacity: 1;
     transform: translateX(0);
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .productInfo {
+    padding: 1rem;
+  }
+
+  .productName {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .productPrice {
+    margin-bottom: 0.75rem;
+  }
+
+  .currentPrice {
+    font-size: 1.1rem;
+  }
+
+  .productFooter {
+    padding: 0.75rem 1rem;
+  }
+
+  .addToCartButton,
+  .viewDetailsButton {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .wishlistButton,
+  .quickViewButton {
+    width: 40px;
+    height: 40px;
   }
 }

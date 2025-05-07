@@ -363,77 +363,196 @@
 /* Responsive Styles */
 @media (max-width: 768px) {
   .landing-hero {
-    height: 500px;
+    height: 550px;
+    padding: 2rem 1rem;
   }
 
   .landing-hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
   }
 
   .landing-hero p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    max-width: 100%;
   }
 
   .landing-hero-buttons {
     flex-direction: column;
-    gap: 15px;
+    gap: 1rem;
+    width: 100%;
   }
 
   .primary-button,
   .secondary-button {
-    padding: 12px 24px;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 0 1.25rem;
   }
 
   .features-section {
-    padding: 60px 0;
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.25rem;
   }
 
   .cta-section {
-    padding: 60px 0;
+    padding: 3rem 0;
   }
 
   .cta-section h2 {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-section p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem 1.5rem;
   }
 
   .landing-footer {
-    padding: 40px 0 20px;
+    padding: 3rem 0 1.5rem;
   }
 
   .landing-footer-content {
     flex-direction: column;
+    gap: 2rem;
   }
 
   .landing-footer-logo {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 1rem;
+  }
+
+  .landing-footer-logo h3 {
+    font-size: 1.75rem;
+  }
+
+  .landing-footer-logo p {
+    font-size: 0.9rem;
   }
 
   .landing-footer-links {
     justify-content: space-around;
-  }
-}
-
-@media (max-width: 480px) {
-  .landing-hero {
-    height: 450px;
-  }
-
-  .landing-hero h1 {
-    font-size: 2rem;
-  }
-
-  .landing-hero p {
-    font-size: 1rem;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
+    gap: 2rem;
   }
 
   .landing-footer-column {
     flex: 1 1 100%;
     text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .landing-footer-column h4 {
+    margin-bottom: 1rem;
+  }
+
+  .landing-footer-column ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-hero {
+    height: 500px;
+    padding: 1.5rem 1rem;
+  }
+
+  .landing-hero h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .landing-hero p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-card {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta-section p {
+    font-size: 0.9rem;
+  }
+
+  .cta-button {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .landing-footer-column {
+    flex: 1 1 100%;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .landing-footer-column h4 {
+    font-size: 1.1rem;
+  }
+
+  .landing-footer-column ul li a {
+    font-size: 0.9rem;
+  }
+
+  .landing-footer-bottom p {
+    font-size: 0.8rem;
   }
 }

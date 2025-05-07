@@ -182,44 +182,134 @@
 
 @media (max-width: 768px) {
   .hero {
-    height: 600px;
+    height: 650px;
+    padding: 2rem 1.5rem;
+  }
+
+  .content {
+    max-width: 100%;
+    padding: 0 1rem;
   }
 
   .title {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
   }
 
   .subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    max-width: 100%;
   }
 
   .ctaContainer {
     flex-direction: column;
-    gap: 15px;
+    gap: 1rem;
+    width: 100%;
   }
 
   .cta,
   .secondaryCta {
-    padding: 12px 24px;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
   }
 
   .stats {
     flex-direction: column;
-    gap: 20px;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    width: 100%;
+  }
+
+  .stat {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+
+  .statNumber {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .statLabel {
+    font-size: 0.9rem;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .simpleContent {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .simpleContent h2 {
+    font-size: 2rem;
+  }
+
+  .simpleContent p {
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero {
-    height: 650px;
+    height: 700px;
+    padding: 1.5rem 1rem;
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta,
+  .secondaryCta {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .statNumber {
+    font-size: 1.5rem;
+  }
+
+  .statLabel {
+    font-size: 0.85rem;
+  }
+
+  .simpleContent {
+    padding: 1.25rem;
+    max-width: 95%;
+  }
+
+  .simpleContent h2 {
+    font-size: 1.75rem;
+  }
+
+  .simpleContent p {
     font-size: 1rem;
+    line-height: 1.5;
   }
 }
