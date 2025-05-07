@@ -1,0 +1,105 @@
+.installPrompt {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background-color: #000000;
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.promptContent {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.promptIcon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+}
+
+.promptIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.promptText {
+  flex-grow: 1;
+}
+
+.promptText h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #d4af37;
+}
+
+.promptText p {
+  margin: 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.promptActions {
+  display: flex;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.installButton {
+  background-color: #e60000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.installButton:hover {
+  background-color: #cc0000;
+}
+
+.closeButton {
+  background-color: transparent;
+  color: #d4af37;
+  border: 1px solid #d4af37;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+}
+
+@media (min-width: 768px) {
+  .installPrompt {
+    max-width: 400px;
+    left: auto;
+    right: 20px;
+  }
+}

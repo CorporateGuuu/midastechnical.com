@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import UnifiedHeader from '../UnifiedHeader/UnifiedHeader';
@@ -7,7 +7,14 @@ import DeviceGradingPopup from '../DeviceGradingPopup';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import ChatbotUI from '../Chatbot/ChatbotUI';
 import WhatsAppButton from '../WhatsApp/WhatsAppButton';
+import dynamic from 'next/dynamic';
 import styles from './Layout.module.css';
+
+// Dynamically import the PWA install prompt to avoid SSR issues
+const PWAInstallPrompt = dynamic(
+  () => import('../PWAInstallPrompt/PWAInstallPrompt'),
+  { ssr: false }
+);
 
 export default function Layout({ children, title, description }) {
   const { data: session } = useSession();
@@ -67,6 +74,11 @@ export default function Layout({ children, title, description }) {
 
       <ErrorBoundary>
         <WhatsAppButton />
+      </ErrorBoundary>
+
+      {/* PWA Install Prompt */}
+      <ErrorBoundary>
+        <PWAInstallPrompt />
       </ErrorBoundary>
     </div>
   );
