@@ -6,6 +6,18 @@
   z-index: 50;
   background-color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.headerScrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(0);
+  opacity: 0.98;
+}
+
+.headerHidden {
+  transform: translateY(-100%);
+  opacity: 0;
 }
 
 /* Main Header */
