@@ -307,8 +307,8 @@
 }
 
 .cartLink svg {
-  color: #d4af37;
-  /* Gold color */
+  color: #e60000;
+  /* Red color */
 }
 
 /* Account Dropdown */
@@ -414,7 +414,8 @@
   padding: 0.75rem 1rem;
   background: none;
   border: none;
-  color: #e53e3e;
+  color: #e60000;
+  /* Bright red */
   cursor: pointer;
   font-size: 0.875rem;
   transition: background-color 0.2s ease;

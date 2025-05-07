@@ -149,8 +149,8 @@
   left: 0;
   width: 40px;
   height: 3px;
-  background-color: #d4af37;
-  /* Gold color */
+  background: linear-gradient(to right, #e60000 0%, #e60000 50%, #d4af37 50%, #d4af37 100%);
+  /* Red and gold gradient */
 }
 
 .footerLinks2 {
@@ -172,16 +172,18 @@
 }
 
 .footerLinks2 li a:hover {
-  color: #ffffff;
+  color: #e60000;
+  /* Red color */
   transform: translateX(5px);
 }
 
 .contactUsBtn {
-  background-color: #d4af37;
-  /* Gold color */
-  border: none;
-  color: #000000;
-  /* Black color */
+  background-color: #e60000;
+  /* Red color */
+  border: 2px solid #d4af37;
+  /* Gold border */
+  color: #ffffff;
+  /* White color */
   cursor: pointer;
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
@@ -194,7 +196,9 @@
 }
 
 .contactUsBtn:hover {
-  background-color: #b8860b;
+  background-color: #cc0000;
+  /* Darker red */
+  border-color: #b8860b;
   /* Darker gold */
   transform: translateY(-2px);
 }
@@ -258,13 +262,33 @@
   transition: all 0.3s ease;
 }
 
-.facebook:hover,
-.twitter:hover,
-.linkedin:hover,
-.instagram:hover,
-.youtube:hover {
+.facebook:hover {
   background-color: #d4af37;
   /* Gold color */
+  transform: translateY(-3px);
+}
+
+.twitter:hover {
+  background-color: #e60000;
+  /* Red color */
+  transform: translateY(-3px);
+}
+
+.linkedin:hover {
+  background-color: #d4af37;
+  /* Gold color */
+  transform: translateY(-3px);
+}
+
+.instagram:hover {
+  background-color: #e60000;
+  /* Red color */
+  transform: translateY(-3px);
+}
+
+.youtube:hover {
+  background-color: #e60000;
+  /* Red color */
   transform: translateY(-3px);
 }
 
@@ -378,8 +402,12 @@
     padding: 1rem;
     background-color: #f8f8f8;
     /* Light gray background */
-    border: 1px solid #d4af37;
+    border-left: 3px solid #e60000;
+    /* Red border */
+    border-right: 3px solid #d4af37;
     /* Gold border */
+    border-top: 1px solid #d4af37;
+    border-bottom: 1px solid #d4af37;
     border-radius: 8px;
   }
 

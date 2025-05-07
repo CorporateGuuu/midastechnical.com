@@ -15,6 +15,9 @@
   color: #ffffff;
   /* White text */
   font-weight: 500;
+  border-left: 3px solid #e60000;
+  /* Red accent border */
+  padding-left: 10px;
 }
 
 .cutoffTimer {
@@ -59,8 +62,9 @@
 }
 
 .freeShipping strong {
-  color: #d4af37;
-  /* Gold text */
+  color: #e60000;
+  /* Red text */
+  font-weight: 700;
 }
 
 /* Mobile styles */
