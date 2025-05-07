@@ -378,36 +378,73 @@
   .fShippingMethodSection {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 1.5rem 1rem;
+    gap: 0.75rem;
+    padding: 0.75rem 0.5rem;
   }
 
   .shippingMethodsType {
     display: none;
   }
 
+  .ftCerificateSection {
+    display: none;
+    /* Hide certifications on mobile to save space */
+  }
+
   .newFooterMain {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 1rem;
+    grid-template-columns: 1fr 1fr;
+    /* Two columns for more compact layout */
+    gap: 0.5rem;
+    padding: 0.75rem 0.5rem;
   }
 
   .footerLinks2 {
     margin-bottom: 0;
   }
 
+  .footerBoxes2 h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    cursor: pointer;
+    padding-right: 20px;
+  }
+
+  .footerBoxes2 h4::after {
+    content: '+';
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .footerBoxes2 h4.expanded::after {
+    content: '-';
+  }
+
+  .footerLinks2 {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .footerLinks2.expanded {
+    max-height: 200px;
+  }
+
   .footerBoxes2Mobile {
     display: block;
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
   }
 
   .footerLinks2 li {
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
   }
 
   .footerLinks2 li a {
-    font-size: 1rem;
-    padding: 0.5rem 0;
+    font-size: 0.8rem;
+    padding: 0.25rem 0;
     display: block;
   }
 
@@ -415,36 +452,38 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem;
-    margin: 1rem;
+    padding: 0.75rem;
+    margin: 0.5rem;
     background-color: #f8f8f8;
-    /* Light gray background */
-    border-left: 3px solid #e60000;
+    border-left: 2px solid #e60000;
     /* Red border */
-    border-right: 3px solid #d4af37;
+    border-right: 2px solid #d4af37;
     /* Gold border */
-    border-top: 1px solid #d4af37;
-    border-bottom: 1px solid #d4af37;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
 
   .fLeftPart,
   .fRightPart {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .fLeftPart span,
+  .fRightPart span {
+    font-size: 0.75rem;
   }
 
   .conDetailW {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 
   .flagBox2 {
-    width: 24px;
-    height: 16px;
+    width: 20px;
+    height: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -452,34 +491,52 @@
 
   .usaTxt {
     font-weight: 600;
+    font-size: 0.8rem;
   }
 
   .contactTxt {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #6b7280;
   }
 
   .contactNubTxt {
     font-weight: 600;
+    font-size: 0.8rem;
   }
 
   .bootomFooter {
     flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem 1rem;
+    gap: 1rem;
+    padding: 0.75rem 0.5rem;
   }
 
   .footerTrademark {
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.75rem;
     text-align: center;
-    padding: 1rem;
+    padding: 0.5rem;
+  }
+
+  .logoTrademark {
+    transform: scale(0.8);
+    /* Make logo smaller */
   }
 
   .footerTrademark p {
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    display: none;
+    /* Hide on mobile to save space */
+  }
+
+  .footerTrademark2 p {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+
+  .footerTrademark2 address {
+    font-size: 0.7rem;
   }
 
   .hideDeskOllow {
@@ -492,12 +549,12 @@
   }
 
   .socialMediaLinks {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .socialMediaLinks ul {
     justify-content: center;
-    gap: 1.25rem;
+    gap: 0.75rem;
   }
 
   .facebook,
@@ -505,44 +562,36 @@
   .linkedin,
   .instagram,
   .youtube {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 
   .paymentMethodsPart ul {
     justify-content: center;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem;
+  }
+
+  .paymentMethodsPart ul li {
+    transform: scale(0.8);
+    /* Make payment icons smaller */
   }
 
   .paymentMethodsPart h4 {
-    text-align: center;
-    margin-bottom: 1rem;
+    display: none;
+    /* Hide heading to save space */
   }
 
   .shippingMethodsMobile {
-    display: block;
-    margin-top: 2rem;
-    padding: 0 1rem;
-  }
-
-  .shippingMethodsMobile h4 {
-    margin-bottom: 1rem;
-    text-align: center;
-    font-size: 1rem;
-  }
-
-  .shippingMethodsMobile ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.25rem;
+    display: none;
+    /* Hide on mobile to save space */
   }
 
   .contactUsBtn {
     width: 100%;
     justify-content: center;
-    margin-top: 1rem;
-    padding: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    font-size: 0.8rem;
   }
 }
