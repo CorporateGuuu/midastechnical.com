@@ -61,7 +61,7 @@ const withPWA = require('next-pwa')({
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost', 'mdtstech.store', 'images.unsplash.com'],
+    domains: ['localhost', 'midastechnical.com', 'images.unsplash.com'],
     formats: ['image/avif', 'image/webp'],
   },
   compiler: {
@@ -102,7 +102,7 @@ echo "Modified next.config.js to disable ESLint"
 cp package.json package.json.backup
 cat > package.json << 'EOL'
 {
-  "name": "mdts-tech-store",
+  "name": "midastechnical-com",
   "version": "0.1.0",
   "private": true,
   "scripts": {

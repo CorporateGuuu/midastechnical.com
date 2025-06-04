@@ -5,7 +5,7 @@ This directory contains files related to the Supabase integration for the MDTS T
 ## Connecting to Supabase via Netlify
 
 1. Go to the [Netlify Dashboard](https://app.netlify.com/)
-2. Select your site (mdtstech)
+2. Select your site (midastechnical)
 3. Go to Site Configuration
 4. In the sidebar, select 'Supabase'
 5. On the Supabase extension card, click 'Connect'
@@ -38,12 +38,12 @@ async function fetchProducts() {
     .from('products')
     .select('*')
     .limit(10);
-  
+
   if (error) {
     console.error('Error fetching products:', error);
     return [];
   }
-  
+
   return data;
 }
 ```
@@ -57,24 +57,24 @@ export default async function handler(req, res) {
   try {
     // Create a Supabase client for server-side operations
     const supabase = createServerSupabaseClient();
-    
+
     // Example: Fetch products
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .limit(10);
-    
+
     if (error) {
       throw error;
     }
-    
+
     return res.status(200).json({
       success: true,
       data
     });
   } catch (error) {
     console.error('Error:', error);
-    
+
     return res.status(500).json({
       success: false,
       error: error.message

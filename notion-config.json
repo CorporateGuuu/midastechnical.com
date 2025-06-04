@@ -1,0 +1,10 @@
+{
+  "databases": {
+    "products": "mock-products-db-id",
+    "orders": "mock-orders-db-id",
+    "customers": "mock-customers-db-id",
+    "content": "mock-content-db-id"
+  },
+  "apiKey": "mock-api-key",
+  "status": "mock"
+}
