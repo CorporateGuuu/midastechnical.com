@@ -62,7 +62,7 @@ describe('Privacy Policy Page', () => {
     
     // Check that the contact information is rendered
     expect(screen.getByText(/If you have any questions/)).toBeInTheDocument();
-    expect(screen.getByText(/support@mdtstech.store/)).toBeInTheDocument();
+    expect(screen.getByText(/support@midastechnical.com/)).toBeInTheDocument();
     expect(screen.getByText(/Vienna, VA 22182/)).toBeInTheDocument();
   });
 });

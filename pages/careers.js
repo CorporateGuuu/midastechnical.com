@@ -186,8 +186,8 @@ function Careers() {
               <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Don't See a Position That Fits?</h3>
               <p style={{ marginBottom: '1rem' }}>
                 We're always looking for talented individuals to join our team. Send your resume to
-                <a href="mailto:careers@mdtstech.store" style={{ color: '#0066cc', marginLeft: '0.25rem' }}>
-                  careers@mdtstech.store
+                <a href="mailto:careers@midastechnical.com" style={{ color: '#0066cc', marginLeft: '0.25rem' }}>
+                  careers@midastechnical.com
                 </a>
                 and tell us how you can contribute to Midas Technical Solutions.
               </p>

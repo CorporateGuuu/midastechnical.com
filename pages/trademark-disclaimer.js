@@ -92,7 +92,7 @@ function TrademarkDisclaimer() {
           <p style={{ marginTop: '1rem', lineHeight: '1.6' }}>
             Midas Technical Solutions<br />
             Vienna, VA 22182<br />
-            Email: legal@mdtstech.store<br />
+            Email: legal@midastechnical.com<br />
             Phone: +1 (240) 351-0511
           </p>
         </section>

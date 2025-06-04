@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     // Return a fallback response
     return res.status(200).json({ 
       success: true,
-      reply: "I'm sorry, I'm having trouble processing your request right now. Please try again or contact our support team at support@mdtstech.store if you need immediate assistance."
+      reply: "I'm sorry, I'm having trouble processing your request right now. Please try again or contact our support team at support@midastechnical.com if you need immediate assistance."
     });
   }
 }

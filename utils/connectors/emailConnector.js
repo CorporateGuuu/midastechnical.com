@@ -17,17 +17,17 @@ async function initialize() {
       ORDER BY created_at DESC
       LIMIT 1
     `;
-    
+
     const configResult = await pool.query(configQuery);
-    
+
     if (configResult.rows.length === 0) {
       console.error('No active email configuration found');
       return false;
     }
-    
+
     const config = configResult.rows[0];
     const settings = JSON.parse(config.settings);
-    
+
     // Create transporter
     transporter = nodemailer.createTransport({
       host: settings.host,
@@ -38,10 +38,10 @@ async function initialize() {
         pass: settings.password
       }
     });
-    
+
     // Verify connection
     await transporter.verify();
-    
+
     // // // console.log('Email connector initialized successfully');
     return true;
   } catch (error) {
@@ -66,15 +66,15 @@ async function sendMessage(message, recipientData, options = {}) {
         throw new Error('Email connector not initialized');
       }
     }
-    
+
     // Get sender information
     const senderInfo = await getSenderInfo(options.senderId);
-    
+
     // Validate recipient email
     if (!recipientData.email) {
       throw new Error('Recipient email is required');
     }
-    
+
     // Prepare email options
     const mailOptions = {
       from: senderInfo.email,
@@ -86,25 +86,25 @@ async function sendMessage(message, recipientData, options = {}) {
         'X-Recipient-ID': recipientData.id || 'unknown'
       }
     };
-    
+
     // Add CC if specified
     if (options.cc) {
       mailOptions.cc = options.cc;
     }
-    
+
     // Add BCC if specified
     if (options.bcc) {
       mailOptions.bcc = options.bcc;
     }
-    
+
     // Add attachments if specified
     if (options.attachments && Array.isArray(options.attachments)) {
       mailOptions.attachments = options.attachments;
     }
-    
+
     // Send email
     const info = await transporter.sendMail(mailOptions);
-    
+
     // Log the send
     await logEmailSend({
       recipientId: recipientData.id,
@@ -117,7 +117,7 @@ async function sendMessage(message, recipientData, options = {}) {
       status: 'sent',
       sentAt: new Date()
     });
-    
+
     return {
       success: true,
       messageId: info.messageId,
@@ -125,7 +125,7 @@ async function sendMessage(message, recipientData, options = {}) {
     };
   } catch (error) {
     console.error('Error sending email:', error);
-    
+
     // Log the failure
     if (recipientData && recipientData.email) {
       await logEmailSend({
@@ -139,7 +139,7 @@ async function sendMessage(message, recipientData, options = {}) {
         sentAt: new Date()
       });
     }
-    
+
     return {
       success: false,
       error: 'Failed to send email',
@@ -161,27 +161,27 @@ async function getSenderInfo(senderId) {
         SELECT * FROM outreach_senders
         WHERE id = $1 AND channel = 'email'
       `;
-      
+
       const senderResult = await pool.query(senderQuery, [senderId]);
-      
+
       if (senderResult.rows.length > 0) {
         return senderResult.rows[0];
       }
     }
-    
+
     // Get default sender
     const defaultSenderQuery = `
       SELECT * FROM outreach_senders
       WHERE channel = 'email' AND is_default = true
       LIMIT 1
     `;
-    
+
     const defaultSenderResult = await pool.query(defaultSenderQuery);
-    
+
     if (defaultSenderResult.rows.length > 0) {
       return defaultSenderResult.rows[0];
     }
-    
+
     // Fallback to configuration
     const configQuery = `
       SELECT * FROM outreach_channel_config
@@ -189,13 +189,13 @@ async function getSenderInfo(senderId) {
       ORDER BY created_at DESC
       LIMIT 1
     `;
-    
+
     const configResult = await pool.query(configQuery);
-    
+
     if (configResult.rows.length > 0) {
       const config = configResult.rows[0];
       const settings = JSON.parse(config.settings);
-      
+
       return {
         id: null,
         name: settings.senderName || 'MDTS Outreach',
@@ -203,22 +203,22 @@ async function getSenderInfo(senderId) {
         channel: 'email'
       };
     }
-    
+
     // Last resort fallback
     return {
       id: null,
       name: 'MDTS Outreach',
-      email: 'outreach@mdtstech.store',
+      email: 'outreach@midastechnical.com',
       channel: 'email'
     };
   } catch (error) {
     console.error('Error getting sender info:', error);
-    
+
     // Fallback
     return {
       id: null,
       name: 'MDTS Outreach',
-      email: 'outreach@mdtstech.store',
+      email: 'outreach@midastechnical.com',
       channel: 'email'
     };
   }
@@ -245,7 +245,7 @@ async function logEmailSend(logData) {
         sent_at
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
     `;
-    
+
     const values = [
       logData.recipientId,
       logData.recipientEmail,
@@ -258,7 +258,7 @@ async function logEmailSend(logData) {
       logData.errorDetails,
       logData.sentAt
     ];
-    
+
     await pool.query(query, values);
   } catch (error) {
     console.error('Error logging email send:', error);

@@ -19,7 +19,7 @@ async function setupAutomation() {
   try {
     // 1. Create automation tables
     console.log('🗄️  Creating automation tables...');
-    
+
     await pool.query(`
       CREATE TABLE IF NOT EXISTS scheduled_tasks (
         id SERIAL PRIMARY KEY,
@@ -66,7 +66,7 @@ async function setupAutomation() {
 
     // 2. Insert scheduled tasks
     console.log('📅 Creating scheduled tasks...');
-    
+
     const scheduledTasks = [
       {
         name: 'Daily Product Data Refresh',
@@ -126,13 +126,13 @@ async function setupAutomation() {
 
     // 3. Create backup script
     console.log('💾 Creating backup procedures...');
-    
+
     const backupScript = `#!/bin/bash
 
 # Database backup script for midastechnical.com
 # This script creates a full PostgreSQL backup
 
-BACKUP_DIR="/Users/apple/Desktop/Websites Code/MDTSTech.store/backups"
+BACKUP_DIR="/Users/apple/Desktop/Websites Code/midastechnical.com/backups"
 DATE=$(date +"%Y%m%d_%H%M%S")
 DB_NAME="midastechnical_store"
 BACKUP_FILE="$BACKUP_DIR/backup_$DATE.sql"
@@ -146,18 +146,18 @@ pg_dump -h localhost -U postgres -d $DB_NAME > "$BACKUP_FILE"
 
 if [ $? -eq 0 ]; then
     echo "Backup created successfully: $BACKUP_FILE"
-    
+
     # Compress the backup
     gzip "$BACKUP_FILE"
     echo "Backup compressed: $BACKUP_FILE.gz"
-    
+
     # Remove backups older than 30 days
     find "$BACKUP_DIR" -name "backup_*.sql.gz" -mtime +30 -delete
     echo "Old backups cleaned up"
-    
+
     # Log backup to database
     psql -h localhost -U postgres -d $DB_NAME -c "
-      INSERT INTO system_backups (backup_type, file_path, status, completed_at) 
+      INSERT INTO system_backups (backup_type, file_path, status, completed_at)
       VALUES ('database', '$BACKUP_FILE.gz', 'completed', NOW())
     "
 else
@@ -178,9 +178,9 @@ fi
     if (!fs.existsSync(scriptsDir)) {
       fs.mkdirSync(scriptsDir, { recursive: true });
     }
-    
+
     fs.writeFileSync(backupScriptPath, backupScript);
-    
+
     // Make script executable (on Unix systems)
     try {
       fs.chmodSync(backupScriptPath, '755');
@@ -192,7 +192,7 @@ fi
 
     // 4. Create scheduler service
     console.log('⏰ Creating scheduler service...');
-    
+
     const schedulerService = `
 const { Pool } = require('pg');
 const cron = require('node-cron');
@@ -207,16 +207,16 @@ class TaskScheduler {
 
   async initialize() {
     console.log('🤖 Initializing Task Scheduler...');
-    
+
     // Load scheduled tasks from database
     const result = await this.pool.query(
       'SELECT * FROM scheduled_tasks WHERE enabled = true'
     );
-    
+
     for (const task of result.rows) {
       this.scheduleTask(task);
     }
-    
+
     console.log(\`✅ Scheduled \${result.rows.length} tasks\`);
   }
 
@@ -226,17 +226,17 @@ class TaskScheduler {
     }, {
       scheduled: false
     });
-    
+
     this.tasks.set(task.id, cronJob);
     cronJob.start();
-    
+
     console.log(\`📅 Scheduled: \${task.name} (\${task.schedule_cron})\`);
   }
 
   async executeTask(task) {
     const startTime = Date.now();
     console.log(\`🚀 Executing task: \${task.name}\`);
-    
+
     try {
       // Log task start
       const logResult = await this.pool.query(
@@ -244,7 +244,7 @@ class TaskScheduler {
         [task.id, 'running', \`Started execution of \${task.name}\`]
       );
       const logId = logResult.rows[0].id;
-      
+
       // Execute task based on type
       let result;
       switch (task.task_type) {
@@ -269,33 +269,33 @@ class TaskScheduler {
         default:
           throw new Error(\`Unknown task type: \${task.task_type}\`);
       }
-      
+
       const executionTime = Date.now() - startTime;
-      
+
       // Update task log
       await this.pool.query(
         'UPDATE task_logs SET status = $1, message = $2, execution_time_ms = $3, completed_at = NOW() WHERE id = $4',
         ['completed', result.message, executionTime, logId]
       );
-      
+
       // Update task statistics
       await this.pool.query(
         'UPDATE scheduled_tasks SET last_run = NOW(), run_count = run_count + 1, success_count = success_count + 1 WHERE id = $1',
         [task.id]
       );
-      
+
       console.log(\`✅ Task completed: \${task.name} (\${executionTime}ms)\`);
-      
+
     } catch (error) {
       const executionTime = Date.now() - startTime;
       console.error(\`❌ Task failed: \${task.name}\`, error);
-      
+
       // Log error
       await this.pool.query(
         'UPDATE task_logs SET status = $1, message = $2, execution_time_ms = $3, completed_at = NOW() WHERE task_id = $4 AND status = $5',
         ['failed', error.message, executionTime, task.id, 'running']
       );
-      
+
       // Update error count
       await this.pool.query(
         'UPDATE scheduled_tasks SET error_count = error_count + 1 WHERE id = $1',
@@ -343,9 +343,9 @@ module.exports = TaskScheduler;
 
     // 5. Test automation system
     console.log('🧪 Testing automation system...');
-    
+
     const testResults = await pool.query(`
-      SELECT 
+      SELECT
         COUNT(*) as total_tasks,
         COUNT(CASE WHEN enabled = true THEN 1 END) as enabled_tasks,
         COUNT(CASE WHEN task_type = 'data_refresh' THEN 1 END) as data_tasks,
@@ -357,7 +357,7 @@ module.exports = TaskScheduler;
 
     // 6. Generate automation statistics
     const automationStats = await pool.query(`
-      SELECT 
+      SELECT
         st.name,
         st.schedule_cron,
         st.task_type,
@@ -373,8 +373,8 @@ module.exports = TaskScheduler;
 
     // Display results
     console.log('\n🎉 Automated Scheduling and Maintenance Setup Complete!');
-    console.log('=' .repeat(60));
-    
+    console.log('='.repeat(60));
+
     const stats = testResults.rows[0];
     console.log('\n📊 AUTOMATION STATISTICS:');
     console.log(`   Total Scheduled Tasks: ${stats.total_tasks}`);

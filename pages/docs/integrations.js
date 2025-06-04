@@ -166,7 +166,7 @@ export default function IntegrationsPage() {
                 <div className={styles.supportBox}>
                   <div className={styles.supportOption}>
                     <h3>Contact Support</h3>
-                    <p>Email us at <a href="mailto:support@mdtstech.store">support@mdtstech.store</a></p>
+                    <p>Email us at <a href="mailto:support@midastechnical.com">support@midastechnical.com</a></p>
                     <p>Call us at <a href="tel:+12403510511">+1 (240) 351-0511</a></p>
                   </div>
                   <div className={styles.supportOption}>

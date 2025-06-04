@@ -9,7 +9,7 @@ const csv = require('csv-parser');
 
 // Database connection
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/mdtstech_store',
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/midastechnical_store',
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
@@ -48,7 +48,7 @@ async function readCsvFile(filePath) {
 // Import categories
 async function importCategories(client, products) {
   logMessage('Importing categories...');
-  
+
   // Extract unique categories from products
   const categories = new Set();
   products.forEach(product => {
@@ -56,11 +56,11 @@ async function importCategories(client, products) {
       categories.add(product.category);
     }
   });
-  
+
   // Insert categories
   for (const category of categories) {
     const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    
+
     try {
       await client.query(
         'INSERT INTO categories (name, slug, description) VALUES ($1, $2, $3) ON CONFLICT (slug) DO NOTHING',
@@ -70,14 +70,14 @@ async function importCategories(client, products) {
       logMessage(`Error inserting category ${category}: ${error.message}`);
     }
   }
-  
+
   // Get category IDs
   const categoryResult = await client.query('SELECT id, name FROM categories');
   const categoryMap = {};
   categoryResult.rows.forEach(row => {
     categoryMap[row.name.toLowerCase()] = row.id;
   });
-  
+
   logMessage(`Imported ${categories.size} categories`);
   return categoryMap;
 }
@@ -85,18 +85,18 @@ async function importCategories(client, products) {
 // Import products
 async function importProducts(client, products, categoryMap) {
   logMessage('Importing products...');
-  
+
   let importedCount = 0;
   let errorCount = 0;
-  
+
   for (const product of products) {
     try {
       // Generate slug if not present
       const slug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      
+
       // Get category ID
       const categoryId = product.category ? categoryMap[product.category.toLowerCase()] : null;
-      
+
       // Insert product
       const productResult = await client.query(
         `INSERT INTO products (
@@ -131,9 +131,9 @@ async function importProducts(client, products, categoryMap) {
           categoryId
         ]
       );
-      
+
       const productId = productResult.rows[0].id;
-      
+
       // Insert product specifications if available
       if (product.display || product.processor || product.memory || product.storage) {
         await client.query(
@@ -163,27 +163,27 @@ async function importProducts(client, products, categoryMap) {
           ]
         );
       }
-      
+
       importedCount++;
     } catch (error) {
       logMessage(`Error importing product ${product.name}: ${error.message}`);
       errorCount++;
     }
   }
-  
+
   logMessage(`Imported ${importedCount} products with ${errorCount} errors`);
 }
 
 // Main function
 async function main() {
   logMessage('Starting data import process...');
-  
+
   // Check if data files exist
   if (!fileExists(UNIFIED_DATA_PATH)) {
     logMessage(`Error: Unified data file not found at ${UNIFIED_DATA_PATH}`);
     process.exit(1);
   }
-  
+
   // Read metadata if available
   let metadata = null;
   if (fileExists(METADATA_PATH)) {
@@ -194,7 +194,7 @@ async function main() {
       logMessage(`Error reading metadata: ${error.message}`);
     }
   }
-  
+
   // Read unified data
   let products = [];
   try {
@@ -204,21 +204,21 @@ async function main() {
     logMessage(`Error reading unified data: ${error.message}`);
     process.exit(1);
   }
-  
+
   // Connect to database
   const client = await pool.connect();
-  
+
   try {
     // Start transaction
     await client.query('BEGIN');
-    
+
     // Import data
     const categoryMap = await importCategories(client, products);
     await importProducts(client, products, categoryMap);
-    
+
     // Commit transaction
     await client.query('COMMIT');
-    
+
     logMessage('Data import completed successfully');
   } catch (error) {
     // Rollback transaction on error
@@ -229,7 +229,7 @@ async function main() {
     // Release client
     client.release();
   }
-  
+
   // Close pool
   await pool.end();
 }

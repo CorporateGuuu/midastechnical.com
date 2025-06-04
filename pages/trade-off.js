@@ -476,7 +476,7 @@ export default function TradeOffPage() {
               <a href="tel:+12403510511" className={styles.primaryButton}>
                 Call Us: (240) 351-0511
               </a>
-              <a href="mailto:support@mdtstech.store" className={styles.secondaryButton}>
+              <a href="mailto:support@midastechnical.com" className={styles.secondaryButton}>
                 Email Us
               </a>
             </div>

@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 
 // Create a PostgreSQL connection pool
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/mdtstech_store',
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/midastechnical_store',
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 

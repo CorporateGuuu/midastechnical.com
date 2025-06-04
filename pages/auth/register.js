@@ -268,7 +268,7 @@ export default function Register() {
               <ul className={styles.footerLinks}>
                 <li>Vienna, VA 22182</li>
                 <li>Phone: +1 (240) 351-0511</li>
-                <li>Email: support@mdtstech.store</li>
+                <li>Email: support@midastechnical.com</li>
                 <li>Hours: Mon-Fri 9AM-10PM EST</li>
               </ul>
             </div>

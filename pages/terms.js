@@ -22,7 +22,7 @@ function TermsConditions() {
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Agreement to Terms</h2>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
               These Terms and Conditions constitute a legally binding agreement made between you, whether personally or on behalf of an entity 
-              ("you") and Midas Technical Solutions ("we," "us" or "our"), concerning your access to and use of the mdtstech.store website 
+              ("you") and Midas Technical Solutions ("we," "us" or "our"), concerning your access to and use of the midastechnical.com website 
               as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected 
               thereto (collectively, the "Site").
             </p>
@@ -161,7 +161,7 @@ function TermsConditions() {
             <p style={{ marginTop: '1rem', lineHeight: '1.6' }}>
               Midas Technical Solutions<br />
               Vienna, VA 22182<br />
-              Email: legal@mdtstech.store<br />
+              Email: legal@midastechnical.com<br />
               Phone: +1 (240) 351-0511
             </p>
           </section>

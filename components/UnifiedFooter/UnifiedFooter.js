@@ -341,7 +341,7 @@ const UnifiedFooter = () => {
               <li className={styles.instagram}>
                 <a
                   aria-label="instagram"
-                  href="https://www.instagram.com/mdtstech.store/"
+                  href="https://www.instagram.com/midastechnical.com/"
                   title="instagram"
                   target="_blank"
                   rel="noopener noreferrer"

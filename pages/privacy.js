@@ -19,7 +19,7 @@ function PrivacyPolicy() {
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Introduction</h2>
             <p style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
               Midas Technical Solutions ("we," "our," or "us") respects your privacy and is committed to protecting your personal information.
-              This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website mdtstech.store,
+              This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website midastechnical.com,
               including any other media form, media channel, mobile website, or mobile application related or connected thereto (collectively, the "Site").
             </p>
             <p style={{ lineHeight: '1.6' }}>
@@ -180,7 +180,7 @@ function PrivacyPolicy() {
             <p style={{ marginTop: '1rem', lineHeight: '1.6' }}>
               Midas Technical Solutions<br />
               Vienna, VA 22182<br />
-              Email: privacy@mdtstech.store<br />
+              Email: privacy@midastechnical.com<br />
               Phone: +1 (240) 351-0511
             </p>
           </section>

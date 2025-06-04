@@ -87,7 +87,7 @@ export default function CheckoutSuccess() {
           <div className={styles.supportInfo}>
             <p>
               If you have any questions about your order, please contact our customer support at{' '}
-              <a href="mailto:support@mdtstech.store">support@mdtstech.store</a> or call us at{' '}
+              <a href="mailto:support@midastechnical.com">support@midastechnical.com</a> or call us at{' '}
               <a href="tel:+12403510511">+1 (240) 351-0511</a>.
             </p>
           </div>

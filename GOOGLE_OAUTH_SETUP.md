@@ -45,10 +45,10 @@ This guide will walk you through the process of setting up Google OAuth for your
 4. Enter a name for your client (e.g., "MDTS Tech Store Web Client")
 5. Under "Authorized JavaScript origins", add:
    - `http://localhost:3000` (for development)
-   - `https://mdtstech.store` (for production)
+   - `https://midastechnical.com` (for production)
 6. Under "Authorized redirect URIs", add:
    - `http://localhost:3000/api/auth/callback/google` (for development)
-   - `https://mdtstech.store/api/auth/callback/google` (for production)
+   - `https://midastechnical.com/api/auth/callback/google` (for production)
 7. Click "Create"
 8. You'll see a modal with your client ID and client secret. Copy these values.
 

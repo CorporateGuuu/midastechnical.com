@@ -64,13 +64,13 @@ async function updateAdminPassword() {
         INSERT INTO users (
           email, password_hash, first_name, last_name, is_admin, created_at, updated_at
         ) VALUES (
-          'admin@mdtstech.store', $1, 'Admin', 'User', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+          'admin@midastechnical.com', $1, 'Admin', 'User', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         ) RETURNING id
       `;
       await client.query(insertQuery, [hashedPassword]);
       
       // // // console.log('Admin user created successfully!');
-      // // // console.log('Email: admin@mdtstech.store');
+      // // // console.log('Email: admin@midastechnical.com');
       // // // console.log('Password:', password);
       // // // console.log('\nPlease save these credentials in a secure location.');
     } else {

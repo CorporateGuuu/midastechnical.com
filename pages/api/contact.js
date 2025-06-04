@@ -34,7 +34,7 @@ export default async function handler(req, res) {
   try {
     // Store the contact message in the database
     const client = await pool.connect();
-    
+
     try {
       await client.query(
         `INSERT INTO contact_messages (name, email, phone, subject, message, created_at)
@@ -51,8 +51,8 @@ export default async function handler(req, res) {
     // Send email notification
     try {
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM || 'noreply@mdtstech.store',
-        to: process.env.CONTACT_EMAIL || 'support@mdtstech.store',
+        from: process.env.EMAIL_FROM || 'noreply@midastechnical.com',
+        to: process.env.CONTACT_EMAIL || 'support@midastechnical.com',
         subject: `New Contact Form Submission: ${subject}`,
         html: `
           <h2>New Contact Form Submission</h2>
@@ -64,10 +64,10 @@ export default async function handler(req, res) {
           <p>${message.replace(/\n/g, '<br>')}</p>
         `,
       });
-      
+
       // Send confirmation email to the user
       await transporter.sendMail({
-        from: process.env.EMAIL_FROM || 'noreply@mdtstech.store',
+        from: process.env.EMAIL_FROM || 'noreply@midastechnical.com',
         to: email,
         subject: 'Thank you for contacting MDTS - Midas Technical Solutions',
         html: `

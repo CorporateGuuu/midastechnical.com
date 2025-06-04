@@ -34,7 +34,7 @@ const ReturnPolicy = () => {
               <li>
                 <h3>Contact Customer Service</h3>
                 <p>
-                  Before returning any item, please contact our customer service team at <a href="mailto:support@mdtstech.store">support@mdtstech.store</a> or call us at +1 (240) 351-0511 to obtain a Return Merchandise Authorization (RMA) number.
+                  Before returning any item, please contact our customer service team at <a href="mailto:support@midastechnical.com">support@midastechnical.com</a> or call us at +1 (240) 351-0511 to obtain a Return Merchandise Authorization (RMA) number.
                 </p>
               </li>
               <li>
@@ -109,7 +109,7 @@ const ReturnPolicy = () => {
               If you have any questions about our return policy, please contact our customer service team:
             </p>
             <div className={styles.contactInfo}>
-              <p>Email: <a href="mailto:support@mdtstech.store">support@mdtstech.store</a></p>
+              <p>Email: <a href="mailto:support@midastechnical.com">support@midastechnical.com</a></p>
               <p>Phone: +1 (240) 351-0511</p>
               <p>Hours: Monday-Friday, 9AM-10PM EST</p>
             </div>

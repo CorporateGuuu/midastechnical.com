@@ -43,7 +43,7 @@ export default function FinancePage() {
     },
     {
       question: "How can I increase my credit limit?",
-      answer: "We're able to see if you qualify for this increased line of credit so you can place your order but we need a bit of information from you (required by our banking partner, Lead Bank). If you can provide us with the below, we'll be able to review and see if you qualify for the increase: + Additional amount you are requesting ($5k more, $10k more, etc) + Business operating bank statements for the most recent 3 months Please email your bank statements to support@mdtstech.store Once received, please allow 1-2 business days for our team to review for an enhancement."
+      answer: "We're able to see if you qualify for this increased line of credit so you can place your order but we need a bit of information from you (required by our banking partner, Lead Bank). If you can provide us with the below, we'll be able to review and see if you qualify for the increase: + Additional amount you are requesting ($5k more, $10k more, etc) + Business operating bank statements for the most recent 3 months Please email your bank statements to support@midastechnical.com Once received, please allow 1-2 business days for our team to review for an enhancement."
     },
     {
       question: "Can I pay off my Credit Key loan early?",

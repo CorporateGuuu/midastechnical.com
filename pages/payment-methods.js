@@ -217,7 +217,7 @@ function PaymentMethods() {
         <section style={{ marginBottom: '2.5rem' }}>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Purchase Orders</h2>
           <p style={{ lineHeight: '1.6' }}>
-            We accept purchase orders from qualified businesses, educational institutions, and government agencies. To set up a purchase order account, please contact our business sales team at <a href="mailto:business@mdtstech.store" style={{ color: '#0066cc', textDecoration: 'none' }}>business@mdtstech.store</a> or call <a href="tel:+12403510511" style={{ color: '#0066cc', textDecoration: 'none' }}>+1 (240) 351-0511</a>.
+            We accept purchase orders from qualified businesses, educational institutions, and government agencies. To set up a purchase order account, please contact our business sales team at <a href="mailto:business@midastechnical.com" style={{ color: '#0066cc', textDecoration: 'none' }}>business@midastechnical.com</a> or call <a href="tel:+12403510511" style={{ color: '#0066cc', textDecoration: 'none' }}>+1 (240) 351-0511</a>.
           </p>
         </section>
         

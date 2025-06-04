@@ -137,7 +137,7 @@ const ChatbotUI = () => {
         const errorMessage = {
           id: Date.now() + 1,
           role: 'assistant',
-          content: "I'm sorry, I'm having trouble processing your request right now. Please try again later or contact our support team at support@mdtstech.store.",
+          content: "I'm sorry, I'm having trouble processing your request right now. Please try again later or contact our support team at support@midastechnical.com.",
           timestamp: new Date().toISOString(),
         };
 

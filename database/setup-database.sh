@@ -53,8 +53,8 @@ echo -e "${GREEN}✓ Database files combined${NC}"
 
 # Step 7: Create database
 echo -e "\n${YELLOW}Creating database...${NC}"
-psql -U postgres -c "DROP DATABASE IF EXISTS mdtstech_store;"
-psql -U postgres -c "CREATE DATABASE mdtstech_store;"
+psql -U postgres -c "DROP DATABASE IF EXISTS midastechnical_store;"
+psql -U postgres -c "CREATE DATABASE midastechnical_store;"
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error creating database. Check the output above for details.${NC}"
     exit 1
@@ -63,7 +63,7 @@ echo -e "${GREEN}✓ Database created${NC}"
 
 # Step 8: Create tables
 echo -e "\n${YELLOW}Creating tables...${NC}"
-psql -U postgres -d mdtstech_store -f database/combined_schema.sql
+psql -U postgres -d midastechnical_store -f database/combined_schema.sql
 if [ $? -ne 0 ]; then
     echo -e "${RED}Error creating tables. Check the output above for details.${NC}"
     exit 1
@@ -84,7 +84,7 @@ echo -e "\n${YELLOW}Testing database connection...${NC}"
 node -e "
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:postgres@localhost:5432/mdtstech_store',
+  connectionString: 'postgresql://postgres:postgres@localhost:5432/midastechnical_store',
 });
 
 async function testDB() {
@@ -108,6 +108,6 @@ echo -e "${GREEN}✓ Database connection test successful${NC}"
 
 echo -e "\n${GREEN}Database setup completed successfully!${NC}"
 echo -e "You can now connect to the database using the following connection string:"
-echo -e "${BLUE}postgresql://postgres:postgres@localhost:5432/mdtstech_store${NC}"
+echo -e "${BLUE}postgresql://postgres:postgres@localhost:5432/midastechnical_store${NC}"
 echo -e "\nTo use the database in your application, import the models from the database/models directory:"
 echo -e "${BLUE}const { ProductModel, CategoryModel, UserModel, CartModel, OrderModel } = require('./database/models');${NC}"

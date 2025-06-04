@@ -15,7 +15,7 @@ const testCases = [
       },
       {
         query: "Where are you located?",
-        expectedResponse: "Our address is Vienna, VA 22182. Our customer service team can be reached at +1 (240) 351-0511 or by email at support@mdtstech.store."
+        expectedResponse: "Our address is Vienna, VA 22182. Our customer service team can be reached at +1 (240) 351-0511 or by email at support@midastechnical.com."
       },
       {
         query: "What is your phone number?",
@@ -23,7 +23,7 @@ const testCases = [
       },
       {
         query: "What is your email address?",
-        expectedResponse: "support@mdtstech.store"
+        expectedResponse: "support@midastechnical.com"
       }
     ]
   },
@@ -70,7 +70,7 @@ const testCases = [
       },
       {
         query: "How do I return an item?",
-        expectedResponse: "To initiate a return, please sign in to your account at mdtstech.store/account/orders and select the order you wish to return. Then click the 'Return Items' button and follow the instructions."
+        expectedResponse: "To initiate a return, please sign in to your account at midastechnical.com/account/orders and select the order you wish to return. Then click the 'Return Items' button and follow the instructions."
       }
     ]
   },
@@ -79,11 +79,11 @@ const testCases = [
     tests: [
       {
         query: "Tell me about your LCD buyback program",
-        expectedResponse: "Our LCD Buyback Program allows you to sell your old LCD screens to us for cash. We accept screens from iPhones, Samsung phones, iPads, and other devices in various conditions. Visit mdtstech.store/lcd-buyback for more information."
+        expectedResponse: "Our LCD Buyback Program allows you to sell your old LCD screens to us for cash. We accept screens from iPhones, Samsung phones, iPads, and other devices in various conditions. Visit midastechnical.com/lcd-buyback for more information."
       },
       {
         query: "How much do you pay for LCD screens?",
-        expectedResponse: "The value of LCD screens depends on the device model, condition, and current market demand. We offer competitive prices in the industry. You can get an instant quote by filling out the form at mdtstech.store/lcd-buyback."
+        expectedResponse: "The value of LCD screens depends on the device model, condition, and current market demand. We offer competitive prices in the industry. You can get an instant quote by filling out the form at midastechnical.com/lcd-buyback."
       }
     ]
   },
@@ -92,7 +92,7 @@ const testCases = [
     tests: [
       {
         query: "What is the Apple Parts Program?",
-        expectedResponse: "Our Genuine Apple Parts Program (GAPP) provides access to authentic Apple parts for repairs. These parts are sourced directly from Apple and come with full warranty support. Visit mdtstech.store/gapp for more information."
+        expectedResponse: "Our Genuine Apple Parts Program (GAPP) provides access to authentic Apple parts for repairs. These parts are sourced directly from Apple and come with full warranty support. Visit midastechnical.com/gapp for more information."
       }
     ]
   },

@@ -152,7 +152,7 @@ const AdminLayout = ({ children }) => {
           <div className={styles.headerRight}>
             <div className={styles.userInfo}>
               <span className={styles.userName}>{session?.user?.name || 'Admin'}</span>
-              <span className={styles.userEmail}>{session?.user?.email || 'admin@mdtstech.store'}</span>
+              <span className={styles.userEmail}>{session?.user?.email || 'admin@midastechnical.com'}</span>
             </div>
           </div>
         </header>

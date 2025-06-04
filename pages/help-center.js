@@ -247,7 +247,7 @@ function HelpCenter() {
             <div>
               <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Email Support</h3>
               <p style={{ color: '#444' }}>
-                Email us at <a href="mailto:support@mdtstech.store" style={{ color: '#0066cc', textDecoration: 'none' }}>support@mdtstech.store</a>
+                Email us at <a href="mailto:support@midastechnical.com" style={{ color: '#0066cc', textDecoration: 'none' }}>support@midastechnical.com</a>
               </p>
               <p style={{ color: '#666', fontSize: '0.9rem' }}>Response within 24 hours</p>
             </div>

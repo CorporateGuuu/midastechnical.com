@@ -7,8 +7,8 @@ const AccountSidebar = ({ activeTab, onTabChange }) => {
   const { data: session } = useSession();
 
   // Check if user is an admin (in a real app, this would be based on user roles in the database)
-  const isAdmin = session?.user?.email === 'admin@mdtstech.store' ||
-    session?.user?.email === 'support@mdtstech.store' ||
+  const isAdmin = session?.user?.email === 'admin@midastechnical.com' ||
+    session?.user?.email === 'support@midastechnical.com' ||
     session?.user?.isAdmin === true;
 
   return (

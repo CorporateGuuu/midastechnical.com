@@ -53,7 +53,7 @@ export async function processMessage(message, conversationId, userId) {
     return response;
   } catch (error) {
     console.error('Error processing message:', error);
-    return "I'm sorry, I'm having trouble processing your request right now. Please try again or contact our support team at support@mdtstech.store if you need immediate assistance.";
+    return "I'm sorry, I'm having trouble processing your request right now. Please try again or contact our support team at support@midastechnical.com if you need immediate assistance.";
   }
 }
 
@@ -144,7 +144,7 @@ async function handleProductInquiry(message, history) {
     const products = await searchProducts(productKeywords);
 
     if (products.length === 0) {
-      return `I couldn't find any products matching "${productKeywords.join(', ')}". Could you please try different keywords or browse our product categories at mdtstech.store/products?`;
+      return `I couldn't find any products matching "${productKeywords.join(', ')}". Could you please try different keywords or browse our product categories at midastechnical.com/products?`;
     }
 
     // Format product information with better structure
@@ -155,17 +155,17 @@ async function handleProductInquiry(message, history) {
       response += `   Price: $${product.price.toFixed(2)}\n`;
       response += `   Category: ${product.category_name}\n`;
       response += `   Description: ${product.description.substring(0, 100)}...\n`;
-      response += `   View details: mdtstech.store/products/${product.slug}\n\n`;
+      response += `   View details: midastechnical.com/products/${product.slug}\n\n`;
     });
 
     if (products.length > 3) {
-      response += `I found ${products.length} products matching your search. View all results at mdtstech.store/search?q=${encodeURIComponent(productKeywords.join(' '))}`;
+      response += `I found ${products.length} products matching your search. View all results at midastechnical.com/search?q=${encodeURIComponent(productKeywords.join(' '))}`;
     }
 
     return response;
   } catch (error) {
     console.error('Error handling product inquiry:', error);
-    return "I'm having trouble finding product information right now. Please try browsing our products directly at mdtstech.store/products or contact our support team for assistance.";
+    return "I'm having trouble finding product information right now. Please try browsing our products directly at midastechnical.com/products or contact our support team for assistance.";
   }
 }
 
@@ -259,7 +259,7 @@ async function handleOrderStatus(message, userInfo) {
         if (order) {
           return formatOrderStatus(order);
         } else {
-          return `I couldn't find order #${orderNumber} associated with your account. Please check the order number and try again, or contact our support team at support@mdtstech.store for assistance.`;
+          return `I couldn't find order #${orderNumber} associated with your account. Please check the order number and try again, or contact our support team at support@midastechnical.com for assistance.`;
         }
       } else {
         // Check recent orders
@@ -272,24 +272,24 @@ async function handleOrderStatus(message, userInfo) {
             response += formatOrderSummary(order, index + 1);
           });
 
-          response += "\nYou can view all your orders at mdtstech.store/account/orders";
+          response += "\nYou can view all your orders at midastechnical.com/account/orders";
 
           return response;
         } else {
-          return "I don't see any recent orders associated with your account. If you've placed an order and believe this is an error, please contact our support team at support@mdtstech.store.";
+          return "I don't see any recent orders associated with your account. If you've placed an order and believe this is an error, please contact our support team at support@midastechnical.com.";
         }
       }
     } else {
       // User is not logged in
       if (orderNumber) {
-        return `To check the status of order #${orderNumber}, please visit mdtstech.store/order-lookup and enter your order number and email address. Alternatively, you can sign in to your account to view all your orders.`;
+        return `To check the status of order #${orderNumber}, please visit midastechnical.com/order-lookup and enter your order number and email address. Alternatively, you can sign in to your account to view all your orders.`;
       } else {
-        return "To check your order status, please sign in to your account at mdtstech.store/account/orders. If you checked out as a guest, you can look up your order at mdtstech.store/order-lookup using your order number and email address.";
+        return "To check your order status, please sign in to your account at midastechnical.com/account/orders. If you checked out as a guest, you can look up your order at midastechnical.com/order-lookup using your order number and email address.";
       }
     }
   } catch (error) {
     console.error('Error handling order status:', error);
-    return "I'm having trouble retrieving order information right now. Please try checking your order status at mdtstech.store/account/orders or contact our support team for assistance.";
+    return "I'm having trouble retrieving order information right now. Please try checking your order status at midastechnical.com/account/orders or contact our support team for assistance.";
   }
 }
 
@@ -401,7 +401,7 @@ function formatOrderStatus(order) {
   // Add shipping information if available
   if (order.status === 'shipped' && order.tracking_number) {
     response += `Your order was shipped via ${order.shipping_method} with tracking number ${order.tracking_number}.\n`;
-    response += `You can track your package at mdtstech.store/track?number=${order.tracking_number}\n\n`;
+    response += `You can track your package at midastechnical.com/track?number=${order.tracking_number}\n\n`;
   } else if (order.status === 'processing') {
     response += "Your order is being processed and will ship soon. You'll receive an email with tracking information once it ships.\n\n";
   } else if (order.status === 'delivered') {
@@ -421,7 +421,7 @@ function formatOrderStatus(order) {
     response += `- Tracking: ${order.tracking_number}\n`;
   }
 
-  response += "\nYou can view complete order details at mdtstech.store/account/orders";
+  response += "\nYou can view complete order details at midastechnical.com/account/orders";
 
   return response;
 }
@@ -440,9 +440,9 @@ async function handleReturnRequest(message, userInfo) {
 
   // Check if user is logged in
   if (userInfo) {
-    return `${returnPolicy}\n\nTo initiate a return for an order, please visit mdtstech.store/account/orders and select the order you wish to return. Then click the "Return Items" button and follow the instructions.\n\nIf you have any issues with the return process, please contact our support team at support@mdtstech.store or call us at +1 (240) 351-0511.`;
+    return `${returnPolicy}\n\nTo initiate a return for an order, please visit midastechnical.com/account/orders and select the order you wish to return. Then click the "Return Items" button and follow the instructions.\n\nIf you have any issues with the return process, please contact our support team at support@midastechnical.com or call us at +1 (240) 351-0511.`;
   } else {
-    return `${returnPolicy}\n\nTo initiate a return, please sign in to your account at mdtstech.store/account/orders. If you checked out as a guest, you can start a return at mdtstech.store/returns using your order number and email address.\n\nIf you need further assistance, please contact our support team at support@mdtstech.store or call us at +1 (240) 351-0511.`;
+    return `${returnPolicy}\n\nTo initiate a return, please sign in to your account at midastechnical.com/account/orders. If you checked out as a guest, you can start a return at midastechnical.com/returns using your order number and email address.\n\nIf you need further assistance, please contact our support team at support@midastechnical.com or call us at +1 (240) 351-0511.`;
   }
 }
 
@@ -459,7 +459,7 @@ async function handleTechnicalSupport(message, history) {
   const supportArticles = await searchSupportArticles(issueKeywords);
 
   if (supportArticles.length === 0) {
-    return "I don't have specific information about that issue. For technical support, please visit our support center at mdtstech.store/support or contact our technical team at support@mdtstech.store.";
+    return "I don't have specific information about that issue. For technical support, please visit our support center at midastechnical.com/support or contact our technical team at support@midastechnical.com.";
   }
 
   // Format support information with better structure
@@ -468,12 +468,12 @@ async function handleTechnicalSupport(message, history) {
   supportArticles.forEach((article, index) => {
     response += `## ${index + 1}. ${article.title}\n`;
     response += `${article.summary}\n\n`;
-    response += `Read more: mdtstech.store/support/articles/${article.slug}\n\n`;
+    response += `Read more: midastechnical.com/support/articles/${article.slug}\n\n`;
   });
 
   response += "# Need More Help?\n";
   response += "If these resources don't solve your issue, please contact our technical support team:\n";
-  response += "- Email: support@mdtstech.store\n";
+  response += "- Email: support@midastechnical.com\n";
   response += "- Phone: +1 (240) 351-0511\n";
   response += "- Hours: Monday-Friday, 9AM-10PM EST";
 
@@ -562,7 +562,7 @@ async function handleShippingInfo(message) {
 
   // Check for international shipping inquiry
   if (shippingKeywords.includes('international')) {
-    return `${internationalShipping}\n\nWe ship to most countries worldwide. Delivery times may vary based on customs processing. Import duties and taxes may apply and are the responsibility of the recipient.\n\nFor specific international shipping rates to your country, please visit mdtstech.store/shipping or contact our support team.`;
+    return `${internationalShipping}\n\nWe ship to most countries worldwide. Delivery times may vary based on customs processing. Import duties and taxes may apply and are the responsibility of the recipient.\n\nFor specific international shipping rates to your country, please visit midastechnical.com/shipping or contact our support team.`;
   }
 
   // Check for expedited shipping inquiry
@@ -587,7 +587,7 @@ async function handleShippingInfo(message) {
     `- All orders are processed within 1 business day\n` +
     `- Tracking information will be emailed once your order ships\n` +
     `- Free shipping on orders over $1000\n\n` +
-    `For more details, please visit mdtstech.store/shipping.`;
+    `For more details, please visit midastechnical.com/shipping.`;
 }
 
 // Extract shipping keywords
@@ -627,7 +627,7 @@ async function handlePricingInfo(message) {
   const products = await searchProducts(productKeywords);
 
   if (products.length === 0) {
-    return `I couldn't find any products matching "${productKeywords.join(', ')}" to provide pricing for. Could you please try different keywords or browse our products at mdtstech.store/products?`;
+    return `I couldn't find any products matching "${productKeywords.join(', ')}" to provide pricing for. Could you please try different keywords or browse our products at midastechnical.com/products?`;
   }
 
   // Format pricing information with better structure
@@ -641,21 +641,21 @@ async function handlePricingInfo(message) {
       response += `- Discount: ${product.discount_percentage}% off\n`;
     }
     response += `- Category: ${product.category_name}\n`;
-    response += `- Link: mdtstech.store/products/${product.slug}\n\n`;
+    response += `- Link: midastechnical.com/products/${product.slug}\n\n`;
   });
 
   response += "# Additional Information\n";
   response += "- All prices are in USD and subject to change\n";
   response += "- Shipping and taxes may apply\n";
   response += "- We offer volume discounts for bulk orders\n\n";
-  response += "For special pricing, please contact our sales team at sales@mdtstech.store.";
+  response += "For special pricing, please contact our sales team at sales@midastechnical.com.";
 
   return response;
 }
 
 // Handle contact human request
 async function handleContactHuman() {
-  return "# Contact Customer Service\n\nI understand you'd like to speak with a human representative. Our customer service team is available Monday-Friday from 9 AM to 10 PM EST.\n\n## Contact Options\n\n- Phone: +1 (240) 351-0511\n- Email: support@mdtstech.store\n- Live Chat: Available on our website during business hours\n- Address: Vienna, VA 22182\n\n## Tips for Faster Service\n\n- Please have your order number ready if your inquiry is related to a specific order\n- For technical support, please describe your device and issue in detail\n- For returns, please have your order number and reason for return ready\n\nA customer service representative will assist you as soon as possible.";
+  return "# Contact Customer Service\n\nI understand you'd like to speak with a human representative. Our customer service team is available Monday-Friday from 9 AM to 10 PM EST.\n\n## Contact Options\n\n- Phone: +1 (240) 351-0511\n- Email: support@midastechnical.com\n- Live Chat: Available on our website during business hours\n- Address: Vienna, VA 22182\n\n## Tips for Faster Service\n\n- Please have your order number ready if your inquiry is related to a specific order\n- For technical support, please describe your device and issue in detail\n- For returns, please have your order number and reason for return ready\n\nA customer service representative will assist you as soon as possible.";
 }
 
 // Handle greeting
@@ -702,14 +702,14 @@ async function handleGeneral(message, history) {
 
   // FAQ responses
   const faqs = {
-    'warranty': "We offer a 90-day warranty on all parts and a 30-day warranty on accessories. For warranty claims, please email warranty@mdtstech.store with your order number and a description of the issue.",
+    'warranty': "We offer a 90-day warranty on all parts and a 30-day warranty on accessories. For warranty claims, please email warranty@midastechnical.com with your order number and a description of the issue.",
     'business hours': "Our customer service team is available Monday-Friday from 9 AM to 10 PM EST. Our physical location in Vienna, VA is open Monday-Friday from 10 AM to 7 PM EST.",
-    'contact': "You can reach our customer service team at +1 (240) 351-0511 or by email at support@mdtstech.store. Our address is Vienna, VA 22182.",
+    'contact': "You can reach our customer service team at +1 (240) 351-0511 or by email at support@midastechnical.com. Our address is Vienna, VA 22182.",
     'payment': "We accept all major credit cards (Visa, Mastercard, American Express, Discover), PayPal, Apple Pay, and Google Pay. For business orders, we also accept purchase orders and bank transfers.",
-    'repair service': "Yes, we offer repair services for iPhones, iPads, Samsung devices, and MacBooks. You can schedule a repair at mdtstech.store/repair-services or call us at +1 (240) 351-0511.",
+    'repair service': "Yes, we offer repair services for iPhones, iPads, Samsung devices, and MacBooks. You can schedule a repair at midastechnical.com/repair-services or call us at +1 (240) 351-0511.",
     'cryptocurrency': "Yes, we accept Bitcoin and several other cryptocurrencies as payment methods.",
-    'apple parts': "Our Genuine Apple Parts Program (GAPP) provides access to authentic Apple parts for repairs. These parts are sourced directly from Apple and come with full warranty support. Visit mdtstech.store/gapp for more information.",
-    'lcd buyback': "Our LCD Buyback Program allows you to sell your old LCD screens to us for cash. We accept screens from iPhones, Samsung phones, iPads, and other devices in various conditions. Visit mdtstech.store/lcd-buyback for more information.",
+    'apple parts': "Our Genuine Apple Parts Program (GAPP) provides access to authentic Apple parts for repairs. These parts are sourced directly from Apple and come with full warranty support. Visit midastechnical.com/gapp for more information.",
+    'lcd buyback': "Our LCD Buyback Program allows you to sell your old LCD screens to us for cash. We accept screens from iPhones, Samsung phones, iPads, and other devices in various conditions. Visit midastechnical.com/lcd-buyback for more information.",
     'iphone parts': "Yes, we sell a wide range of iPhone parts including screens, batteries, cameras, and other components for all iPhone models.",
     'samsung parts': "Yes, we carry Samsung parts including screens, batteries, and other components for Galaxy S and Note series phones.",
     'repair tools': "Yes, we offer professional repair tools including precision screwdriver sets, pry tools, heat guns, and complete repair kits.",

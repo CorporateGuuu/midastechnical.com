@@ -69,7 +69,7 @@ export default async function handler(req, res) {
     try {
       // Send the email
       const info = await transporter.sendMail({
-        from: '"MDTS Tech Website" <noreply@mdtstech.store>',
+        from: '"MDTS Tech Website" <noreply@midastechnical.com>',
         to,
         subject,
         html: emailContent,
