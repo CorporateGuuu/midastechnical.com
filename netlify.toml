@@ -2,13 +2,10 @@
   command = "npm ci && npm run build"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_FLAGS = "--production=false"
-  NEXT_TELEMETRY_DISABLED = "1"
-
-[build.environment]
   NODE_VERSION = "18.17.0"
   NPM_VERSION = "9.6.7"
+  NPM_FLAGS = "--production=false"
+  NEXT_TELEMETRY_DISABLED = "1"
   NETLIFY_USE_PYTHON = "false"
 
 # Redirects for Next.js with Netlify runtime
