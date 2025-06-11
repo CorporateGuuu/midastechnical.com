@@ -1,0 +1,9 @@
+# Netlify redirects for Next.js
+# This file handles client-side routing for Next.js on Netlify
+
+# Redirect old routes
+/home / 301
+/shop /products 301
+
+# Handle Next.js dynamic routes and client-side routing
+/* /index.html 200
