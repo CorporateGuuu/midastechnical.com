@@ -51,7 +51,7 @@ const featuredProducts = [
     category: 'Replacement Parts',
     price: 129.99,
     discount_percentage: 13.33,
-    imageUrl: '/images/products/iphone/iphone-13-pro-screen.jpg',
+    imageUrl: '/images/products/iphone-13-screen.jpg',
     badge: 'Best Seller'
   },
   {
@@ -69,7 +69,7 @@ const featuredProducts = [
     category: 'Batteries',
     price: 39.99,
     discount_percentage: 20,
-    imageUrl: '/images/products/samsung/galaxy-s22-battery.jpg',
+    imageUrl: '/images/samsung-battery.svg',
     badge: '20% OFF'
   },
   {
@@ -78,7 +78,7 @@ const featuredProducts = [
     category: 'Replacement Parts',
     price: 199.99,
     discount_percentage: 0,
-    imageUrl: '/images/products/ipad/ipad-pro-lcd.jpg',
+    imageUrl: '/images/products/ipad-pro-screen.jpg',
     badge: null
   }
 ];
@@ -90,7 +90,7 @@ const popularProducts = [
     category: 'iPhone Parts',
     price: 89.99,
     discount_percentage: 0,
-    imageUrl: '/images/products/iphone/iphone-12-screen.jpg'
+    imageUrl: '/images/iphone12-screen.svg'
   },
   {
     id: 6,
@@ -98,7 +98,7 @@ const popularProducts = [
     category: 'Samsung Parts',
     price: 34.99,
     discount_percentage: 0,
-    imageUrl: '/images/products/samsung/galaxy-s21-battery.jpg'
+    imageUrl: '/images/s21-battery.svg'
   },
   {
     id: 7,
