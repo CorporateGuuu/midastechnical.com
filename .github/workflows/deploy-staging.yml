@@ -12,23 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy to Staging Environment
     environment: staging
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.1'
         extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql
-        
+
     - name: Install Composer dependencies
       run: |
         if [ -f composer.json ]; then
           composer install --optimize-autoloader
         fi
-        
+
     - name: Build theme assets
       run: |
         if [ -d "wp-content/themes/mdts-theme" ]; then
@@ -38,29 +38,47 @@ jobs:
             npm run build
           fi
         fi
-        
+
     - name: Run WordPress tests
       run: |
         echo "🧪 Running WordPress compatibility tests..."
-        
-        # Check PHP syntax
-        find . -name "*.php" -exec php -l {} \; | grep -v "No syntax errors"
-        
-        # Check for WordPress coding standards (basic)
-        if command -v phpcs &> /dev/null; then
-          phpcs --standard=WordPress wp-content/themes/mdts-theme/ || true
-          phpcs --standard=WordPress wp-content/plugins/mdts-stripe-integration/ || true
+
+        # Check PHP syntax for existing PHP files only
+        if find . -name "*.php" -type f | head -1 | grep -q ".php"; then
+          echo "Checking PHP syntax for existing files..."
+          find . -name "*.php" -exec php -l {} \; | grep -v "No syntax errors" || echo "✅ No PHP syntax errors found"
+        else
+          echo "ℹ️ No PHP files found to test - WordPress content will be added later"
         fi
-        
-        echo "✅ Tests completed"
-        
+
+        # Check for WordPress themes and plugins only if they exist
+        if [ -d "wp-content/themes/mdts-theme" ]; then
+          echo "Testing MDTS theme..."
+          if command -v phpcs &> /dev/null; then
+            phpcs --standard=WordPress wp-content/themes/mdts-theme/ || true
+          fi
+        else
+          echo "ℹ️ MDTS theme not found - will be added during WordPress export"
+        fi
+
+        if [ -d "wp-content/plugins/mdts-stripe-integration" ]; then
+          echo "Testing MDTS Stripe plugin..."
+          if command -v phpcs &> /dev/null; then
+            phpcs --standard=WordPress wp-content/plugins/mdts-stripe-integration/ || true
+          fi
+        else
+          echo "ℹ️ MDTS Stripe plugin not found - will be added during WordPress export"
+        fi
+
+        echo "✅ WordPress tests completed successfully"
+
     - name: Prepare staging deployment
       run: |
         echo "📦 Preparing staging deployment..."
-        
+
         # Create deployment directory
         mkdir -p deploy
-        
+
         # Copy files (excluding sensitive data)
         rsync -av --exclude-from='.gitignore' \
           --exclude='.git' \
@@ -68,15 +86,15 @@ jobs:
           --exclude='node_modules' \
           --exclude='*.log' \
           . deploy/
-        
+
         # Create staging wp-config.php
         cp config/wp-config-staging.php deploy/wp-config.php
-        
+
         # Create staging .htaccess
         cp config/.htaccess-staging deploy/.htaccess
-        
+
         echo "✅ Staging package ready"
-        
+
     - name: Deploy to staging via SFTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
@@ -92,7 +110,7 @@ jobs:
           **/*.log
           **/wp-content/uploads/**
           **/wp-content/cache/**
-          
+
     - name: Post-deployment staging optimization
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -101,33 +119,33 @@ jobs:
         key: ${{ secrets.SITEGROUND_STAGING_SSH_KEY }}
         script: |
           echo "🔧 Optimizing staging environment..."
-          
+
           cd /home/${{ secrets.SITEGROUND_STAGING_USERNAME }}/public_html
-          
+
           # Set file permissions
           find . -type d -exec chmod 755 {} \;
           find . -type f -exec chmod 644 {} \;
           chmod 600 wp-config.php
-          
+
           # Clear cache
           if [ -f wp-content/advanced-cache.php ]; then
             rm -rf wp-content/cache/*
           fi
-          
+
           # Update database
           wp core update-db --allow-root --path=/home/${{ secrets.SITEGROUND_STAGING_USERNAME }}/public_html
-          
+
           # Flush rewrite rules
           wp rewrite flush --allow-root --path=/home/${{ secrets.SITEGROUND_STAGING_USERNAME }}/public_html
-          
+
           echo "✅ Staging optimization completed"
-          
+
     - name: Verify staging deployment
       run: |
         echo "🔍 Verifying staging deployment..."
-        
+
         STAGING_URL="${{ secrets.STAGING_URL }}"
-        
+
         # Check staging homepage
         STAGING_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$STAGING_URL/")
         if [ "$STAGING_STATUS" != "200" ]; then
@@ -135,7 +153,7 @@ jobs:
           exit 1
         fi
         echo "✅ Staging homepage accessible"
-        
+
         # Check staging shop
         SHOP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$STAGING_URL/shop/")
         if [ "$SHOP_STATUS" != "200" ]; then
@@ -143,10 +161,10 @@ jobs:
           exit 1
         fi
         echo "✅ Staging shop accessible"
-        
+
         echo "🎉 Staging deployment verified!"
         echo "🔗 Staging URL: $STAGING_URL"
-        
+
     - name: Comment on PR
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7
@@ -157,59 +175,59 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: `🚀 **Staging Deployment Complete**
-            
+
             Your changes have been deployed to the staging environment:
-            
+
             🔗 **Staging URL**: ${{ secrets.STAGING_URL }}
-            
+
             **Deployed Changes:**
             - Commit: ${context.sha.substring(0, 7)}
             - Branch: ${context.ref.replace('refs/heads/', '')}
-            
+
             **Test the following:**
             - [ ] Homepage loads correctly
             - [ ] Shop functionality works
             - [ ] Product pages display properly
             - [ ] Checkout process functional
             - [ ] Admin dashboard accessible
-            
+
             Once testing is complete, this PR can be merged to deploy to production.`
           })
 
   security-scan:
     runs-on: ubuntu-latest
     name: Security Scan
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Run security checks
       run: |
         echo "🔒 Running security scan..."
-        
+
         # Check for hardcoded secrets
         if grep -r -i "password\|secret\|key" --include="*.php" . | grep -v "wp-config-sample\|README"; then
           echo "⚠️  Potential hardcoded secrets found"
         fi
-        
+
         # Check for SQL injection patterns
         if grep -r -i "\$_GET\|\$_POST" --include="*.php" . | grep -v "sanitize\|escape"; then
           echo "⚠️  Potential SQL injection vulnerabilities found"
         fi
-        
+
         # Check for XSS vulnerabilities
         if grep -r "echo \$_" --include="*.php" .; then
           echo "⚠️  Potential XSS vulnerabilities found"
         fi
-        
+
         echo "✅ Security scan completed"
 
   performance-test:
     runs-on: ubuntu-latest
     needs: deploy-to-staging
     name: Performance Testing
-    
+
     steps:
     - name: Lighthouse CI
       uses: treosh/lighthouse-ci-action@v10
@@ -220,7 +238,7 @@ jobs:
         configPath: './lighthouserc.json'
         uploadArtifacts: true
         temporaryPublicStorage: true
-        
+
     - name: Performance report
       run: |
         echo "📊 Performance testing completed"
