@@ -10,7 +10,7 @@ jobs:
   notify-deployment-status:
     runs-on: ubuntu-latest
     name: Send Deployment Notifications
-    
+
     steps:
     - name: Get workflow information
       id: workflow-info
@@ -20,7 +20,7 @@ jobs:
         echo "workflow_url=${{ github.event.workflow_run.html_url }}" >> $GITHUB_OUTPUT
         echo "commit_sha=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
         echo "branch_name=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_OUTPUT
-        
+
         # Determine environment
         if [[ "${{ github.event.workflow_run.name }}" == *"Production"* ]]; then
           echo "environment=production" >> $GITHUB_OUTPUT
@@ -40,7 +40,7 @@ jobs:
         COMMIT_SHA="${{ steps.workflow-info.outputs.commit_sha }}"
         BRANCH_NAME="${{ steps.workflow-info.outputs.branch_name }}"
         WORKFLOW_URL="${{ steps.workflow-info.outputs.workflow_url }}"
-        
+
         # Create status emoji and color
         if [ "$WORKFLOW_STATUS" = "success" ]; then
           STATUS_EMOJI="✅"
@@ -55,44 +55,44 @@ jobs:
           STATUS_COLOR="warning"
           STATUS_TEXT="CANCELLED"
         fi
-        
+
         # Create message content
         MESSAGE_TITLE="$STATUS_EMOJI WordPress Deployment $STATUS_TEXT"
-        
+
         MESSAGE_BODY="**Environment**: $ENVIRONMENT
         **Site**: $SITE_URL
         **Branch**: $BRANCH_NAME
         **Commit**: \`${COMMIT_SHA:0:7}\`
         **Workflow**: [$WORKFLOW_NAME]($WORKFLOW_URL)
         **Time**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-        
+
         # Add environment-specific information
         if [ "$ENVIRONMENT" = "production" ]; then
           MESSAGE_BODY="$MESSAGE_BODY
-          
+
           **🚀 Production Deployment**
           - Live site updated
           - Customer-facing changes active
           - Monitor for any issues"
         else
           MESSAGE_BODY="$MESSAGE_BODY
-          
+
           **🧪 Staging Deployment**
           - Testing environment updated
           - Ready for QA testing
           - Merge to main for production"
         fi
-        
+
         # Add failure-specific information
         if [ "$WORKFLOW_STATUS" = "failure" ]; then
           MESSAGE_BODY="$MESSAGE_BODY
-          
+
           **🔧 Action Required**
           - Check workflow logs for errors
           - Fix issues and retry deployment
           - Consider rollback if production affected"
         fi
-        
+
         # Save outputs
         echo "title=$MESSAGE_TITLE" >> $GITHUB_OUTPUT
         echo "body<<EOF" >> $GITHUB_OUTPUT
@@ -144,9 +144,9 @@ jobs:
                           <p><strong>Commit:</strong> ${{ steps.workflow-info.outputs.commit_sha }}</p>
                           <p><strong>Time:</strong> $(date -u '+%Y-%m-%d %H:%M:%S UTC')</p>
                       </div>
-                      
+
                       <p><a href="${{ steps.workflow-info.outputs.workflow_url }}" class="button">View Workflow Details</a></p>
-                      
+
                       ${{ steps.workflow-info.outputs.workflow_status == 'failure' && '<p><strong>⚠️ Action Required:</strong> This deployment failed. Please check the workflow logs and take appropriate action.</p>' || '' }}
                   </div>
                   <div class="footer">
@@ -158,7 +158,7 @@ jobs:
           </html>
 
     - name: Send Slack notification
-      if: always() && secrets.SLACK_WEBHOOK_URL
+      if: always()
       uses: 8398a7/action-slack@v3
       with:
         status: ${{ steps.workflow-info.outputs.workflow_status }}
@@ -176,7 +176,7 @@ jobs:
           }
         text: |
           ${{ steps.message.outputs.title }}
-          
+
           ${{ steps.message.outputs.body }}
 
     - name: Create GitHub issue on failure
@@ -186,53 +186,53 @@ jobs:
         script: |
           const title = `🚨 Production Deployment Failed - ${new Date().toISOString().split('T')[0]}`;
           const body = `## Production Deployment Failure
-          
+
           **Environment**: Production
           **Site**: https://midastechnical.com
           **Branch**: ${{ steps.workflow-info.outputs.branch_name }}
           **Commit**: ${{ steps.workflow-info.outputs.commit_sha }}
           **Workflow**: ${{ steps.workflow-info.outputs.workflow_url }}
           **Time**: ${new Date().toISOString()}
-          
+
           ## Immediate Actions Required
-          
+
           1. **Check workflow logs** for specific error details
           2. **Verify site functionality** at https://midastechnical.com
           3. **Consider rollback** if site is affected
           4. **Fix underlying issues** before next deployment
-          
+
           ## Rollback Procedure
-          
+
           If the site is affected, use the emergency rollback:
-          
+
           \`\`\`bash
           # SSH to production server
           ssh user@server
-          
+
           # Run rollback script
           ./scripts/rollback.sh production
           \`\`\`
-          
+
           ## Investigation Checklist
-          
+
           - [ ] Reviewed workflow logs
           - [ ] Checked site functionality
           - [ ] Identified root cause
           - [ ] Applied fix
           - [ ] Tested fix in staging
           - [ ] Ready for retry
-          
+
           ## Next Steps
-          
+
           1. Investigate and fix the deployment issue
           2. Test the fix in staging environment
           3. Retry the production deployment
           4. Close this issue once resolved
-          
+
           ---
-          
+
           *This issue was automatically created by the deployment notification system.*`;
-          
+
           github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -249,9 +249,9 @@ jobs:
           const fs = require('fs');
           const status = '${{ steps.workflow-info.outputs.workflow_status }}';
           const environment = '${{ steps.workflow-info.outputs.environment }}';
-          
+
           let badgeColor, badgeMessage;
-          
+
           if (status === 'success') {
             badgeColor = 'brightgreen';
             badgeMessage = 'deployed';
@@ -262,9 +262,9 @@ jobs:
             badgeColor = 'yellow';
             badgeMessage = 'unknown';
           }
-          
+
           const badgeUrl = `https://img.shields.io/badge/${environment}-${badgeMessage}-${badgeColor}`;
-          
+
           console.log(`Deployment status: ${environment} - ${badgeMessage}`);
           console.log(`Badge URL: ${badgeUrl}`);
 
@@ -273,19 +273,19 @@ jobs:
     needs: notify-deployment-status
     if: github.event.workflow_run.conclusion == 'success'
     name: Post-Deployment Health Check
-    
+
     steps:
     - name: Wait for deployment to stabilize
       run: sleep 30
-      
+
     - name: Comprehensive health check
       run: |
         ENVIRONMENT="${{ github.event.workflow_run.name == 'Deploy to Production' && 'production' || 'staging' }}"
-        SITE_URL="${{ github.event.workflow_run.name == 'Deploy to Production' && 'https://midastechnical.com' || secrets.STAGING_URL }}"
-        
+        SITE_URL="${{ github.event.workflow_run.name == 'Deploy to Production' && 'https://midastechnical.com' || 'https://staging.midastechnical.com' }}"
+
         echo "🏥 Running post-deployment health check for $ENVIRONMENT"
         echo "Site URL: $SITE_URL"
-        
+
         # Test homepage
         echo "Testing homepage..."
         HOMEPAGE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL/")
@@ -294,7 +294,7 @@ jobs:
           exit 1
         fi
         echo "✅ Homepage healthy"
-        
+
         # Test shop page
         echo "Testing shop page..."
         SHOP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL/shop/")
@@ -303,7 +303,7 @@ jobs:
           exit 1
         fi
         echo "✅ Shop page healthy"
-        
+
         # Test admin login
         echo "Testing admin login..."
         ADMIN_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL/wp-admin/")
@@ -312,7 +312,7 @@ jobs:
           exit 1
         fi
         echo "✅ Admin login healthy"
-        
+
         # Test SSL certificate
         echo "Testing SSL certificate..."
         SSL_CHECK=$(echo | openssl s_client -servername $(echo $SITE_URL | sed 's|https://||') -connect $(echo $SITE_URL | sed 's|https://||'):443 2>/dev/null | grep -c "Verify return code: 0" || echo "0")
@@ -321,7 +321,7 @@ jobs:
         else
           echo "✅ SSL certificate healthy"
         fi
-        
+
         echo "🎉 All health checks passed!"
 
     - name: Send health check notification
@@ -331,24 +331,24 @@ jobs:
         script: |
           const title = `⚠️ Post-Deployment Health Check Failed`;
           const body = `## Health Check Failure
-          
+
           The deployment completed successfully, but post-deployment health checks failed.
-          
+
           **Environment**: ${{ github.event.workflow_run.name == 'Deploy to Production' && 'Production' || 'Staging' }}
-          **Site**: ${{ github.event.workflow_run.name == 'Deploy to Production' && 'https://midastechnical.com' || secrets.STAGING_URL }}
+          **Site**: ${{ github.event.workflow_run.name == 'Deploy to Production' && 'https://midastechnical.com' || 'https://staging.midastechnical.com' }}
           **Time**: ${new Date().toISOString()}
-          
+
           ## Immediate Actions Required
-          
+
           1. **Check site functionality** manually
           2. **Review deployment logs** for any warnings
           3. **Monitor site performance** closely
           4. **Consider rollback** if issues persist
-          
+
           ---
-          
+
           *This issue was automatically created by the health check system.*`;
-          
+
           github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
