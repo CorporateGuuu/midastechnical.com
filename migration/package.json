@@ -1,0 +1,11 @@
+{
+  "name": "mdts-migration-export",
+  "version": "1.0.0",
+  "description": "Data export for WordPress migration",
+  "main": "export-data.js",
+  "dependencies": {
+    "csv-writer": "^1.6.0",
+    "pg": "^8.11.0",
+    "dotenv": "^16.0.0"
+  }
+}

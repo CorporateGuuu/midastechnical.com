@@ -1,0 +1,224 @@
+# .htaccess for midastechnical.com WordPress Migration
+# SEO-Preserving 301 Redirects from Next.js to WordPress
+
+# Security Headers for midastechnical.com
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# Force HTTPS for midastechnical.com
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://midastechnical.com%{REQUEST_URI} [L,R=301]
+
+# Force www to non-www (or vice versa - choose one)
+RewriteCond %{HTTP_HOST} ^www\.midastechnical\.com [NC]
+RewriteRule ^(.*)$ https://midastechnical.com/$1 [L,R=301]
+</IfModule>
+
+# BEGIN WordPress SEO Redirects for midastechnical.com Migration
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# ========================================
+# CRITICAL SEO REDIRECTS - PRESERVE RANKINGS
+# ========================================
+
+# Product pages: /products/[slug] -> /product/[slug]/
+# This preserves individual product SEO rankings
+RewriteRule ^products/([a-zA-Z0-9\-_]+)/?$ /product/$1/ [R=301,L]
+
+# Products listing: /products -> /shop/
+RewriteRule ^products/?$ /shop/ [R=301,L]
+
+# Category pages: /categories/[slug] -> /product-category/[slug]/
+RewriteRule ^categories/([a-zA-Z0-9\-_]+)/?$ /product-category/$1/ [R=301,L]
+
+# User account system
+RewriteRule ^account/?$ /my-account/ [R=301,L]
+RewriteRule ^account/orders/?$ /my-account/orders/ [R=301,L]
+RewriteRule ^account/profile/?$ /my-account/edit-account/ [R=301,L]
+RewriteRule ^account/addresses/?$ /my-account/edit-address/ [R=301,L]
+
+# Admin area redirects
+RewriteRule ^admin/?$ /wp-admin/ [R=301,L]
+RewriteRule ^admin/dashboard/?$ /wp-admin/ [R=301,L]
+RewriteRule ^admin/products/?$ /wp-admin/edit.php?post_type=product [R=301,L]
+RewriteRule ^admin/orders/?$ /wp-admin/edit.php?post_type=shop_order [R=301,L]
+RewriteRule ^admin/customers/?$ /wp-admin/users.php [R=301,L]
+
+# API endpoints for external integrations
+RewriteRule ^api/products/?$ /wp-json/wc/v3/products [R=301,L]
+RewriteRule ^api/products/([0-9]+)/?$ /wp-json/wc/v3/products/$1 [R=301,L]
+RewriteRule ^api/categories/?$ /wp-json/wc/v3/products/categories [R=301,L]
+RewriteRule ^api/orders/?$ /wp-json/wc/v3/orders [R=301,L]
+RewriteRule ^api/customers/?$ /wp-json/wc/v3/customers [R=301,L]
+
+# Cart and checkout (likely same URLs but ensure trailing slash)
+RewriteRule ^cart/?$ /cart/ [R=301,L]
+RewriteRule ^checkout/?$ /checkout/ [R=301,L]
+RewriteRule ^checkout/success/?$ /checkout/order-received/ [R=301,L]
+RewriteRule ^checkout/cancel/?$ /cart/ [R=301,L]
+
+# Static pages (ensure trailing slashes for consistency)
+RewriteRule ^about/?$ /about/ [R=301,L]
+RewriteRule ^contact/?$ /contact/ [R=301,L]
+RewriteRule ^privacy/?$ /privacy-policy/ [R=301,L]
+RewriteRule ^terms/?$ /terms-of-service/ [R=301,L]
+
+# Legacy URLs that might exist
+RewriteRule ^home/?$ / [R=301,L]
+RewriteRule ^shop/?$ /shop/ [R=301,L]
+RewriteRule ^store/?$ /shop/ [R=301,L]
+
+# ========================================
+# SPECIFIC PRODUCT CATEGORY REDIRECTS
+# ========================================
+
+# Phone repair parts
+RewriteRule ^categories/phone-parts/?$ /product-category/phone-parts/ [R=301,L]
+RewriteRule ^categories/iphone-parts/?$ /product-category/iphone-parts/ [R=301,L]
+RewriteRule ^categories/samsung-parts/?$ /product-category/samsung-parts/ [R=301,L]
+
+# Tools and equipment
+RewriteRule ^categories/repair-tools/?$ /product-category/repair-tools/ [R=301,L]
+RewriteRule ^categories/testing-equipment/?$ /product-category/testing-equipment/ [R=301,L]
+
+# Accessories
+RewriteRule ^categories/accessories/?$ /product-category/accessories/ [R=301,L]
+RewriteRule ^categories/cables/?$ /product-category/cables/ [R=301,L]
+
+# ========================================
+# SEARCH AND FILTER REDIRECTS
+# ========================================
+
+# Search functionality
+RewriteRule ^search/?$ /shop/?s= [R=301,L]
+RewriteRule ^products/search/?$ /shop/?s= [R=301,L]
+
+# Filter redirects (preserve filter parameters)
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^products/filter/?$ /shop/?%1 [R=301,L]
+
+# ========================================
+# WORDPRESS STANDARD RULES
+# ========================================
+
+# WordPress standard rewrite rules
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+</IfModule>
+# END WordPress SEO Redirects
+
+# ========================================
+# PERFORMANCE OPTIMIZATIONS
+# ========================================
+
+# Enable Gzip Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresDefault "access plus 2 days"
+</IfModule>
+
+# ========================================
+# SECURITY ENHANCEMENTS
+# ========================================
+
+# Protect wp-config.php
+<Files wp-config.php>
+    order allow,deny
+    deny from all
+</Files>
+
+# Protect .htaccess
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect against script injection
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi)$">
+    order deny,allow
+    deny from all
+    allow from 127.0.0.1
+</FilesMatch>
+
+# Allow WordPress files
+<FilesMatch "^(index\.php|wp-login\.php|wp-admin/.*\.php|wp-includes/.*\.php|wp-content/.*\.php)$">
+    order allow,deny
+    allow from all
+</FilesMatch>
+
+# Block access to sensitive files
+<FilesMatch "\.(log|sql|conf|fla|psd|ini|sh|inc|swp|dist)$">
+    order allow,deny
+    deny from all
+</FilesMatch>
+
+# ========================================
+# WORDPRESS SPECIFIC OPTIMIZATIONS
+# ========================================
+
+# Protect WordPress uploads directory
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_URI} ^/wp-content/uploads/.*$
+    RewriteCond %{REQUEST_FILENAME} \.(php|php3|php4|php5|pl|py|jsp|asp|sh|cgi)$ [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# Limit file upload size (adjust as needed)
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+php_value max_execution_time 300
+php_value max_input_vars 3000
+
+# ========================================
+# CUSTOM REDIRECTS FOR MIDASTECHNICAL.COM
+# ========================================
+
+# Any additional custom redirects specific to your site
+# Add them here as needed
+
+# Redirect old blog URLs if they exist
+# RewriteRule ^blog/(.*)$ /news/$1 [R=301,L]
+
+# Redirect old support URLs
+# RewriteRule ^support/?$ /contact/ [R=301,L]
+
+# End of .htaccess for midastechnical.com

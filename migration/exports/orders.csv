@@ -1,0 +1,6 @@
+Order ID,Order Number,Customer Email,Status,Total,Shipping,Payment Method,Payment Status,Date Created,Shipping Address,Billing Address
+1,ORD-0001,,completed,89.99,0.00,stripe,paid,Fri Jun 20 2025 22:48:02 GMT+0400 (Gulf Standard Time),,
+2,ORD-0002,,processing,45.99,0.00,stripe,paid,Fri Jun 20 2025 22:48:02 GMT+0400 (Gulf Standard Time),,
+3,ORD-0003,,pending,29.99,0.00,stripe,pending,Fri Jun 20 2025 22:48:02 GMT+0400 (Gulf Standard Time),,
+4,ORD-0004,,shipped,149.98,0.00,stripe,paid,Fri Jun 20 2025 22:48:02 GMT+0400 (Gulf Standard Time),,
+5,ORD-0005,,delivered,19.99,0.00,stripe,paid,Fri Jun 20 2025 22:48:02 GMT+0400 (Gulf Standard Time),,
