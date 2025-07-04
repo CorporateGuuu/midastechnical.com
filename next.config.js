@@ -149,8 +149,7 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
 
-  // Output configuration for different deployment targets
-  output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
+  // Output configuration removed - let Netlify plugin handle deployment
 
   // Trailing slash configuration
   trailingSlash: false,
