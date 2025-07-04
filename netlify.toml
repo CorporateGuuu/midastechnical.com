@@ -1,6 +1,10 @@
 [build]
   command = "npm ci && npm run build"
 
+# Force cache invalidation
+[build.processing]
+  skip_processing = false
+
 [build.environment]
   NODE_VERSION = "18.20.4"
   NPM_VERSION = "10.8.2"
