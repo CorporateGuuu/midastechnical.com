@@ -1,13 +1,14 @@
 [build]
-  command = "npm ci && npm run build"
+  command = "npm ci && npm run build && ls -la .next"
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "18.17.0"
-  NPM_VERSION = "9.6.7"
+  NODE_VERSION = "18.20.4"
+  NPM_VERSION = "10.8.2"
   NPM_FLAGS = "--production=false"
   NEXT_TELEMETRY_DISABLED = "1"
   NETLIFY_USE_PYTHON = "false"
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 # Redirects for Next.js with Netlify runtime
 # For more information see https://docs.netlify.com/routing/redirects/

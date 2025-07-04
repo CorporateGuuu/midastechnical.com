@@ -128,12 +128,12 @@ export function middleware(request) {
 // Configure which paths this middleware will run on
 export const config = {
   matcher: [
-    // Apply to all routes
-    '/:path*',
-    // Include static assets for caching
+    // Only apply to static assets for caching - temporarily disable for all routes
     '/_next/static/:path*',
     '/images/:path*',
     '/fonts/:path*',
     '/assets/:path*',
+    // Temporarily disable middleware for all routes to debug 404 issue
+    // '/:path*',
   ],
 };
