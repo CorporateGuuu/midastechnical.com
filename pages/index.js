@@ -3,7 +3,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Layout from '../components/Layout/Layout';
 
-// Test deployment update - 2025-07-04 15:30
+// Test deployment update - 2025-07-04 19:35 - Fixed submodule issue
 
 // Dynamic imports for code splitting
 const Hero = dynamic(() => import('../components/Hero/Hero'), {
