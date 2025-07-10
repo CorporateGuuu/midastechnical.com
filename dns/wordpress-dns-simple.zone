@@ -1,0 +1,7 @@
+midastechnical.com.	3600	IN	A	192.0.78.159
+midastechnical.com.	3600	IN	A	192.0.78.224
+www.midastechnical.com.	3600	IN	CNAME	midastechnical.com.
+midastechnical.com.	3600	IN	TXT	"v=spf1 include:_spf.wpcloud.com ~all"
+_dmarc.midastechnical.com.	3600	IN	TXT	"v=DMARC1;p=none;"
+wpcloud1._domainkey.midastechnical.com.	3600	IN	CNAME	wpcloud1._domainkey.wpcloud.com.
+wpcloud2._domainkey.midastechnical.com.	3600	IN	CNAME	wpcloud2._domainkey.wpcloud.com.

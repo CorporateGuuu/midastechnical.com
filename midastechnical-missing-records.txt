@@ -1,0 +1,13 @@
+$ORIGIN midastechnical.com.
+$TTL 3600
+
+; WWW CNAME Record (Missing)
+www	IN	CNAME	midastechnical.com.
+
+; Email Authentication Records (Missing)
+@	IN	TXT	"v=spf1 include:_spf.wpcloud.com ~all"
+_dmarc	IN	TXT	"v=DMARC1;p=none;"
+
+; DKIM Records for WordPress.com Email (Missing)
+wpcloud1._domainkey	IN	CNAME	wpcloud1._domainkey.wpcloud.com.
+wpcloud2._domainkey	IN	CNAME	wpcloud2._domainkey.wpcloud.com.

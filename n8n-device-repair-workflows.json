@@ -1,0 +1,207 @@
+{
+  "workflows": [
+    {
+      "name": "WooCommerce Order Processing",
+      "description": "Automates order processing for device repair services",
+      "trigger": "webhook",
+      "webhook_url": "/webhook/woocommerce-order",
+      "nodes": [
+        {
+          "type": "webhook",
+          "name": "WooCommerce Order Webhook",
+          "settings": {
+            "httpMethod": "POST",
+            "path": "woocommerce-order"
+          }
+        },
+        {
+          "type": "function",
+          "name": "Process Order Data",
+          "code": "// Extract order information\nconst order = $json.body;\nconst orderData = {\n  orderId: order.id,\n  customerName: order.billing.first_name + ' ' + order.billing.last_name,\n  customerEmail: order.billing.email,\n  customerPhone: order.billing.phone,\n  orderTotal: order.total,\n  orderStatus: order.status,\n  items: order.line_items.map(item => ({\n    name: item.name,\n    quantity: item.quantity,\n    price: item.price,\n    sku: item.sku\n  })),\n  deviceType: order.line_items[0].name.includes('iPhone') ? 'iPhone' : \n              order.line_items[0].name.includes('Samsung') ? 'Samsung' :\n              order.line_items[0].name.includes('iPad') ? 'iPad' :\n              order.line_items[0].name.includes('MacBook') ? 'MacBook' : 'Other',\n  serviceType: order.line_items[0].name.includes('Screen') ? 'Screen Repair' :\n               order.line_items[0].name.includes('Battery') ? 'Battery Replacement' :\n               order.line_items[0].name.includes('Service') ? 'Repair Service' : 'Parts Order'\n};\n\nreturn { orderData };"
+        },
+        {
+          "type": "slack",
+          "name": "Notify Team",
+          "settings": {
+            "channel": "#orders",
+            "message": "🛒 New Order #{{$node.Process Order Data.json.orderData.orderId}}\n\n👤 Customer: {{$node.Process Order Data.json.orderData.customerName}}\n📧 Email: {{$node.Process Order Data.json.orderData.customerEmail}}\n📱 Phone: {{$node.Process Order Data.json.orderData.customerPhone}}\n💰 Total: ${{$node.Process Order Data.json.orderData.orderTotal}}\n🔧 Service: {{$node.Process Order Data.json.orderData.serviceType}}\n📱 Device: {{$node.Process Order Data.json.orderData.deviceType}}\n\n📋 Items:\n{{$node.Process Order Data.json.orderData.items}}"
+          }
+        },
+        {
+          "type": "email",
+          "name": "Customer Confirmation",
+          "settings": {
+            "to": "{{$node.Process Order Data.json.orderData.customerEmail}}",
+            "subject": "Order Confirmation #{{$node.Process Order Data.json.orderData.orderId}} - Midas Technical",
+            "body": "Dear {{$node.Process Order Data.json.orderData.customerName}},\n\nThank you for your order! We've received your request for {{$node.Process Order Data.json.orderData.serviceType}} and will begin processing immediately.\n\nOrder Details:\n- Order #: {{$node.Process Order Data.json.orderData.orderId}}\n- Service: {{$node.Process Order Data.json.orderData.serviceType}}\n- Device: {{$node.Process Order Data.json.orderData.deviceType}}\n- Total: ${{$node.Process Order Data.json.orderData.orderTotal}}\n\nNext Steps:\n1. Our technicians will review your order\n2. You'll receive a repair estimate within 2 hours\n3. We'll schedule your device drop-off/pickup\n\nQuestions? Reply to this email or call (555) 123-4567\n\nBest regards,\nMidas Technical Solutions Team"
+          }
+        },
+        {
+          "type": "airtable",
+          "name": "Log to CRM",
+          "settings": {
+            "operation": "create",
+            "table": "Orders",
+            "fields": {
+              "Order ID": "{{$node.Process Order Data.json.orderData.orderId}}",
+              "Customer Name": "{{$node.Process Order Data.json.orderData.customerName}}",
+              "Customer Email": "{{$node.Process Order Data.json.orderData.customerEmail}}",
+              "Customer Phone": "{{$node.Process Order Data.json.orderData.customerPhone}}",
+              "Order Total": "{{$node.Process Order Data.json.orderData.orderTotal}}",
+              "Service Type": "{{$node.Process Order Data.json.orderData.serviceType}}",
+              "Device Type": "{{$node.Process Order Data.json.orderData.deviceType}}",
+              "Status": "New Order",
+              "Created Date": "{{$now}}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Repair Status Updates",
+      "description": "Sends automated updates to customers about repair progress",
+      "trigger": "webhook",
+      "webhook_url": "/webhook/repair-status",
+      "nodes": [
+        {
+          "type": "webhook",
+          "name": "Status Update Webhook",
+          "settings": {
+            "httpMethod": "POST",
+            "path": "repair-status"
+          }
+        },
+        {
+          "type": "function",
+          "name": "Format Status Message",
+          "code": "const status = $json.body.status;\nconst orderId = $json.body.orderId;\nconst customerEmail = $json.body.customerEmail;\nconst customerName = $json.body.customerName;\nconst deviceType = $json.body.deviceType;\n\nlet statusMessage, nextSteps;\n\nswitch(status) {\n  case 'received':\n    statusMessage = 'We\\'ve received your device and our technicians are beginning the diagnostic process.';\n    nextSteps = 'You\\'ll receive a detailed repair estimate within 2 hours.';\n    break;\n  case 'diagnosed':\n    statusMessage = 'Diagnostic complete! We\\'ve identified the issues and prepared your repair estimate.';\n    nextSteps = 'Please review the estimate in your customer portal and approve to proceed.';\n    break;\n  case 'approved':\n    statusMessage = 'Repair approved! Our technicians are now working on your device.';\n    nextSteps = 'Estimated completion time: 2-4 hours. We\\'ll notify you when ready.';\n    break;\n  case 'in_progress':\n    statusMessage = 'Your device repair is currently in progress.';\n    nextSteps = 'Our skilled technicians are carefully working on your device.';\n    break;\n  case 'testing':\n    statusMessage = 'Repair complete! We\\'re now running comprehensive quality tests.';\n    nextSteps = 'Final testing typically takes 30-60 minutes.';\n    break;\n  case 'completed':\n    statusMessage = 'Great news! Your device repair is complete and ready for pickup.';\n    nextSteps = 'Please bring your order confirmation to collect your device.';\n    break;\n  case 'ready_pickup':\n    statusMessage = 'Your device is ready for pickup at our location.';\n    nextSteps = 'Store hours: Mon-Fri 9AM-7PM, Sat 10AM-5PM. Bring photo ID.';\n    break;\n  default:\n    statusMessage = 'Your repair status has been updated.';\n    nextSteps = 'Contact us if you have any questions.';\n}\n\nreturn {\n  orderId,\n  customerEmail,\n  customerName,\n  deviceType,\n  status,\n  statusMessage,\n  nextSteps\n};"
+        },
+        {
+          "type": "email",
+          "name": "Email Customer Update",
+          "settings": {
+            "to": "{{$node.Format Status Message.json.customerEmail}}",
+            "subject": "Repair Update: Order #{{$node.Format Status Message.json.orderId}} - {{$node.Format Status Message.json.deviceType}}",
+            "body": "Hi {{$node.Format Status Message.json.customerName}},\n\nWe have an update on your {{$node.Format Status Message.json.deviceType}} repair:\n\n📱 Device: {{$node.Format Status Message.json.deviceType}}\n📋 Order #: {{$node.Format Status Message.json.orderId}}\n🔄 Status: {{$node.Format Status Message.json.status}}\n\n{{$node.Format Status Message.json.statusMessage}}\n\nNext Steps:\n{{$node.Format Status Message.json.nextSteps}}\n\nTrack your repair: https://midastechnical.com/track/{{$node.Format Status Message.json.orderId}}\n\nQuestions? Contact us:\n📞 (555) 123-4567\n📧 support@mdtstech.store\n\nThanks for choosing Midas Technical!\nThe Repair Team"
+          }
+        },
+        {
+          "type": "sms",
+          "name": "SMS Notification",
+          "settings": {
+            "to": "{{$json.body.customerPhone}}",
+            "message": "Midas Technical Update: Your {{$node.Format Status Message.json.deviceType}} repair (Order #{{$node.Format Status Message.json.orderId}}) is now {{$node.Format Status Message.json.status}}. {{$node.Format Status Message.json.statusMessage}} Track: https://midastechnical.com/track/{{$node.Format Status Message.json.orderId}}"
+          }
+        },
+        {
+          "type": "airtable",
+          "name": "Update CRM Record",
+          "settings": {
+            "operation": "update",
+            "table": "Orders",
+            "recordId": "{{$json.body.recordId}}",
+            "fields": {
+              "Status": "{{$node.Format Status Message.json.status}}",
+              "Last Updated": "{{$now}}",
+              "Status Message": "{{$node.Format Status Message.json.statusMessage}}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer Inquiry AI Response",
+      "description": "AI-powered responses to customer inquiries via contact form",
+      "trigger": "webhook",
+      "webhook_url": "/webhook/contact-form",
+      "nodes": [
+        {
+          "type": "webhook",
+          "name": "Contact Form Webhook",
+          "settings": {
+            "httpMethod": "POST",
+            "path": "contact-form"
+          }
+        },
+        {
+          "type": "function",
+          "name": "Categorize Inquiry",
+          "code": "const inquiry = $json.body.message.toLowerCase();\nconst customerName = $json.body.name;\nconst customerEmail = $json.body.email;\nconst subject = $json.body.subject || 'General Inquiry';\n\nlet category = 'general';\nlet priority = 'normal';\nlet autoResponse = '';\n\n// Categorize based on keywords\nif (inquiry.includes('screen') || inquiry.includes('display') || inquiry.includes('cracked')) {\n  category = 'screen_repair';\n  autoResponse = 'Thank you for your screen repair inquiry! Screen repairs typically take 1-2 hours and come with a lifetime warranty. Would you like to schedule a diagnostic?';\n} else if (inquiry.includes('battery') || inquiry.includes('charging') || inquiry.includes('power')) {\n  category = 'battery_issue';\n  autoResponse = 'Thanks for contacting us about battery issues! Battery replacements usually take 30-45 minutes. We use only high-quality batteries with 6-month warranties.';\n} else if (inquiry.includes('water') || inquiry.includes('liquid') || inquiry.includes('wet')) {\n  category = 'water_damage';\n  priority = 'high';\n  autoResponse = 'Water damage requires immediate attention! Please power off your device and bring it in ASAP. Our liquid damage recovery service has a high success rate when treated quickly.';\n} else if (inquiry.includes('price') || inquiry.includes('cost') || inquiry.includes('quote')) {\n  category = 'pricing';\n  autoResponse = 'Thanks for your pricing inquiry! We offer competitive rates with transparent pricing. Most repairs range from $49-$199. Would you like a free diagnostic and quote?';\n} else if (inquiry.includes('warranty') || inquiry.includes('guarantee')) {\n  category = 'warranty';\n  autoResponse = 'All our repairs come with warranties! Screen repairs: Lifetime warranty, Battery replacements: 6 months, Other repairs: 90 days. We stand behind our work!';\n} else if (inquiry.includes('appointment') || inquiry.includes('schedule') || inquiry.includes('book')) {\n  category = 'scheduling';\n  autoResponse = 'We\\'d be happy to schedule your repair! Walk-ins welcome, or book online at midastechnical.com/book. Average wait time: 15 minutes.';\n}\n\nreturn {\n  customerName,\n  customerEmail,\n  subject,\n  inquiry: $json.body.message,\n  category,\n  priority,\n  autoResponse\n};"
+        },
+        {
+          "type": "email",
+          "name": "Auto-Response Email",
+          "settings": {
+            "to": "{{$node.Categorize Inquiry.json.customerEmail}}",
+            "subject": "Re: {{$node.Categorize Inquiry.json.subject}} - Midas Technical Response",
+            "body": "Hi {{$node.Categorize Inquiry.json.customerName}},\n\nThank you for contacting Midas Technical Solutions!\n\n{{$node.Categorize Inquiry.json.autoResponse}}\n\nYour inquiry has been categorized as: {{$node.Categorize Inquiry.json.category}}\nPriority level: {{$node.Categorize Inquiry.json.priority}}\n\nOur team will review your message and provide a detailed response within 2 hours during business hours.\n\nIn the meantime:\n📍 Visit us: 123 Tech Street, New York, NY 10001\n📞 Call us: (555) 123-4567\n🌐 Online booking: https://midastechnical.com/book\n⏰ Hours: Mon-Fri 9AM-7PM, Sat 10AM-5PM\n\nBest regards,\nMidas Technical Solutions\nYour Device Repair Experts"
+          }
+        },
+        {
+          "type": "slack",
+          "name": "Notify Support Team",
+          "settings": {
+            "channel": "#customer-support",
+            "message": "📧 New Customer Inquiry\n\n👤 From: {{$node.Categorize Inquiry.json.customerName}} ({{$node.Categorize Inquiry.json.customerEmail}})\n📋 Subject: {{$node.Categorize Inquiry.json.subject}}\n🏷️ Category: {{$node.Categorize Inquiry.json.category}}\n⚡ Priority: {{$node.Categorize Inquiry.json.priority}}\n\n💬 Message:\n{{$node.Categorize Inquiry.json.inquiry}}\n\n🤖 Auto-response sent: {{$node.Categorize Inquiry.json.autoResponse}}"
+          }
+        },
+        {
+          "type": "airtable",
+          "name": "Log Inquiry",
+          "settings": {
+            "operation": "create",
+            "table": "Customer_Inquiries",
+            "fields": {
+              "Customer Name": "{{$node.Categorize Inquiry.json.customerName}}",
+              "Customer Email": "{{$node.Categorize Inquiry.json.customerEmail}}",
+              "Subject": "{{$node.Categorize Inquiry.json.subject}}",
+              "Message": "{{$node.Categorize Inquiry.json.inquiry}}",
+              "Category": "{{$node.Categorize Inquiry.json.category}}",
+              "Priority": "{{$node.Categorize Inquiry.json.priority}}",
+              "Auto Response": "{{$node.Categorize Inquiry.json.autoResponse}}",
+              "Status": "New",
+              "Created Date": "{{$now}}"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "setup_instructions": {
+    "prerequisites": [
+      "n8n instance running (self-hosted or cloud)",
+      "WordPress.com site with webhook capabilities",
+      "Slack workspace for notifications",
+      "Email service (SMTP or service like SendGrid)",
+      "SMS service (Twilio recommended)",
+      "Airtable account for CRM functionality"
+    ],
+    "webhook_endpoints": [
+      {
+        "name": "WooCommerce Orders",
+        "url": "https://your-n8n-instance.com/webhook/woocommerce-order",
+        "method": "POST",
+        "setup": "Add to WooCommerce webhook settings"
+      },
+      {
+        "name": "Repair Status Updates",
+        "url": "https://your-n8n-instance.com/webhook/repair-status",
+        "method": "POST",
+        "setup": "Integrate with repair management system"
+      },
+      {
+        "name": "Contact Form",
+        "url": "https://your-n8n-instance.com/webhook/contact-form",
+        "method": "POST",
+        "setup": "Add to WordPress contact form plugin"
+      }
+    ],
+    "configuration_steps": [
+      "1. Import workflows into n8n",
+      "2. Configure service credentials (Slack, email, SMS, Airtable)",
+      "3. Set up webhook URLs in WordPress.com",
+      "4. Test each workflow with sample data",
+      "5. Monitor and optimize based on usage"
+    ]
+  }
+}

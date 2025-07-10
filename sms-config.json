@@ -1,0 +1,13 @@
+{
+  "sms_integration": {
+    "provider": "twilio",
+    "account_sid": "YOUR_TWILIO_ACCOUNT_SID",
+    "auth_token": "YOUR_TWILIO_AUTH_TOKEN",
+    "from_number": "+1234567890",
+    "templates": {
+      "order_received": "Midas Technical: Order #{{orderId}} received. We'll send updates as we progress. Track: {{trackingUrl}}",
+      "repair_ready": "Midas Technical: Your {{deviceType}} repair is complete! Ready for pickup. Order #{{orderId}}",
+      "status_update": "Midas Technical: {{deviceType}} repair update - {{status}}. Order #{{orderId}}. Track: {{trackingUrl}}"
+    }
+  }
+}
