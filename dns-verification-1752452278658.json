@@ -1,0 +1,37 @@
+{
+  "domain": "midastechnical.com",
+  "timestamp": "2025-07-14T00:17:58.658Z",
+  "results": {
+    "aRecords": {
+      "status": "success",
+      "records": [
+        "192.0.78.224",
+        "192.0.78.159"
+      ]
+    },
+    "ssl": {
+      "status": "success",
+      "details": {
+        "issuer": "E5",
+        "validFrom": "Jun  4 11:10:47 2025 GMT",
+        "validTo": "Sep  2 11:10:46 2025 GMT",
+        "subject": "midastechnical.com"
+      }
+    },
+    "email": {
+      "status": "error",
+      "records": {}
+    },
+    "accessibility": {
+      "status": "error",
+      "response": {
+        "statusCode": 404,
+        "headers": {
+          "server": "Netlify",
+          "content-type": "text/plain; charset=utf-8"
+        }
+      }
+    }
+  },
+  "overallStatus": "error"
+}

@@ -1,0 +1,359 @@
+{
+  "store_settings": {
+    "general": {
+      "woocommerce_store_address": "Your Business Address",
+      "woocommerce_store_address_2": "Suite/Unit Number",
+      "woocommerce_store_city": "Your City",
+      "woocommerce_default_country": "US:CA",
+      "woocommerce_store_postcode": "Your ZIP Code",
+      "woocommerce_allowed_countries": "all",
+      "woocommerce_all_except_countries": [],
+      "woocommerce_specific_allowed_countries": [],
+      "woocommerce_ship_to_countries": "",
+      "woocommerce_specific_ship_to_countries": [],
+      "woocommerce_default_customer_address": "base",
+      "woocommerce_calc_taxes": "yes",
+      "woocommerce_enable_coupons": "yes",
+      "woocommerce_calc_discounts_sequentially": "no",
+      "woocommerce_currency": "USD",
+      "woocommerce_currency_pos": "left",
+      "woocommerce_price_thousand_sep": ",",
+      "woocommerce_price_decimal_sep": ".",
+      "woocommerce_price_num_decimals": "2"
+    },
+    "products": {
+      "woocommerce_shop_page_display": "",
+      "woocommerce_category_archive_display": "",
+      "woocommerce_default_catalog_orderby": "menu_order",
+      "woocommerce_enable_reviews": "yes",
+      "woocommerce_review_rating_verification_label": "yes",
+      "woocommerce_review_rating_verification_required": "no",
+      "woocommerce_enable_review_rating": "yes",
+      "woocommerce_review_rating_required": "yes",
+      "woocommerce_manage_stock": "yes",
+      "woocommerce_hold_stock_minutes": "60",
+      "woocommerce_notify_low_stock": "yes",
+      "woocommerce_notify_no_stock": "yes",
+      "woocommerce_stock_email_recipient": "support@mdtstech.store",
+      "woocommerce_notify_low_stock_amount": "2",
+      "woocommerce_notify_no_stock_amount": "0",
+      "woocommerce_hide_out_of_stock_items": "no"
+    },
+    "shipping": {
+      "woocommerce_shipping_cost_requires_address": "no",
+      "woocommerce_ship_to_destination": "billing",
+      "woocommerce_shipping_debug_mode": "no",
+      "woocommerce_enable_shipping_calc": "yes"
+    },
+    "checkout": {
+      "woocommerce_enable_guest_checkout": "yes",
+      "woocommerce_enable_checkout_login_reminder": "no",
+      "woocommerce_enable_signup_and_login_from_checkout": "no",
+      "woocommerce_enable_myaccount_registration": "no",
+      "woocommerce_registration_generate_username": "yes",
+      "woocommerce_registration_generate_password": "yes",
+      "woocommerce_erasure_request_removes_order_data": "no",
+      "woocommerce_erasure_request_removes_download_data": "no",
+      "woocommerce_allow_bulk_remove_personal_data": "no",
+      "woocommerce_registration_privacy_policy_text": "Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.",
+      "woocommerce_checkout_privacy_policy_text": "Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.",
+      "woocommerce_delete_inactive_accounts": {
+        "enabled": "no",
+        "inactive_time": "24"
+      }
+    }
+  },
+  "stripe_settings": {
+    "enabled": "yes",
+    "title": "Credit Card (Stripe)",
+    "description": "Pay securely with your credit card via Stripe",
+    "testmode": "yes",
+    "test_publishable_key": "pk_test_YOUR_TEST_PUBLISHABLE_KEY",
+    "test_secret_key": "sk_test_YOUR_TEST_SECRET_KEY",
+    "publishable_key": "pk_live_YOUR_LIVE_PUBLISHABLE_KEY",
+    "secret_key": "sk_live_YOUR_LIVE_SECRET_KEY",
+    "capture": "yes",
+    "payment_request": "yes",
+    "payment_request_button_type": "buy",
+    "payment_request_button_theme": "dark",
+    "payment_request_button_height": "40",
+    "saved_cards": "yes",
+    "logging": "yes"
+  },
+  "shipping_zones": [
+    {
+      "zone_name": "United States",
+      "zone_locations": [
+        {
+          "type": "country",
+          "code": "US"
+        }
+      ],
+      "shipping_methods": [
+        {
+          "method_id": "flat_rate",
+          "method_title": "Standard Shipping",
+          "settings": {
+            "title": "Standard Shipping",
+            "cost": "5.99",
+            "class_costs": "",
+            "calculation_type": "class",
+            "minimum_fee": "",
+            "maximum_fee": ""
+          }
+        },
+        {
+          "method_id": "free_shipping",
+          "method_title": "Free Shipping",
+          "settings": {
+            "title": "Free Shipping",
+            "requires": "min_amount",
+            "min_amount": "75",
+            "ignore_discounts": "no"
+          }
+        },
+        {
+          "method_id": "local_pickup",
+          "method_title": "Local Pickup",
+          "settings": {
+            "title": "Local Pickup",
+            "cost": "0"
+          }
+        }
+      ]
+    },
+    {
+      "zone_name": "International",
+      "zone_locations": [
+        {
+          "type": "continent",
+          "code": "EU"
+        },
+        {
+          "type": "continent",
+          "code": "AS"
+        },
+        {
+          "type": "continent",
+          "code": "OC"
+        },
+        {
+          "type": "continent",
+          "code": "AF"
+        },
+        {
+          "type": "continent",
+          "code": "AN"
+        },
+        {
+          "type": "continent",
+          "code": "SA"
+        }
+      ],
+      "shipping_methods": [
+        {
+          "method_id": "flat_rate",
+          "method_title": "International Shipping",
+          "settings": {
+            "title": "International Shipping",
+            "cost": "15.99",
+            "class_costs": "",
+            "calculation_type": "class",
+            "minimum_fee": "",
+            "maximum_fee": ""
+          }
+        }
+      ]
+    }
+  ],
+  "tax_rates": [
+    {
+      "country": "US",
+      "state": "CA",
+      "rate": "8.2500",
+      "name": "CA Tax",
+      "priority": "1",
+      "compound": "0",
+      "shipping": "1",
+      "order": "0",
+      "class": ""
+    },
+    {
+      "country": "US",
+      "state": "NY",
+      "rate": "8.0000",
+      "name": "NY Tax",
+      "priority": "1",
+      "compound": "0",
+      "shipping": "1",
+      "order": "0",
+      "class": ""
+    },
+    {
+      "country": "US",
+      "state": "TX",
+      "rate": "6.2500",
+      "name": "TX Tax",
+      "priority": "1",
+      "compound": "0",
+      "shipping": "1",
+      "order": "0",
+      "class": ""
+    }
+  ],
+  "email_settings": {
+    "woocommerce_email_from_name": "Midas Technical",
+    "woocommerce_email_from_address": "orders@midastechnical.com",
+    "woocommerce_email_header_image": "",
+    "woocommerce_email_footer_text": "Midas Technical - Professional Device Repair Parts",
+    "woocommerce_email_base_color": "#1e3a8a",
+    "woocommerce_email_background_color": "#f7f7f7",
+    "woocommerce_email_body_background_color": "#ffffff",
+    "woocommerce_email_text_color": "#3c3c3c"
+  },
+  "product_categories": [
+    {
+      "name": "iPhone Parts",
+      "slug": "iphone-parts",
+      "description": "High-quality iPhone replacement parts and components",
+      "subcategories": [
+        "LCD Screens",
+        "Batteries",
+        "Cameras",
+        "Charging Ports"
+      ]
+    },
+    {
+      "name": "Samsung Parts",
+      "slug": "samsung-parts",
+      "description": "Samsung device parts and display assemblies",
+      "subcategories": [
+        "Display Assemblies",
+        "Batteries",
+        "Components"
+      ]
+    },
+    {
+      "name": "Repair Tools",
+      "slug": "repair-tools",
+      "description": "Professional repair tools and equipment",
+      "subcategories": [
+        "Opening Tools",
+        "Screwdrivers",
+        "Testing Equipment"
+      ]
+    },
+    {
+      "name": "Wholesale",
+      "slug": "wholesale",
+      "description": "Bulk orders and professional repair kits",
+      "subcategories": [
+        "Bulk Orders",
+        "Professional Kits"
+      ]
+    },
+    {
+      "name": "Trade-In",
+      "slug": "trade-in",
+      "description": "Device buyback and evaluation services",
+      "subcategories": [
+        "Device Buyback",
+        "Evaluation"
+      ]
+    }
+  ],
+  "custom_fields": [
+    {
+      "key": "compatibility",
+      "label": "Device Compatibility",
+      "name": "compatibility",
+      "type": "text",
+      "instructions": "Enter compatible device models",
+      "required": 0,
+      "default_value": "",
+      "placeholder": "e.g., iPhone 12, iPhone 12 Pro"
+    },
+    {
+      "key": "condition",
+      "label": "Product Condition",
+      "name": "condition",
+      "type": "select",
+      "instructions": "Select product condition",
+      "required": 1,
+      "choices": {
+        "new": "New",
+        "refurbished": "Refurbished",
+        "used": "Used"
+      },
+      "default_value": "new"
+    },
+    {
+      "key": "screen_size",
+      "label": "Screen Size",
+      "name": "screen_size",
+      "type": "text",
+      "instructions": "Enter screen size if applicable",
+      "required": 0,
+      "default_value": "",
+      "placeholder": "e.g., 6.1 inch"
+    },
+    {
+      "key": "color",
+      "label": "Color",
+      "name": "color",
+      "type": "select",
+      "instructions": "Select product color",
+      "required": 0,
+      "choices": {
+        "black": "Black",
+        "white": "White",
+        "blue": "Blue",
+        "red": "Red",
+        "green": "Green",
+        "purple": "Purple",
+        "gold": "Gold",
+        "silver": "Silver"
+      },
+      "default_value": "black"
+    },
+    {
+      "key": "storage",
+      "label": "Storage Capacity",
+      "name": "storage",
+      "type": "select",
+      "instructions": "Select storage capacity if applicable",
+      "required": 0,
+      "choices": {
+        "64gb": "64GB",
+        "128gb": "128GB",
+        "256gb": "256GB",
+        "512gb": "512GB",
+        "1tb": "1TB"
+      },
+      "default_value": ""
+    }
+  ],
+  "theme_customization": {
+    "site_title": "Midas Technical",
+    "tagline": "Professional Device Repair Parts",
+    "colors": {
+      "primary": "#1e3a8a",
+      "secondary": "#f59e0b",
+      "text": "#1f2937",
+      "background": "#ffffff",
+      "accent": "#10b981"
+    },
+    "typography": {
+      "heading_font": "Roboto",
+      "body_font": "Open Sans",
+      "font_size_base": "16px",
+      "line_height": "1.6"
+    },
+    "layout": {
+      "container_width": "1200px",
+      "sidebar_width": "300px",
+      "header_layout": "default",
+      "footer_layout": "default"
+    }
+  }
+}
