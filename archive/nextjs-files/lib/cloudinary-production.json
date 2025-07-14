@@ -1,0 +1,24 @@
+{
+  "cloud_name": "midastechnical-prod",
+  "api_key": "YOUR_PRODUCTION_API_KEY",
+  "api_secret": "YOUR_PRODUCTION_API_SECRET",
+  "secure": true,
+  "folders": {
+    "products": "midastechnical/products",
+    "categories": "midastechnical/categories",
+    "blog": "midastechnical/blog",
+    "marketing": "midastechnical/marketing"
+  },
+  "transformations": {
+    "thumbnail": "w_300,h_300,c_fill,f_webp,q_auto:good",
+    "medium": "w_600,h_600,c_fill,f_webp,q_auto:good",
+    "large": "w_1200,h_1200,c_fill,f_webp,q_auto:good",
+    "hero": "w_1920,h_1080,c_fill,f_webp,q_auto:good"
+  },
+  "optimization": {
+    "auto_format": true,
+    "auto_quality": true,
+    "progressive": true,
+    "lazy_loading": true
+  }
+}

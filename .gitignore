@@ -1,22 +1,35 @@
-# WordPress.com Repository .gitignore
+# Dependencies
+node_modules/
+vendor/
 
-# Archive directory (Next.js files)
-archive/
-
-# Temporary files
-*.tmp
-*.temp
-.DS_Store
-Thumbs.db
-
-# Log files
+# Logs and temporary files
 *.log
-logs/
+*.tmp
+setup-log-*.txt
+dns-verification-*.json
+expansion_report_*.txt
 
-# Environment files (if any)
+# Environment files
 .env
 .env.local
 .env.production
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Database files
+*.db
+*.sqlite
+
+# Backup files
+*.bak
+backup-*/
+
+# System files
+.DS_Store
+Thumbs.db
 
 # IDE files
 .vscode/
@@ -24,23 +37,16 @@ logs/
 *.swp
 *.swo
 
-# Backup files
-*.backup
-*.bak
+# WordPress specific
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
 
-# Node modules (if any migration scripts need them)
-node_modules/
+# Temporary directories
+tmp/
+temp/
+cache/
 
-# Output directories
-output/
-dist/
-build/
-
-# Database files
-*.db
-*.sqlite
-
-# Compressed files
-*.zip
-*.tar.gz
-*.rar
+# Package manager files
+package-lock.json (keep for WordPress.com migration)
+composer.lock

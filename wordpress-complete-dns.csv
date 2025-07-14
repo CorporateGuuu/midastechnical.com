@@ -1,8 +1,0 @@
-Type,Name,Value,TTL
-A,@,192.0.78.159,3600
-A,@,192.0.78.224,3600
-CNAME,www,midastechnical.com,3600
-TXT,@,"v=spf1 include:_spf.wpcloud.com ~all",3600
-TXT,_dmarc,"v=DMARC1;p=none;",3600
-CNAME,wpcloud1._domainkey,wpcloud1._domainkey.wpcloud.com,3600
-CNAME,wpcloud2._domainkey,wpcloud2._domainkey.wpcloud.com,3600
